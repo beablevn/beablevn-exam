@@ -11,13 +11,20 @@ import WritingTestPage from './pages/WritingTestPage';
 import TestHistoryPage from './pages/TestHistoryPage'; 
 import ReviewHubPage from './pages/ReviewHubPage';
 import { ref, get, child, update, remove } from "firebase/database";
-import { db } from './firebase'; 
+import { httpsCallable } from "firebase/functions";
+import { db, functions } from './firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 const ProtectedRoute = ({ isLoggedIn, children }) => {
   if (!isLoggedIn) return <Navigate to="/" replace />;
+  return children;
+};
+
+// 👉 GUARD CHO TRANG ADMIN — chỉ cho vào khi isAdmin = true (state nội bộ, không từ localStorage)
+const AdminRoute = ({ isAdmin, children }) => {
+  if (!isAdmin) return <Navigate to="/" replace />;
   return children;
 };
 
@@ -43,7 +50,9 @@ function App() {
   const [passForm, setPassForm] = useState({ studentId: '', oldPass: '', newPass: '', confirmPass: '' });
   
   const [studentName, setStudentName] = useState(''); 
-  const [userRole, setUserRole] = useState(localStorage.getItem('currentUserRole') || 'normal');
+  // 👉 KHÔNG đọc role từ localStorage — localStorage có thể bị sửa trong DevTools.
+  //    Role chỉ được set từ dữ liệu Firebase sau khi login thành công (handleLoginSubmit).
+  const [userRole, setUserRole] = useState('normal');
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -157,10 +166,20 @@ function App() {
     if (studentId.length !== 8 && studentId !== 'admin') { toast.warning("⚠️ Mã học viên phải có đúng 8 chữ số!"); return; }
     if (password.length < 6) { toast.warning("⚠️ Mật khẩu phải có ít nhất 6 ký tự!"); return; }
 
-    if (studentId === '15082022' && password === 'BAVNbavn$67896789#') {
-       setIsLoggedIn(true); setIsAdmin(true); setStudentName("Quản Trị Viên"); 
-       setShowLoginModal(false); toast.success("🔓 Đăng nhập Admin thành công!"); 
-       navigate('/admin'); return;
+    // Fix 5: Mat khau admin duoc so sanh tren server (khong con trong bundle JS)
+    if (studentId === '15082022') {
+      try {
+        const verifyAdmin = httpsCallable(functions, 'verifyAdminLogin');
+        const result = await verifyAdmin({ password });
+        if (result.data?.success) {
+          setIsLoggedIn(true); setIsAdmin(true); setStudentName("Quản Trị Viên");
+          setShowLoginModal(false); toast.success("🔓 Đăng nhập Admin thành công!");
+          navigate('/admin');
+        }
+      } catch (err) {
+        toast.error("❌ Sai mật khẩu Admin!");
+      }
+      return;
     }
 
     try {
@@ -367,7 +386,7 @@ function App() {
       <div className="app-content">
         <Routes>
           <Route path="/" element={ !isLoggedIn ? <LandingPage onOpenLogin={openModal} /> : (isAdmin ? <Navigate to="/admin" /> : <Navigate to="/dashboard" />) } />         
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={<AdminRoute isAdmin={isAdmin}><AdminPage /></AdminRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute isLoggedIn={isLoggedIn}><HomePage /></ProtectedRoute>} />
           <Route path="/test-menu/:testId" element={<ProtectedRoute isLoggedIn={isLoggedIn}><TestMenuPage /></ProtectedRoute>} />
           <Route path="/do-test/:testId/:skill" element={<ProtectedRoute isLoggedIn={isLoggedIn}><FullTestPage /></ProtectedRoute>} />

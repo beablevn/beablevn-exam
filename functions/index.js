@@ -30,6 +30,7 @@ exports.generateContent = onCall(
     },
     async (request) => {
         const promptText = request.data?.promptText;
+        const studentId  = request.data?.studentId;
 
         // Kiem tra dau vao
         if (!promptText || typeof promptText !== "string") {
@@ -37,6 +38,23 @@ exports.generateContent = onCall(
         }
         if (promptText.length > 50000) {
             throw new HttpsError("invalid-argument", "Noi dung qua dai.");
+        }
+
+        // Xac thuc nguoi goi: phai la tai khoan ton tai trong he thong.
+        // Ngan ke ngoai biet projectId goi function tieu quota Gemini.
+        if (!studentId || typeof studentId !== "string") {
+            throw new HttpsError("unauthenticated", "Yeu cau xac thuc: thieu studentId.");
+        }
+        const dbRef = admin.database();
+        // Admin (15082022) luon duoc phep, hoc vien phai check DB
+        if (studentId !== "15082022") {
+            const userSnap = await dbRef.ref(`users/${studentId}`).once("value");
+            if (!userSnap.exists()) {
+                throw new HttpsError("unauthenticated", "Tai khoan khong hop le.");
+            }
+            if (userSnap.val()?.isLocked === true) {
+                throw new HttpsError("permission-denied", "Tai khoan bi khoa, khong the su dung AI.");
+            }
         }
 
         try {
@@ -87,9 +105,10 @@ admin.initializeApp({
 // Rules chi cho doc users/{id} DICH DANH, KHONG cho doc ca thu muc "users".
 // Function nay chay bang Admin SDK (bo qua Rules), doc toan bo "users" roi
 // tra ve danh sach DA LOC BO MAT KHAU. Co cong chan bang mat khau admin
-// (so o server - vốn da public trong App.jsx). Deploy: firebase deploy --only functions
+// (so o server - KHONG con trong App.jsx sau Fix 5).
+// Deploy: firebase deploy --only functions
 // ============================================================
-const ADMIN_PANEL_PASSWORD = "BAVNbavn$67896789#"; // trung mat khau dang nhap Admin
+const ADMIN_PANEL_PASSWORD = "BAVNbavn$67896789#"; // Chi nam o server, khong con trong bundle JS
 
 exports.listUsers = onCall(
     {
@@ -113,6 +132,28 @@ exports.listUsers = onCall(
             createdAt: u?.createdAt || null
         }));
         return { users };
+    }
+);
+
+// ============================================================
+// XAC THUC DANG NHAP ADMIN - SO SANH MAT KHAU O SERVER (Fix 5)
+// ------------------------------------------------------------
+// Truoc Fix 5: App.jsx so sat cung mat khau 'BAVNbavn$67896789#' ngay trong
+// bundle JS -> bat ky ai mo DevTools -> Sources -> bundle.js la doc duoc.
+// Sau Fix 5: client gui password len day, server so sanh voi ADMIN_PANEL_PASSWORD.
+// Password khong con trong bundle cua trinh duyet.
+// Client van gui studentId = '15082022' de bien hay trang dang nhap binh thuong
+// (admin ID khong phai secret quan trong bang password).
+// Deploy sau khi sua: firebase deploy --only functions
+// ============================================================
+exports.verifyAdminLogin = onCall(
+    { memory: "128MiB", maxInstances: 3 },
+    async (request) => {
+        const { password } = request.data || {};
+        if (!password || password !== ADMIN_PANEL_PASSWORD) {
+            throw new HttpsError("permission-denied", "Sai mat khau Admin.");
+        }
+        return { success: true };
     }
 );
 

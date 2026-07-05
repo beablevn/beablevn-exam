@@ -13,12 +13,15 @@
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../firebase";
 
-export const generateContentWithRotation = async (promptText) => {
+export const generateContentWithRotation = async (promptText, studentId) => {
     // timeout 120s - cham essay dai co the lau
     const callGemini = httpsCallable(functions, "generateContent", { timeout: 120000 });
 
+    // Lấy studentId từ localStorage nếu caller không truyền vào
+    const sid = studentId || localStorage.getItem("currentStudentId") || "";
+
     try {
-        const result = await callGemini({ promptText });
+        const result = await callGemini({ promptText, studentId: sid });
         return result.data.text;
     } catch (error) {
         // error.code cua Firebase Functions: functions/resource-exhausted, functions/unavailable...
