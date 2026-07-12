@@ -37,6 +37,6 @@ export default defineConfig({
     })
   ],
   build: {
-    cssMinify: 'esbuild' // lightningcss có bug với bundle này, esbuild tương đương
+    cssMinify: false // esbuild và lightningcss đều lỗi với rolldown-vite 7.2.5
   }
 })

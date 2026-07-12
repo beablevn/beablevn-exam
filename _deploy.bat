@@ -1,49 +1,65 @@
 @echo off
-rem Thu muc hien tai da la project folder khi double-click tu File Explorer
+SETLOCAL ENABLEDELAYEDEXPANSION
 
-(
-    echo === STEP 1: npm run build ===
-    call npm run build
-    echo BUILD_EXIT=%ERRORLEVEL%
-) > _deploy.log 2>&1
+rem pushd %~dp0 = chuyen den thu muc chua file bat (xu ly duoc ky tu dac biet trong ten thu muc)
+pushd "%~dp0"
 
-findstr /C:"BUILD_EXIT=0" _deploy.log > nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    echo BUILD FAILED - xem _deploy.log
-    pause
-    exit /b 1
+echo ========================================
+echo  BUILD + DEPLOY BAVN EXAM
+echo ========================================
+echo.
+
+rem === STEP 1: npm run build ===
+echo [1/3] npm run build...
+echo.
+npm run build
+set BUILD_CODE=!ERRORLEVEL!
+
+if !BUILD_CODE! NEQ 0 (
+    echo.
+    echo *** BUILD FAILED (exit code !BUILD_CODE!) ***
+    popd & pause & exit /b 1
 )
 
-(
+if not exist "dist\index.html" (
     echo.
-    echo === STEP 2: firebase deploy --only hosting ===
-    call firebase deploy --only hosting
-    echo FIREBASE_EXIT=%ERRORLEVEL%
-) >> _deploy.log 2>&1
-
-findstr /C:"FIREBASE_EXIT=0" _deploy.log > nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    echo FIREBASE FAILED - xem _deploy.log
-    pause
-    exit /b 1
+    echo *** dist\index.html KHONG TON TAI sau build! ***
+    popd & pause & exit /b 1
 )
+echo BUILD OK.
+echo.
 
-(
+rem === STEP 2: firebase deploy ===
+echo [2/3] firebase deploy --only hosting...
+echo.
+firebase deploy --only hosting
+set FIRE_CODE=!ERRORLEVEL!
+
+if !FIRE_CODE! NEQ 0 (
     echo.
-    echo === STEP 3: git commit + push ===
-    git add .
-    git commit -m "Fix mobile responsive: modal overflow, AdminPage layout+color #2B6830, LandingPage h1 font, remove sync btn, fix CSS build"
-    echo.
-    echo --- push company ---
+    echo *** FIREBASE DEPLOY FAILED ***
+    popd & pause & exit /b 1
+)
+echo FIREBASE DEPLOY OK.
+echo.
+
+rem === STEP 3: git commit + push ===
+echo [3/3] git commit + push...
+git add -A
+set /p COMMIT_MSG="Nhap commit message (Enter de bo qua commit): "
+if not "!COMMIT_MSG!"=="" (
+    git commit -m "!COMMIT_MSG!"
     git push company main
-    echo PUSH_CO=%ERRORLEVEL%
-    echo.
-    echo --- push personal ---
     git push personal main
-    echo PUSH_PE=%ERRORLEVEL%
-    echo.
-    echo === ALL DONE ===
-) >> _deploy.log 2>&1
+) else (
+    echo Khong commit. Chi deploy.
+)
 
-echo Hoan tat! Xem _deploy.log de kiem tra ket qua.
+echo.
+echo ========================================
+echo  XONG! https://beablevn-exam.web.app
+echo  Nho Ctrl+Shift+R de xoa cache.
+echo ========================================
+echo.
+popd
 pause

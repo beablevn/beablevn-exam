@@ -186,6 +186,8 @@ function App() {
           setIsLoggedIn(true); setIsAdmin(true); setStudentName("Quản Trị Viên");
           setShowLoginModal(false); toast.success("🔓 Đăng nhập Admin thành công!");
           navigate('/admin');
+        } else {
+          toast.error("❌ Sai mật khẩu Admin!");
         }
       } catch (err) {
         toast.error("❌ Sai mật khẩu Admin!");

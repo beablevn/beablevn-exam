@@ -57,7 +57,7 @@ export default function ReviewHubPage() {
         navigate(`/test-menu/${item.id}`);
     } else {
         // Đẩy đến trang Writing Practice và truyền ID qua state
-        navigate(`/writing-practice/${id}`, { state: { fromReviewHub: true } });
+        navigate(`/writing-practice/${item.id}`, { state: { fromReviewHub: true } });
     }
   };
 

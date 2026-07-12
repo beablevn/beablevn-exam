@@ -29,7 +29,7 @@ const TaskGroup = ({ groupName, items, type, selectedId, onSelect }) => {
                         const isSelected = selectedId === item.id;
                         // Strip HTML tags từ nội dung ReactQuill để hiển thị text thuần trong card preview
                         const stripHtml = (html) => (html || "").replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
-                        const desc = type === 1 ? item.title : stripHtml(item.question);
+                        const desc = type === 1 ? stripHtml(item.title) : stripHtml(item.question);
                         const thumb = type === 1 ? (item.image || (item.images && item.images[0])) : null;
                         return (
                             <div key={item.id} className={`item-card ${isSelected ? 'selected' : ''}`} onClick={() => onSelect(item.id)}>
