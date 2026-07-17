@@ -5,13 +5,31 @@ import { useParams, Link } from 'react-router-dom';
 // 👉 1. IMPORT FIREBASE
 import { ref, get, child } from "firebase/database";
 import { db } from '../firebase';
+import { isTestProtected, isTestUnlocked, tryUnlockTest } from '../utils/testLock';
 
 export default function TestMenuPage() {
   const { testId } = useParams();
-  
+
   // 👉 2. KHAI BÁO STATE
   const [testData, setTestData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // 🔒 Cổng mật khẩu dự phòng nếu học viên vào thẳng URL test-menu (bỏ qua popup ở Dashboard).
+  // Neu da mo khoa tu Dashboard (session hien tai) thi khong hoi lai o day.
+  const isProtected = isTestProtected(testId);
+  const [unlocked, setUnlocked] = useState(() => isTestUnlocked(testId));
+  const [pwInput, setPwInput] = useState('');
+  const [pwError, setPwError] = useState('');
+
+  const handleUnlock = (e) => {
+    e.preventDefault();
+    if (tryUnlockTest(testId, pwInput)) {
+      setUnlocked(true);
+      setPwError('');
+    } else {
+      setPwError('❌ Sai mật khẩu, vui lòng thử lại.');
+    }
+  };
 
   // 👉 3. GỌI DỮ LIỆU TỪ FIREBASE DỰA VÀO TEST ID
   useEffect(() => {
@@ -59,10 +77,43 @@ export default function TestMenuPage() {
     );
   }
 
-  // 👉 HIỂN THỊ GIAO DIỆN CHỌN KỸ NĂNG NHƯ CŨ
+  const locked = isProtected && !unlocked;
+
+  // 👉 HIỂN THỊ GIAO DIỆN CHỌN KỸ NĂNG NHƯ CŨ (làm mờ + khóa tương tác phía sau nếu đề chưa mở khóa)
+  // Popup phải là phần tử ANH EM với khối bị blur, không đặt lồng bên trong —
+  // filter trên div cha biến nó thành containing block cho con position:fixed,
+  // khiến popup bị mờ theo và định vị sai lệch vào góc thay vì giữa màn hình.
   return (
-    <div className="test-menu-container">
-        
+    <>
+      {locked && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ background: 'white', borderRadius: '14px', padding: '32px 28px', maxWidth: '340px', width: '90%', textAlign: 'center', boxShadow: '0 10px 40px rgba(0,0,0,0.25)' }}>
+            <i className="fa-solid fa-lock" style={{ fontSize: '2.5rem', color: '#2B6830', marginBottom: '16px' }}></i>
+            <h3 style={{ color: '#2B6830', margin: '0 0 6px' }}>{testData.testName}</h3>
+            <p style={{ color: '#666', marginBottom: '20px', fontSize: '0.9rem' }}>Đề thi này yêu cầu mật khẩu để bắt đầu làm bài.</p>
+            <form onSubmit={handleUnlock}>
+              <input
+                type="password"
+                value={pwInput}
+                onChange={(e) => { setPwInput(e.target.value); setPwError(''); }}
+                placeholder="Nhập mật khẩu"
+                autoFocus
+                style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '1rem', marginBottom: '12px', textAlign: 'center', boxSizing: 'border-box' }}
+              />
+              {pwError && <p style={{ color: '#ef4444', marginTop: '-4px', marginBottom: '12px', fontSize: '0.85rem' }}>{pwError}</p>}
+              <button
+                type="submit"
+                style={{ width: '100%', background: '#2B6830', color: 'white', padding: '12px', borderRadius: '8px', border: 'none', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer' }}
+              >
+                Xác nhận
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <div className="test-menu-container" style={locked ? { filter: 'blur(4px)', pointerEvents: 'none', userSelect: 'none' } : undefined}>
+
       <div className="test-info-header">
         <h1 className="test-title">
           {testData.testName}
@@ -137,6 +188,7 @@ export default function TestMenuPage() {
           )}
 
       </div>
-    </div>
+      </div>
+    </>
   );
 }
