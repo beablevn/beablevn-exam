@@ -34,3 +34,10 @@ repomix-output.xml
 
 # Firebase functions dependencies
 functions/node_modules
+# Service account (KHONG commit)
+functions/admin-scripts/service-account*.json
+*service-account*.json
+admin.json
+
+# Bao cao bao mat noi bo (chi tiet khai thac, KHONG day len GitHub)
+_SECURITY-AUDIT-*.md

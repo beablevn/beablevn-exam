@@ -9,12 +9,13 @@ import emailjs from '@emailjs/browser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { generateContentWithRotation } from '../utils/geminiHelper';
+import { reportTestBug } from '../utils/api';
 
 // 👉 IMPORT FIREBASE ĐẦY ĐỦ CÁC HÀM GET, CHILD
 import { ref, push, set, get, child, update } from "firebase/database";
 import { db } from '../firebase';
 
-// Bảng tra audioSrc từ file local (audioMap.js nhỏ) — ưu tiên hơn Firebase để tránh link cũ trong DB.
+// Bang tra audioSrc tu file local (audioMap.js nho), uu tien hon Firebase de tranh link cu trong DB.
 // Tách khỏi allTests để KHÔNG kéo toàn bộ data đề (~1.4MB) vào bundle chính.
 import { audioMap as _localAudioMap } from '../data/audioMap';
 
@@ -28,6 +29,7 @@ export default function FullTestPage() {
     const userRole = localStorage.getItem('currentUserRole') || 'normal';
     const [showBugModal, setShowBugModal] = useState(false);
     const [bugNote, setBugNote] = useState('');
+    const [isSendingBug, setIsSendingBug] = useState(false); // khoa nut gui bao loi, chong bam doi ghi trung bugNotes
 
     const { testId, skill } = useParams(); 
     const navigate = useNavigate();
@@ -227,7 +229,14 @@ export default function FullTestPage() {
     };
     const handleStartListeningClick = () => {
         setShowListeningStart(false); setIsAudioPlaying(true);
-        if (audioRef.current) audioRef.current.play().catch(err => console.error(err));
+        if (audioRef.current) audioRef.current.play().catch(err => {
+            // play() that bai (autoplay bi chan / file loi): phai bao hoc vien va tra co
+            // isAudioPlaying ve false de timer khong chay khi chua co tieng
+            console.error(err);
+            setIsAudioPlaying(false);
+            toast.error("❌ Không phát được audio. Em hãy bấm lại nút bắt đầu, nếu vẫn lỗi hãy báo giáo viên.", { autoClose: 8000 });
+            setShowListeningStart(true);
+        });
     };
 
     // Cham 1 task bang AI - dung chung prompt va cach tinh band voi trang Writing rieng le
@@ -292,34 +301,22 @@ export default function FullTestPage() {
     };
 
     const handleReportBug = async () => {
+        if (isSendingBug) return; // dang gui do, bo qua lan bam them
         if (!bugNote.trim()) {
             toast.warning("⚠️ Vui lòng nhập chi tiết lỗi bạn gặp phải!");
             return;
         }
+        setIsSendingBug(true);
         try {
-            const dbRef = ref(db);
-            const testSnap = await get(child(dbRef, `mockTests/${testId}`));
-
-            if (testSnap.exists()) {
-                const data = testSnap.val();
-                const existingNotes = data.bugNotes || "";
-
-                const timestamp = new Date().toLocaleString('vi-VN');
-                const newNoteEntry = `[${timestamp}] - Kỹ năng [${skill.toUpperCase()}]: ${bugNote.trim()}`;
-
-                const updatedNotes = existingNotes ? `${existingNotes}\n\n${newNoteEntry}` : newNoteEntry;
-
-                await update(ref(db, `mockTests/${testId}`), {
-                    status: 'reported',
-                    bugNotes: updatedNotes
-                });
-
-                toast.success("🐞 Đã ghi nhận lỗi! Đề thi đã bị ẩn khỏi Review Hub. Bạn hãy tiếp tục test các phần khác nhé.");
-                setShowBugModal(false);
-                setBugNote(''); 
-            }
+            // Báo lỗi qua Function (gộp bugNotes + set status server-side); client không ghi thẳng mockTests nữa.
+            await reportTestBug('mockTests', testId, bugNote.trim(), skill);
+            toast.success("🐞 Đã ghi nhận lỗi! Đề thi đã bị ẩn khỏi Review Hub. Bạn hãy tiếp tục test các phần khác nhé.");
+            setShowBugModal(false);
+            setBugNote('');
         } catch (error) {
             toast.error("❌ Lỗi khi gửi báo cáo: " + error.message);
+        } finally {
+            setIsSendingBug(false);
         }
     };
 
@@ -923,9 +920,10 @@ export default function FullTestPage() {
                             />
                             <button
                                 onClick={handleReportBug}
-                                style={{ width: '100%', background: '#ef4444', color: 'white', border: 'none', padding: '15px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.1rem' }}
+                                disabled={isSendingBug}
+                                style={{ width: '100%', background: '#ef4444', color: 'white', border: 'none', padding: '15px', borderRadius: '8px', fontWeight: 'bold', cursor: isSendingBug ? 'wait' : 'pointer', fontSize: '1.1rem', opacity: isSendingBug ? 0.6 : 1 }}
                             >
-                                <i className="fa-solid fa-paper-plane"></i> BÁO CÁO LỖI NÀY
+                                <i className="fa-solid fa-paper-plane"></i> {isSendingBug ? 'ĐANG GỬI...' : 'BÁO CÁO LỖI NÀY'}
                             </button>
                         </div>
                     </div>
@@ -964,25 +962,21 @@ export default function FullTestPage() {
                 <div className="header-left"><img src="/images/logo.png" alt="Logo" className="test-logo" /></div>
                 <div className="header-center"><div className="timer-box"><i className="fa-regular fa-clock"></i> {formatTime(timeLeft)}</div></div>
                 
-                <div className="header-right" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                {/* KHONG dat gap inline o day: inline se de len rule mobile .header-right { gap: 8px } trong App.css */}
+                <div className="header-right">
                     {userRole === 'private' && (
-                        <button 
+                        <button
+                            className="btn-report-header"
                             onClick={() => setShowBugModal(true)}
-                            style={{
-                                background: '#ef4444', color: 'white', border: 'none',
-                                borderRadius: '6px', padding: '10px 15px', fontWeight: 'bold', fontSize: '0.9rem',
-                                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: '0.2s'
-                            }}
-                            onMouseOver={(e) => e.currentTarget.style.background = '#dc2626'}
-                            onMouseOut={(e) => e.currentTarget.style.background = '#ef4444'}
                         >
-                            <i className="fa-solid"></i> BÁO LỖI ĐỀ
+                            <i className="fa-solid fa-bug"></i> <span>BÁO LỖI ĐỀ</span>
                         </button>
                     )}
 
                     {skill === 'writing' && (
                         <button className="btn-ai-header" onClick={handleUnifiedGrading} disabled={isGrading}>
-                            <i className="fa-solid fa-wand-magic-sparkles"></i> {isGrading ? ' Grading...' : ' AI Grade'}
+                            {/* Chu nam trong span de rule mobile .btn-ai-header span { display: none } an duoc */}
+                            <i className="fa-solid fa-wand-magic-sparkles"></i> <span>{isGrading ? 'Grading...' : 'AI Grade'}</span>
                         </button>
                     )}
                     <button className="submit-btn" onClick={() => setShowConfirmModal(true)}>
@@ -1002,7 +996,12 @@ export default function FullTestPage() {
                             onPlaying={() => setIsAudioPlaying(true)}
                             onWaiting={() => setIsAudioPlaying(false)}
                             onPause={() => setIsAudioPlaying(false)}
-                            onError={(e) => console.error('[Audio Error]', e.target.error, 'src:', e.target.src)}
+                            onError={(e) => {
+                                // Audio hong ma im lang thi hoc vien ngoi cho vo ich trong khi dong ho chay
+                                console.error('[Audio Error]', e.target.error, 'src:', e.target.src);
+                                setIsAudioPlaying(false);
+                                toast.error("❌ File nghe bị lỗi, không tải được. Em hãy báo giáo viên để kiểm tra đề.", { autoClose: false });
+                            }}
                         />
                         {showListeningStart && (
                             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(255,255,255,0.98)', zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: '8px' }}>
@@ -1084,7 +1083,7 @@ export default function FullTestPage() {
                                 {(activeWritingTask === 'task1' ? aiResultTask1 : aiResultTask2) && (
                                     <div style={{ marginTop: '15px', background: 'white', border: '2px solid #2B6830', borderRadius: '10px', padding: '15px', maxHeight: '40vh', overflowY: 'auto' }}>
                                         <h3 style={{ margin: '0 0 10px 0', color: '#2B6830', fontSize: '1.05rem' }}>
-                                            <i className="fa-solid fa-wand-magic-sparkles"></i> Kết quả AI — {activeWritingTask === 'task1' ? 'Task 1' : 'Task 2'}
+                                            <i className="fa-solid fa-wand-magic-sparkles"></i> Kết quả AI: {activeWritingTask === 'task1' ? 'Task 1' : 'Task 2'}
                                         </h3>
                                         {parse(generateWritingFeedbackHTML(activeWritingTask === 'task1' ? aiResultTask1 : aiResultTask2, activeWritingTask))}
                                     </div>
@@ -1122,7 +1121,7 @@ export default function FullTestPage() {
                     <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '650px', padding: '30px' }}>
                         <button className="close-modal" onClick={() => setShowBugModal(false)}>×</button>
                         <h2 style={{ color: '#ef4444', marginTop: 0, borderBottom: '2px solid #fee2e2', paddingBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <i className="fa-solid"></i> BÁO LỖI ĐỀ THI
+                            <i className="fa-solid fa-bug"></i> BÁO LỖI ĐỀ THI
                         </h2>
                         <p style={{ color: '#64748b', fontSize: '1rem', marginBottom: '20px', lineHeight: '1.6' }}>
                             Hệ thống sẽ cập nhật trạng thái đề thành <strong>Reported</strong>.
@@ -1141,15 +1140,16 @@ export default function FullTestPage() {
                         />
                         <button
                             onClick={handleReportBug}
+                            disabled={isSendingBug}
                             style={{
                                 width: '100%', background: '#ef4444', color: 'white', border: 'none',
-                                padding: '15px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.1rem',
-                                transition: '0.2s'
+                                padding: '15px', borderRadius: '8px', fontWeight: 'bold', cursor: isSendingBug ? 'wait' : 'pointer', fontSize: '1.1rem',
+                                transition: '0.2s', opacity: isSendingBug ? 0.6 : 1
                             }}
-                            onMouseOver={(e) => e.currentTarget.style.background = '#dc2626'}
-                            onMouseOut={(e) => e.currentTarget.style.background = '#ef4444'}
+                            onMouseOver={(e) => { if (!isSendingBug) e.currentTarget.style.background = '#dc2626'; }}
+                            onMouseOut={(e) => { if (!isSendingBug) e.currentTarget.style.background = '#ef4444'; }}
                         >
-                            <i className="fa-solid fa-paper-plane"></i> GỬI LÊN HỆ THỐNG
+                            <i className="fa-solid fa-paper-plane"></i> {isSendingBug ? 'ĐANG GỬI...' : 'GỬI LÊN HỆ THỐNG'}
                         </button>
                     </div>
                 </div>

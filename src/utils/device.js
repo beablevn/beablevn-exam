@@ -6,7 +6,7 @@
 // vào chế độ toàn màn hình...) → nếu đếm blur như desktop sẽ bị tính nhầm
 // vi phạm và tự động nộp bài oan. Vì vậy ở iOS ta bỏ nghe blur, chỉ dựa vào
 // `visibilitychange` (chỉ bật khi học viên THẬT SỰ rời trang: chuyển app /
-// khoá máy / đổi tab) — vẫn bắt được gian lận thật.
+// khoá máy / đổi tab), vẫn bắt được gian lận thật.
 // ============================================================
 
 // true nếu đang chạy trên iPad / iPhone / iPod

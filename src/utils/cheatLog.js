@@ -40,8 +40,8 @@ export const buildCheatReportHTML = () => {
         .join('');
 
     const headline = log.forced
-        ? `🚨 BÀI THI BỊ ÉP NỘP — học viên vi phạm quá ${n} lần (rời màn hình bài thi)`
-        : `⚠️ BÀI THI NÀY CÓ GIAN LẬN — học viên đã rời màn hình bài thi ${n} lần`;
+        ? `🚨 BÀI THI BỊ ÉP NỘP: học viên vi phạm quá ${n} lần (rời màn hình bài thi)`
+        : `⚠️ BÀI THI NÀY CÓ GIAN LẬN: học viên đã rời màn hình bài thi ${n} lần`;
 
     return `
         <div style="border:3px solid #d32f2f; border-radius:8px; padding:14px 16px; background:#fef2f2; font-family:Arial,sans-serif; margin-bottom:18px;">

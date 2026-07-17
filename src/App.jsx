@@ -10,10 +10,13 @@ import WritingLibraryPage from './pages/WritingLibraryPage';
 import WritingTestPage from './pages/WritingTestPage';
 import TestHistoryPage from './pages/TestHistoryPage'; 
 import ReviewHubPage from './pages/ReviewHubPage';
-import { ref, get, child, update, remove } from "firebase/database";
-import { httpsCallable } from "firebase/functions";
-import { db, functions } from './firebase';
+import SatAdaptiveTestPage from './pages/SatAdaptiveTestPage'; // Trang thi SAT Adaptive 2 module
+import { ref, get, child, remove } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
+import { db, auth } from './firebase';
+import { loginStudent, loginAdmin, logout, changePassword } from './utils/api';
 import { ToastContainer, toast } from 'react-toastify';
+import ConfirmDialog from './components/ConfirmDialog';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
@@ -22,13 +25,13 @@ const ProtectedRoute = ({ isLoggedIn, children }) => {
   return children;
 };
 
-// 👉 GUARD CHO TRANG ADMIN — chỉ cho vào khi isAdmin = true (state nội bộ, không từ localStorage)
+// 👉 GUARD CHO TRANG ADMIN: chỉ cho vào khi isAdmin = true (state nội bộ, không từ localStorage)
 const AdminRoute = ({ isAdmin, children }) => {
   if (!isAdmin) return <Navigate to="/" replace />;
   return children;
 };
 
-// 👉 GUARD THEO VAI TRO — chan deep-link vao trang chi danh cho role nhat dinh (vd /review-hub cho 'private').
+// 👉 GUARD THEO VAI TRO: chan deep-link vao trang chi danh cho role nhat dinh (vd /review-hub cho 'private').
 //    Day chi la lop UX; enforcement that phai o RTDB rules (xem followup bao mat gui Bak).
 const RoleRoute = ({ isLoggedIn, userRole, allow, children }) => {
   if (!isLoggedIn) return <Navigate to="/" replace />;
@@ -40,8 +43,10 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  // Cho toi khi Firebase Auth phuc hoi phien (tranh route redirect nham ve landing luc F5)
+  const [authReady, setAuthReady] = useState(false);
 
   // 👉 STATE CHO CHỨC NĂNG "TIẾP TỤC LÀM BÀI"
   const [showInProgressModal, setShowInProgressModal] = useState(false);
@@ -49,7 +54,10 @@ function App() {
   const [loadingDrafts, setLoadingDrafts] = useState(false);
   
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [modalView, setModalView] = useState('login'); 
+  const [modalView, setModalView] = useState('login');
+  // Hop thoai xac nhan brand thay window.confirm + khoa nut khi dang goi Firebase
+  const [confirmReq, setConfirmReq] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -58,7 +66,7 @@ function App() {
   const [passForm, setPassForm] = useState({ studentId: '', oldPass: '', newPass: '', confirmPass: '' });
   
   const [studentName, setStudentName] = useState(''); 
-  // 👉 KHÔNG đọc role từ localStorage — localStorage có thể bị sửa trong DevTools.
+  // 👉 KHÔNG đọc role từ localStorage, localStorage có thể bị sửa trong DevTools.
   //    Role chỉ được set từ dữ liệu Firebase sau khi login thành công (handleLoginSubmit).
   const [userRole, setUserRole] = useState('normal');
 
@@ -72,6 +80,31 @@ function App() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, []);
+
+  // Khoi phuc phien tu Firebase Auth (token luu trong trinh duyet). Doc role tu claim.
+  // Nho vay F5 giua bai khong con bi da ve landing (truoc day isLoggedIn chi la React state).
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const res = await user.getIdTokenResult();
+          const role = res.claims?.role || 'normal';
+          if (role === 'admin') {
+            setIsLoggedIn(true); setIsAdmin(true); setStudentName('Quản Trị Viên'); setUserRole('normal');
+          } else {
+            setIsLoggedIn(true); setIsAdmin(false); setUserRole(role);
+            setStudentName(localStorage.getItem('currentStudentName') || '');
+            localStorage.setItem('currentStudentId', user.uid); // uid = studentId, dam bao khop
+            localStorage.setItem('currentUserRole', role);
+          }
+        } catch (e) { console.error('Lỗi khôi phục phiên:', e); }
+      } else {
+        setIsLoggedIn(false); setIsAdmin(false); setUserRole('normal'); setStudentName('');
+      }
+      setAuthReady(true);
+    });
+    return () => unsub();
   }, []);
 
   useEffect(() => {
@@ -126,18 +159,30 @@ function App() {
           } else {
               setInProgressTests([]);
           }
-      } catch (error) { console.error("Lỗi kéo dữ liệu:", error); } 
+      } catch (error) {
+          console.error("Lỗi kéo dữ liệu:", error);
+          // Bao ro cho hoc vien: khong bao thi modal hien "chua co ban nhap" du that ra la loi mang
+          toast.error("❌ Không tải được danh sách bài đang làm, vui lòng thử lại.");
+      }
       finally { setLoadingDrafts(false); }
   };
 
-  const handleDeleteDraft = async (type, id) => {
-      if (!window.confirm("Bạn có chắc muốn xóa bản nháp này? Dữ liệu bài làm sẽ mất vĩnh viễn.")) return;
-      const studentId = localStorage.getItem("currentStudentId");
-      try {
-          await remove(ref(db, `drafts/${studentId}/${type}/${id}`));
-          toast.success("🗑️ Đã xóa bản nháp thành công!");
-          fetchInProgressTests(); 
-      } catch (e) { toast.error("❌ Lỗi xóa bản nháp: " + e.message); }
+  const handleDeleteDraft = (type, id) => {
+      // Dung hop thoai brand thay window.confirm native (SOP)
+      setConfirmReq({
+          title: 'XÓA BẢN NHÁP?',
+          message: 'Dữ liệu bài làm sẽ mất vĩnh viễn, không thể khôi phục.',
+          danger: true,
+          yesLabel: 'XÓA',
+          onYes: async () => {
+              const studentId = localStorage.getItem("currentStudentId");
+              try {
+                  await remove(ref(db, `drafts/${studentId}/${type}/${id}`));
+                  toast.success("🗑️ Đã xóa bản nháp thành công!");
+                  fetchInProgressTests();
+              } catch (e) { toast.error("❌ Lỗi xóa bản nháp: " + e.message); }
+          }
+      });
   };
 
   const handleContinueDraft = (item) => {
@@ -170,91 +215,85 @@ function App() {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return; // chan bam doi khi dang goi Firebase
     const { studentId, password } = credentials;
     if (studentId.length !== 8 && studentId !== 'admin') { toast.warning("⚠️ Mã học viên phải có đúng 8 chữ số!"); return; }
     if (password.length < 6) { toast.warning("⚠️ Mật khẩu phải có ít nhất 6 ký tự!"); return; }
+    setIsSubmitting(true);
 
-    // Fix 5: Mat khau admin duoc so sanh tren server (khong con trong bundle JS)
+    // Dang nhap admin: goi verifyAdminLogin -> nhan custom token role='admin' -> signIn.
     if (studentId === '15082022') {
       try {
-        const verifyAdmin = httpsCallable(functions, 'verifyAdminLogin');
-        const result = await verifyAdmin({ password });
-        if (result.data?.success) {
-          // Luu tam mat khau admin trong sessionStorage de AdminPage goi listUsers, KHONG hardcode trong bundle.
-          // sessionStorage mat khi dong tab; chuoi khong con nam co dinh trong file JS public.
-          sessionStorage.setItem('_ap', password);
-          setIsLoggedIn(true); setIsAdmin(true); setStudentName("Quản Trị Viên");
-          setShowLoginModal(false); toast.success("🔓 Đăng nhập Admin thành công!");
-          navigate('/admin');
-        } else {
-          toast.error("❌ Sai mật khẩu Admin!");
-        }
+        await loginAdmin(password);
+        setIsLoggedIn(true); setIsAdmin(true); setStudentName("Quản Trị Viên"); setUserRole('normal');
+        setShowLoginModal(false); toast.success("🔓 Đăng nhập Admin thành công!");
+        navigate('/admin');
       } catch (err) {
         toast.error("❌ Sai mật khẩu Admin!");
+      } finally {
+        setIsSubmitting(false);
       }
       return;
     }
 
+    // Dang nhap hoc vien: so pass bcrypt server-side, nhan token role.
+    // Client KHONG con doc node users de so password (khong lo hash ra trinh duyet).
     try {
-      const dbRef = ref(db);
-      const snapshot = await get(child(dbRef, `users/${studentId}`));
-      if (snapshot.exists()) {
-        const userData = snapshot.val();
-        if (userData.password === password) {
-           setIsLoggedIn(true); setIsAdmin(false); 
-           
-           const currentRole = userData.role || 'normal';
-           setStudentName(userData.fullName);
-           setUserRole(currentRole);
-
-           localStorage.setItem("currentStudentName", userData.fullName);
-           localStorage.setItem("currentStudentId", studentId);
-           localStorage.setItem("currentUserRole", currentRole);
-
-           setShowLoginModal(false);
-           toast.success(`🦄 Xin chào ${userData.fullName}! Chúc bạn thi tốt.`); 
-           navigate('/dashboard'); 
-        } else { toast.error("❌ Sai mật khẩu! Vui lòng thử lại."); }
-      } else { toast.error("❌ Mã học viên không tồn tại!"); }
-    } catch (error) { console.error(error); toast.error("❌ Lỗi kết nối Server: " + error.message); }
+      const { fullName, role } = await loginStudent(studentId, password);
+      setIsLoggedIn(true); setIsAdmin(false);
+      setStudentName(fullName); setUserRole(role || 'normal');
+      localStorage.setItem("currentStudentName", fullName);
+      localStorage.setItem("currentStudentId", studentId);
+      localStorage.setItem("currentUserRole", role || 'normal');
+      setShowLoginModal(false);
+      toast.success(`🦄 Xin chào ${fullName}! Chúc bạn thi tốt.`);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error(error);
+      // HttpsError tra ve thong bao dong nhat cho ID sai / pass sai
+      toast.error("❌ Mã học viên hoặc mật khẩu không đúng!");
+    } finally { setIsSubmitting(false); }
   };
 
   const handleChangePassSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
     const { studentId, oldPass, newPass, confirmPass } = passForm;
     if (studentId.length !== 8) { toast.warning("⚠️ Vui lòng nhập đúng Mã học viên!"); return; }
     if (newPass.length < 6) { toast.warning("⚠️ Mật khẩu mới phải từ 6 ký tự!"); return; }
     if (newPass !== confirmPass) { toast.error("❌ Xác nhận mật khẩu không khớp!"); return; }
+    setIsSubmitting(true);
 
+    // Doi mat khau yeu cau co phien: dang nhap tam bang mat khau cu -> doi (server so lai
+    // pass cu bcrypt) -> dang xuat, buoc dang nhap lai bang mat khau moi.
     try {
-        const dbRef = ref(db);
-        const snapshot = await get(child(dbRef, `users/${studentId}`));
-        if (snapshot.exists()) {
-            const userData = snapshot.val();
-            if (userData.password === oldPass) {
-                await update(ref(db, `users/${studentId}`), { password: newPass });
-                toast.success("✅ Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
-                setModalView('login');
-                setCredentials({ studentId: studentId, password: '' });
-                setPassForm({ studentId: '', oldPass: '', newPass: '', confirmPass: '' });
-            } else { toast.error("❌ Mật khẩu cũ không đúng!"); }
-        } else { toast.error("❌ Mã học viên không tồn tại!"); }
-    } catch (error) { console.error(error); toast.error("❌ Lỗi hệ thống: " + error.message); }
+      await loginStudent(studentId, oldPass);
+      await changePassword(oldPass, newPass);
+      await logout();
+      toast.success("✅ Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
+      setModalView('login');
+      setCredentials({ studentId: studentId, password: '' });
+      setPassForm({ studentId: '', oldPass: '', newPass: '', confirmPass: '' });
+    } catch (error) {
+      console.error(error);
+      toast.error("❌ Mã học viên hoặc mật khẩu cũ không đúng!");
+      try { await logout(); } catch (e) { /* dam bao khong ket phien dang do */ }
+    } finally { setIsSubmitting(false); }
   };
 
   // Da BO reset mat khau self-service: truoc day bat ky ai nhap ma hoc vien (8 so, de do) la reset
   // mat khau nan nhan ve "BAVNbavn" roi chiem tai khoan. Nay chi Admin reset trong panel quan tri.
   // Hoc vien quen mat khau lien he giao vu de duoc cap lai.
 
-  const handleLogout = () => {
-    setIsMenuOpen(false); 
-    setIsLoggedIn(false); setIsAdmin(false); 
-    setStudentName(''); setUserRole('normal'); 
+  const handleLogout = async () => {
+    setIsMenuOpen(false);
+    try { await logout(); } catch (e) { console.error("Lỗi đăng xuất:", e); }
+    setIsLoggedIn(false); setIsAdmin(false);
+    setStudentName(''); setUserRole('normal');
 
     localStorage.removeItem("currentStudentId");
     localStorage.removeItem("currentStudentName");
     localStorage.removeItem("currentUserRole");
-    sessionStorage.removeItem('_ap'); // xoa mat khau admin tam khi thoat
     navigate('/');
   };
 
@@ -263,9 +302,10 @@ function App() {
   const isTestingPage = location.pathname.startsWith('/do-test/') || location.pathname === '/writing-practice';
 
   return (
-    <div className="app-container"> 
+    <div className="app-container">
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />
-      
+      <ConfirmDialog req={confirmReq} onClose={() => setConfirmReq(null)} />
+
       {!isTestingPage && (
         <nav className="main-navbar">
             <Link to="/" className="nav-center-logo">
@@ -279,7 +319,7 @@ function App() {
                     <div style={{ position: 'relative', zIndex: 9999 }} ref={dropdownRef}>
                       <div 
                         onClick={() => setIsMenuOpen(!isMenuOpen)} 
-                        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', background: '#f1f5f9', padding: '6px 15px 6px 6px', borderRadius: '30px', border: '1px solid #e2e8f0', fontWeight: 'bold', color: '#2B6830', userSelect: 'none' }}
+                        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', background: '#F2F8F4', padding: '6px 15px 6px 6px', borderRadius: '30px', border: '1px solid #CBE3D2', fontWeight: 'bold', color: '#2B6830', userSelect: 'none' }}
                       >
                         <div style={{ width: '32px', height: '32px', flexShrink: 0, borderRadius: '50%', background: '#2B6830', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <i className="fa-solid fa-user" style={{ fontSize: '14px' }}></i>
@@ -338,7 +378,9 @@ function App() {
                         <input type="text" className="login-input" placeholder="Nhập 8 số ID..." value={credentials.studentId} onChange={handleIdChange} inputMode="numeric" />
                         <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>MẬT KHẨU</div>
                         <input type="password" className="login-input" placeholder="Nhập mật khẩu..." value={credentials.password} onChange={(e) => setCredentials({...credentials, password: e.target.value})} />
-                        <button type="submit" className="btn-submit-login">TRUY CẬP HỆ THỐNG</button>
+                        <button type="submit" className="btn-submit-login" disabled={isSubmitting} style={isSubmitting ? { opacity: 0.6, cursor: 'wait' } : undefined}>
+                            {isSubmitting ? 'ĐANG KIỂM TRA...' : 'TRUY CẬP HỆ THỐNG'}
+                        </button>
                     </form>
                     <div style={{marginTop:'20px', fontSize:'13px', display:'flex', flexDirection:'column', gap:'8px'}}>
                         <span onClick={() => setModalView('change-pass')} className="link-switch-mode"><i className="fa-solid fa-key"></i> Đổi mật khẩu</span>
@@ -359,7 +401,10 @@ function App() {
                         <input type="password" className="login-input" placeholder="Mật khẩu mới (min 6 ký tự)" value={passForm.newPass} onChange={(e) => setPassForm({...passForm, newPass: e.target.value})} />
                         <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>Xác nhận mật khẩu</div>
                         <input type="password" className="login-input" placeholder="Nhập lại mật khẩu mới..." value={passForm.confirmPass} onChange={(e) => setPassForm({...passForm, confirmPass: e.target.value})} />
-                        <button type="submit" className="btn-submit-login" style={{background:'#28a745'}}>LƯU MẬT KHẨU MỚI</button>
+                        {/* Bo override #28a745 (xanh Bootstrap ngoai brand), dung Forest Green cua class */}
+                        <button type="submit" className="btn-submit-login" disabled={isSubmitting} style={isSubmitting ? { opacity: 0.6, cursor: 'wait' } : undefined}>
+                            {isSubmitting ? 'ĐANG LƯU...' : 'LƯU MẬT KHẨU MỚI'}
+                        </button>
                     </form>
                     <div style={{marginTop:'15px', fontSize:'13px'}}>
                         <span onClick={() => setModalView('login')} className="link-switch-mode"><i className="fa-solid fa-arrow-left"></i> Quay lại Đăng nhập</span>
@@ -380,12 +425,20 @@ function App() {
       )}
 
       <div className="app-content">
+        {!authReady ? (
+          <div style={{ margin: 'auto', textAlign: 'center', color: '#2B6830' }}>
+            <i className="fa-solid fa-spinner fa-spin" style={{ fontSize: '2.5rem', marginBottom: '12px' }}></i>
+            <p>Đang kết nối...</p>
+          </div>
+        ) : (
         <Routes>
-          <Route path="/" element={ !isLoggedIn ? <LandingPage onOpenLogin={openModal} /> : (isAdmin ? <Navigate to="/admin" /> : <Navigate to="/dashboard" />) } />         
+          <Route path="/" element={ !isLoggedIn ? <LandingPage onOpenLogin={openModal} /> : (isAdmin ? <Navigate to="/admin" /> : <Navigate to="/dashboard" />) } />
           <Route path="/admin" element={<AdminRoute isAdmin={isAdmin}><AdminPage /></AdminRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute isLoggedIn={isLoggedIn}><HomePage /></ProtectedRoute>} />
           <Route path="/test-menu/:testId" element={<ProtectedRoute isLoggedIn={isLoggedIn}><TestMenuPage /></ProtectedRoute>} />
           <Route path="/do-test/:testId/:skill" element={<ProtectedRoute isLoggedIn={isLoggedIn}><FullTestPage /></ProtectedRoute>} />
+          {/* Thi SAT Reading & Writing theo co che Adaptive (2 module, re nhanh Kho/De) */}
+          <Route path="/sat-test/:satId" element={<ProtectedRoute isLoggedIn={isLoggedIn}><SatAdaptiveTestPage /></ProtectedRoute>} />
           <Route path="/writing-library" element={<ProtectedRoute isLoggedIn={isLoggedIn}><WritingLibraryPage /></ProtectedRoute>} />
           <Route path="/writing-practice" element={<ProtectedRoute isLoggedIn={isLoggedIn}><WritingTestPage /></ProtectedRoute>} />
           <Route path="/writing-practice/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn}><WritingTestPage /></ProtectedRoute>} />
@@ -393,12 +446,13 @@ function App() {
           
           <Route path="/review-hub" element={<RoleRoute isLoggedIn={isLoggedIn} userRole={userRole} allow={['private']}><ReviewHubPage /></RoleRoute>} />
         </Routes>
+        )}
       </div>
 
       {!isTestingPage && (
-        <footer className="main-footer" style={{ height: 'auto', padding: '12px 20px', flexDirection: 'column', textAlign: 'center', gap: '5px' }}>
-          <div>©2026 Be Able VN. All rights reserved.</div>
-          <div style={{ fontSize: '0.75rem', opacity: 0.8 }}>
+        <footer className="main-footer">
+          <div className="footer-copy">©2026 Be Able VN. All rights reserved.</div>
+          <div className="footer-legal">
             No part of this document may be reproduced or transmitted in any form or by any means, electronic, mechanical, photocopying, recording, or otherwise, without prior written permission of Be Able VN.
           </div>
         </footer>
@@ -450,7 +504,7 @@ function App() {
                           }
 
                           return (
-                              <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc', padding: '15px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                              <div key={idx} style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc', padding: '15px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                                   
                                   <div>
                                       <div style={{ fontWeight: 'bold', color: '#0f172a', fontSize: '1.05rem', marginBottom: '5px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -472,8 +526,9 @@ function App() {
                                       </div>
                                   </div>
 
-                                  <div style={{ display: 'flex', gap: '10px' }}>
-                                      <button onClick={() => handleContinueDraft(item)} style={{ background: '#0ea5e9', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', transition: '0.2s' }} onMouseOver={e => e.target.style.background = '#0284c7'} onMouseOut={e => e.target.style.background = '#0ea5e9'}>
+                                  <div style={{ display: 'flex', gap: '10px', flexShrink: 0 }}>
+                                      {/* Nut hanh dong chinh dung Forest Green theo brand (truoc la sky blue #0ea5e9 lac he) */}
+                                      <button onClick={() => handleContinueDraft(item)} style={{ background: '#2B6830', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', transition: '0.2s', minHeight: '40px' }} onMouseOver={e => e.target.style.background = '#1E5225'} onMouseOut={e => e.target.style.background = '#2B6830'}>
                                           TIẾP TỤC
                                       </button>
                                       <button onClick={() => handleDeleteDraft(item.type, item.id)} style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fca5a5', padding: '8px 12px', borderRadius: '6px', cursor: 'pointer', transition: '0.2s' }} onMouseOver={e => e.target.style.background = '#fee2e2'} onMouseOut={e => e.target.style.background = '#fef2f2'}>

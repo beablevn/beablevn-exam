@@ -8,6 +8,8 @@ import 'dayjs/locale/vi';
 // Nhúng Firebase
 import { ref, get, child, set } from "firebase/database";
 import { db } from '../firebase';
+import { toast } from 'react-toastify';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 dayjs.extend(relativeTime);
 dayjs.locale('vi');
@@ -15,7 +17,8 @@ dayjs.locale('vi');
 export default function TestHistoryPage() {
     const navigate = useNavigate();
     const [history, setHistory] = useState([]);
-    const [activeTab, setActiveTab] = useState('mock_test'); 
+    const [activeTab, setActiveTab] = useState('mock_test');
+    const [confirmReq, setConfirmReq] = useState(null); // hop thoai xac nhan brand thay window.confirm
     
     // UI States
     const [searchTerm, setSearchTerm] = useState('');
@@ -53,7 +56,8 @@ export default function TestHistoryPage() {
                     setHistory(mergedHistory);
                 } catch (error) {
                     console.error("Lỗi tải từ Firebase, dùng dữ liệu trên máy:", error);
-                    localHistory.sort((a, b) => b.id - a.id); 
+                    toast.warn("⚠️ Không kết nối được máy chủ, đang hiển thị lịch sử lưu trên máy này.");
+                    localHistory.sort((a, b) => b.id - a.id);
                     setHistory(localHistory);
                 }
             }
@@ -61,47 +65,46 @@ export default function TestHistoryPage() {
         fetchHistory();
     }, [currentStudentId]);
 
-    // 👉 LOGIC XÓA LỊCH SỬ CỦA TAB
-    const clearTabHistory = async () => {
-        const tabName = activeTab === 'mock_test' ? 'L/R Mock Test' : 'Writing Test';
-        if(window.confirm(`Bạn có chắc chắn muốn xóa TOÀN BỘ lịch sử của phần ${tabName} không?\n(Lịch sử của các phần khác vẫn được giữ nguyên)`)) {
-            
-            const remainingHistory = history.filter(item => item.type !== activeTab);
-            
-            const allStorage = JSON.parse(localStorage.getItem("ielts_history") || "[]");
-            const otherUsers = allStorage.filter(record => record.studentId !== currentStudentId);
-            localStorage.setItem("ielts_history", JSON.stringify([...otherUsers, ...remainingHistory]));
-            
-            if (currentStudentId !== "Guest") {
-                try {
-                    await set(ref(db, `history/${currentStudentId}`), remainingHistory);
-                } catch (error) {
-                    console.error("Lỗi xóa Firebase:", error);
-                }
+    // Ghi danh sach con lai: Firebase TRUOC (that bai thi giu nguyen UI + bao loi), roi moi cap nhat local
+    const commitRemaining = async (remainingHistory) => {
+        if (currentStudentId !== "Guest") {
+            try {
+                await set(ref(db, `history/${currentStudentId}`), remainingHistory);
+            } catch (error) {
+                console.error("Lỗi xóa Firebase:", error);
+                toast.error("❌ Xóa trên máy chủ thất bại, lịch sử được giữ nguyên. Vui lòng thử lại.");
+                return; // khong cap nhat UI/local de khong tao cam giac da xoa
             }
-            setHistory(remainingHistory);
         }
+        const allStorage = JSON.parse(localStorage.getItem("ielts_history") || "[]");
+        const otherUsers = allStorage.filter(record => record.studentId !== currentStudentId);
+        localStorage.setItem("ielts_history", JSON.stringify([...otherUsers, ...remainingHistory]));
+        setHistory(remainingHistory);
+        toast.success("🗑️ Đã xóa khỏi lịch sử.");
+    };
+
+    // 👉 LOGIC XÓA LỊCH SỬ CỦA TAB
+    const clearTabHistory = () => {
+        const tabName = activeTab === 'mock_test' ? 'L/R Mock Test' : 'Writing Test';
+        setConfirmReq({
+            title: 'XÓA TOÀN BỘ LỊCH SỬ?',
+            message: `Toàn bộ lịch sử của phần ${tabName} sẽ bị xóa vĩnh viễn.\n(Lịch sử của các phần khác vẫn được giữ nguyên)`,
+            danger: true,
+            yesLabel: 'XÓA TẤT CẢ',
+            onYes: () => commitRemaining(history.filter(item => item.type !== activeTab))
+        });
     };
 
     // 👉 XÓA 1 BÀI THI KỸ NĂNG LẺ
-    const deleteSingleRecord = async (recordId, e) => {
-        e.stopPropagation(); 
-        if(window.confirm("Bạn có chắc chắn muốn xóa kết quả bài thi này?")) {
-            const remainingHistory = history.filter(item => item.id !== recordId);
-            
-            const allStorage = JSON.parse(localStorage.getItem("ielts_history") || "[]");
-            const otherUsers = allStorage.filter(record => record.studentId !== currentStudentId);
-            localStorage.setItem("ielts_history", JSON.stringify([...otherUsers, ...remainingHistory]));
-            
-            if (currentStudentId !== "Guest") {
-                try {
-                    await set(ref(db, `history/${currentStudentId}`), remainingHistory);
-                } catch (error) {
-                    console.error("Lỗi xóa Firebase:", error);
-                }
-            }
-            setHistory(remainingHistory);
-        }
+    const deleteSingleRecord = (recordId, e) => {
+        e.stopPropagation();
+        setConfirmReq({
+            title: 'XÓA KẾT QUẢ NÀY?',
+            message: 'Kết quả bài thi sẽ bị xóa vĩnh viễn khỏi lịch sử.',
+            danger: true,
+            yesLabel: 'XÓA',
+            onYes: () => commitRemaining(history.filter(item => item.id !== recordId))
+        });
     };
 
     // 👉 LỌC DỮ LIỆU
@@ -133,8 +136,9 @@ export default function TestHistoryPage() {
     const renderWritingSubScores = (record) => {
         if (!record.t1Band && !record.t2Band) return null; 
         
-        const badgeStyleT1 = { background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', padding: '2px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '0.8rem', whiteSpace: 'nowrap' };
-        const badgeStyleT2 = { background: '#faf5ff', color: '#6d28d9', border: '1px solid #e9d5ff', padding: '2px 6px', borderRadius: '4px', fontWeight: '800', fontSize: '0.8rem', whiteSpace: 'nowrap' };
+        // Cap badge theo brand: T1 xanh Forest tint, T2 amber (amber thuoc he mau chuc nang cho phep)
+        const badgeStyleT1 = { background: '#E8F4EC', color: '#1E5225', border: '1px solid #CBE3D2', padding: '2px 6px', borderRadius: '6px', fontWeight: '800', fontSize: '0.8rem', whiteSpace: 'nowrap' };
+        const badgeStyleT2 = { background: '#FEF6E7', color: '#B45309', border: '1px solid #F2DFB8', padding: '2px 6px', borderRadius: '6px', fontWeight: '800', fontSize: '0.8rem', whiteSpace: 'nowrap' };
 
         if (record.skill === 'TASK 1') return <div style={{ marginTop: '5px' }}><span style={badgeStyleT1}>T1: {record.t1Band || 'N/A'}</span></div>;
         if (record.skill === 'TASK 2') return <div style={{ marginTop: '5px' }}><span style={badgeStyleT2}>T2: {record.t2Band || 'N/A'}</span></div>;
@@ -150,6 +154,7 @@ export default function TestHistoryPage() {
     return (
         /* 👉 KHUNG CHỨA THÔNG MINH: Rộng tối đa 1000px trên PC, tự co giãn 100% trên Điện thoại */
             <div className="homepage-wrapper">
+                <ConfirmDialog req={confirmReq} onClose={() => setConfirmReq(null)} />
                 <div className="hp-container">
                 
                     {/* Điều chỉnh Header một chút để đồng bộ font chữ to, đậm giống Homepage */}
@@ -162,21 +167,23 @@ export default function TestHistoryPage() {
                         >
                             <i className="fa-solid fa-arrow-left" style={{ pointerEvents: 'none' }}></i>
                         </button>
-                        <h1 style={{ color: '#2B6830', margin: 0, fontSize: '2.2rem', fontWeight: '900', letterSpacing: '-1px', textTransform: 'uppercase' }}>
+                        {/* clamp(): tu co tren man hep, media query khong ghi de duoc inline style */}
+                        <h1 style={{ color: '#2B6830', margin: 0, fontSize: 'clamp(1.4rem, 5vw, 2.2rem)', fontWeight: '900', letterSpacing: '-1px', textTransform: 'uppercase' }}>
                             Lịch Sử Làm Bài
                         </h1>
                 </div>
 
-                <div style={{ display: 'flex', background: '#f1f5f9', padding: '6px', borderRadius: '12px', marginBottom: '25px' }}>
-                    <button 
-                        onClick={() => {setActiveTab('mock_test'); setExpandedTestKey(null);}} 
-                        style={{ flex: 1, padding: '12px 0', background: activeTab === 'mock_test' ? '#fff' : 'transparent', border: 'none', borderRadius: '8px', color: activeTab === 'mock_test' ? '#2B6830' : '#475569', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', transition: '0.2s', boxShadow: activeTab === 'mock_test' ? '0 2px 5px rgba(0,0,0,0.05)' : 'none' }}
+                {/* Thanh tab dung tint Forest Green thay slate */}
+                <div style={{ display: 'flex', background: '#E8F4EC', padding: '6px', borderRadius: '12px', marginBottom: '25px' }}>
+                    <button
+                        onClick={() => {setActiveTab('mock_test'); setExpandedTestKey(null);}}
+                        style={{ flex: 1, padding: '12px 0', minHeight: '44px', background: activeTab === 'mock_test' ? '#fff' : 'transparent', border: 'none', borderRadius: '8px', color: activeTab === 'mock_test' ? '#2B6830' : '#666666', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', transition: '0.2s', boxShadow: activeTab === 'mock_test' ? '0 2px 5px rgba(0,0,0,0.05)' : 'none' }}
                     >
                         <i className="fa-solid fa-headphones" style={{ marginRight: '8px' }}></i> Mock Test
                     </button>
-                    <button 
-                        onClick={() => {setActiveTab('writing'); setExpandedTestKey(null);}} 
-                        style={{ flex: 1, padding: '12px 0', background: activeTab === 'writing' ? '#fff' : 'transparent', border: 'none', borderRadius: '8px', color: activeTab === 'writing' ? '#2B6830' : '#475569', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', transition: '0.2s', boxShadow: activeTab === 'writing' ? '0 2px 5px rgba(0,0,0,0.05)' : 'none' }}
+                    <button
+                        onClick={() => {setActiveTab('writing'); setExpandedTestKey(null);}}
+                        style={{ flex: 1, padding: '12px 0', minHeight: '44px', background: activeTab === 'writing' ? '#fff' : 'transparent', border: 'none', borderRadius: '8px', color: activeTab === 'writing' ? '#2B6830' : '#666666', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', transition: '0.2s', boxShadow: activeTab === 'writing' ? '0 2px 5px rgba(0,0,0,0.05)' : 'none' }}
                     >
                         <i className="fa-solid fa-pen-nib" style={{ marginRight: '8px' }}></i> Writing Test
                     </button>
@@ -246,14 +253,16 @@ export default function TestHistoryPage() {
                                                         <div style={{ background: '#fafbfc', borderTop: '1px solid #f1f5f9' }}>
                                                             {testRecords.map((record, index) => {
                                                                 const isWritingRecord = record.type === 'writing' || record.skill === 'WRITING';
+                                                                // Record SAT Adaptive: hien scaled score /800 + raw + nhanh
+                                                                const isSatRecord = record.type === 'sat_adaptive';
                                                                 const isLast = index === testRecords.length - 1;
 
                                                                 return (
-                                                                    <div key={record.id} style={{ padding: '16px 20px 16px 64px', borderBottom: isLast ? 'none' : '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                    <div key={record.id} style={{ padding: '16px 20px 16px 64px', borderBottom: isLast ? 'none' : '1px solid #f1f5f9', display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'space-between', alignItems: 'center' }}>
                                                                         
                                                                         <div style={{ flex: 1, minWidth: 0 }}>
                                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                                                                                <span style={{ fontSize: '0.75rem', background: isWritingRecord ? '#dcfce7' : '#dbeafe', color: isWritingRecord ? '#166534' : '#1e40af', padding: '4px 8px', borderRadius: '6px', fontWeight: '800', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
+                                                                                <span style={{ fontSize: '0.75rem', background: isWritingRecord ? '#E8F4EC' : '#FEF6E7', color: isWritingRecord ? '#1E5225' : '#B45309', padding: '4px 8px', borderRadius: '6px', fontWeight: '800', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
                                                                                     {record.skill}
                                                                                 </span>
                                                                                 <span style={{ color: '#475569', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
@@ -262,16 +271,24 @@ export default function TestHistoryPage() {
                                                                                 </span>
                                                                             </div>
                                                                             {isWritingRecord && renderWritingSubScores(record)}
+                                                                            {isSatRecord && (
+                                                                                <div style={{ marginTop: '5px' }}>
+                                                                                    <span style={{ fontSize: '0.78rem', background: '#E8F4EC', color: '#1E5225', padding: '3px 8px', borderRadius: '6px', fontWeight: '700' }}>
+                                                                                        Raw {record.score}/{record.total} • {record.branch === 'harder' ? 'Nhánh Khó' : 'Nhánh Dễ'}
+                                                                                    </span>
+                                                                                </div>
+                                                                            )}
                                                                         </div>
                                                                         
                                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flexShrink: 0, marginLeft: '10px' }}>
-                                                                            <div style={{ fontWeight: '800', fontSize: '1.1rem', color: isWritingRecord ? '#ef4444' : '#10b981', whiteSpace: 'nowrap' }}>
-                                                                                {isWritingRecord ? `Band ${record.band?.replace('Band: ', '')}` : `${record.score} / ${record.total}`}
+                                                                            {/* Diem so dung Forest Green: do (danger) cho diem la sai ngu nghia, emerald lech brand */}
+                                                                            <div style={{ fontWeight: '800', fontSize: '1.1rem', color: '#2B6830', whiteSpace: 'nowrap' }}>
+                                                                                {isWritingRecord ? `Band ${record.band?.replace('Band: ', '')}` : isSatRecord ? `${record.scaledScore} / 800` : `${record.score} / ${record.total}`}
                                                                             </div>
                                                                             
                                                                             <button 
                                                                                 onClick={(e) => deleteSingleRecord(record.id, e)}
-                                                                                style={{ width: '32px', height: '32px', display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#fff', color: '#ef4444', border: '1px solid #fca5a5', borderRadius: '6px', cursor: 'pointer', transition: '0.2s', flexShrink: 0 }}
+                                                                                style={{ width: '40px', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#fff', color: '#ef4444', border: '1px solid #fca5a5', borderRadius: '6px', cursor: 'pointer', transition: '0.2s', flexShrink: 0 }}
                                                                                 title="Xóa kết quả này"
                                                                                 onMouseOver={(e) => { e.currentTarget.style.background = '#fef2f2'; }}
                                                                                 onMouseOut={(e) => { e.currentTarget.style.background = '#fff'; }}

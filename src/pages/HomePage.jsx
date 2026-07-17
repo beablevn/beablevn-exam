@@ -29,7 +29,6 @@ export default function HomePage() {
     setActiveTab(tab);
     try { localStorage.setItem('exam_home_tab', tab); } catch (e) { console.error(e); }
   };
-
   // 👉 GỌI DỮ LIỆU IELTS TỪ FIREBASE KHI TRANG VỪA MỞ LÊN
   useEffect(() => {
     const fetchTests = async () => {

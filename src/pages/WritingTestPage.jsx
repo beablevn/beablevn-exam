@@ -5,6 +5,7 @@ import FullscreenGuard from '../components/FullscreenGuard';
 import AntiCheatGuard from '../components/AntiCheatGuard';
 import { buildCheatReportHTML, cheatTitleSuffix } from '../utils/cheatLog';
 import { generateContentWithRotation } from '../utils/geminiHelper';
+import { reportTestBug } from '../utils/api';
 import emailjs from '@emailjs/browser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -40,6 +41,7 @@ export default function WritingTestPage() {
     const userRole = localStorage.getItem('currentUserRole') || 'normal';
     const [showBugModal, setShowBugModal] = useState(false);
     const [bugNote, setBugNote] = useState('');
+    const [isSendingBug, setIsSendingBug] = useState(false); // khoa nut gui, chong bam doi ghi trung bugNotes
 
     // Gắn ID học viên vào khoá lưu nháp để nháp KHÔNG bị dùng chung giữa các tài khoản
     // đăng nhập trên cùng một trình duyệt (trước đây khoá không có ID -> lộ bài người trước).
@@ -90,36 +92,31 @@ export default function WritingTestPage() {
     const renderHTML = (text) => parse((text || "").replace(/\n/g, '<br/>'));
 
     const handleReportBug = async () => {
+        if (isSendingBug) return; // dang gui do, bo qua lan bam them
         if (!bugNote.trim()) { toast.warning("⚠️ Vui lòng nhập chi tiết lỗi!"); return; }
+        setIsSendingBug(true);
         try {
             const currentId = t1Id || t2Id;
-            if (!currentId) return;
+            if (!currentId) { toast.error("❌ Không xác định được đề để báo lỗi."); return; }
 
-            const dbRef = ref(db);
-            const testSnap = await get(child(dbRef, `writingLibrary/${currentId}`));
+            // Báo lỗi qua Function (gộp bugNotes + set status server-side)
+            await reportTestBug('writingLibrary', currentId, bugNote.trim(), 'WRITING');
 
-            if (testSnap.exists()) {
-                const data = testSnap.val();
-                const existingNotes = data.bugNotes || "";
-                const timestamp = new Date().toLocaleString('vi-VN');
-                const newNoteEntry = `[${timestamp}] - WRITING: ${bugNote.trim()}`;
-                const updatedNotes = existingNotes ? `${existingNotes}\n\n${newNoteEntry}` : newNoteEntry;
-
-                await update(ref(db, `writingLibrary/${currentId}`), {
-                    status: 'reported',
-                    bugNotes: updatedNotes
-                });
-
-                toast.success("🐞 Đã ghi nhận lỗi! Đề thi đã bị đưa vào trạm xử lý.");
-                setShowBugModal(false);
-                setBugNote('');
-                if (userRole === 'private' && location.state?.fromReviewHub) {
-                    navigate('/review-hub', { state: { tab: 'writing' }, replace: true });
-                } else {
-                    navigate('/writing-library', { replace: true });
-                }
+            toast.success("🐞 Đã ghi nhận lỗi! Đề thi đã bị đưa vào trạm xử lý.");
+            setShowBugModal(false);
+            setBugNote('');
+            if (userRole === 'private' && location.state?.fromReviewHub) {
+                navigate('/review-hub', { state: { tab: 'writing' }, replace: true });
+            } else {
+                navigate('/writing-library', { replace: true });
             }
-        } catch (error) { toast.error("❌ Lỗi khi gửi báo cáo: " + error.message); }
+        } catch (error) {
+            const msg = (error?.message || '').includes('not-found') || (error?.message || '').includes('Khong tim thay')
+                ? "❌ Không tìm thấy đề trên hệ thống, có thể đề đã bị gỡ."
+                : "❌ Lỗi khi gửi báo cáo: " + error.message;
+            toast.error(msg);
+        }
+        finally { setIsSendingBug(false); }
     };
 
     const saveToHistory = async (bandScore, t1Band, t2Band) => {
@@ -253,7 +250,7 @@ export default function WritingTestPage() {
             task2_content: answers.task2 || "(No submission)", task2_feedback: generateWritingFeedbackHTML(aiResultTask2, 'task2')
         };
 
-        // 👉 Gửi email kết quả — KHÔNG để việc gửi mail chặn việc nộp bài.
+        // 👉 Gửi email kết quả: KHÔNG để việc gửi mail chặn việc nộp bài.
         // Nếu email lỗi/timeout, học viên VẪN phải được nộp xong: xoá nháp + về thư viện,
         // tránh kẹt màn hình và tránh lộ bài cho người dùng kế tiếp trên cùng máy.
         try {
@@ -263,7 +260,7 @@ export default function WritingTestPage() {
             toast.warning("Bài đã nộp nhưng hệ thống gửi email đang bận!");
         }
 
-        // 👉 DỌN NHÁP + ĐIỀU HƯỚNG — LUÔN chạy dù email thành công hay thất bại
+        // 👉 DỌN NHÁP + ĐIỀU HƯỚNG: LUÔN chạy dù email thành công hay thất bại
         localStorage.removeItem(testSaveKey); localStorage.removeItem(timeSaveKey);
         const sId = localStorage.getItem("currentStudentId");
         if (sId && sId !== "Guest") {
@@ -411,11 +408,9 @@ export default function WritingTestPage() {
             <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#F2F8F4' }}>
                 <i className="fa-regular fa-face-frown" style={{ fontSize: '4rem', color: '#ef4444', marginBottom: '20px' }}></i>
                 <h2 style={{ color: '#2B6830' }}>❌ Lỗi tải đề thi!</h2>
-                <button 
-                    onClick={() => navigate('/writing-library', { replace: true })} 
-                    style={{ background: '#2B6830', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', cursor: 'pointer', marginTop: '15px' }}
-                >
-                    Về thư viện Writing
+                {/* Dung class btn-home co san (hover + vung cham chuan) thay vi tu ve nut */}
+                <button className="btn-home" onClick={() => navigate('/writing-library', { replace: true })}>
+                    <i className="fa-solid fa-arrow-left"></i> Về thư viện Writing
                 </button>
             </div>
         );
@@ -432,20 +427,12 @@ export default function WritingTestPage() {
                 <div className="header-center"><div className="timer-box"><i className="fa-regular fa-clock"></i> {formatTime(timeLeft)}</div></div>
                 <div className="header-right">
                     {userRole === 'private' && (
-                        <button 
-                            onClick={() => setShowBugModal(true)}
-                            style={{
-                                background: '#ef4444', color: 'white', border: 'none',
-                                borderRadius: '6px', padding: '10px 15px', fontWeight: 'bold', fontSize: '0.9rem',
-                                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: '0.2s'
-                            }}
-                            onMouseOver={(e) => e.currentTarget.style.background = '#dc2626'}
-                            onMouseOut={(e) => e.currentTarget.style.background = '#ef4444'}
-                        >
-                            <i className="fa-solid fa-bug"></i> BÁO LỖI
+                        <button className="btn-report-header" onClick={() => setShowBugModal(true)}>
+                            <i className="fa-solid fa-bug"></i> <span>BÁO LỖI</span>
                         </button>
                     )}
-                    <button className="btn-ai-header" onClick={handleAiGrade} disabled={isGrading || isSubmitting}><i className="fa-solid fa-wand-magic-sparkles"></i>{isGrading ? ' Grading...' : ' AI Grade'}</button>
+                    {/* Chu trong span de rule mobile .btn-ai-header span { display: none } thu gon duoc */}
+                    <button className="btn-ai-header" onClick={handleAiGrade} disabled={isGrading || isSubmitting}><i className="fa-solid fa-wand-magic-sparkles"></i> <span>{isGrading ? 'Grading...' : 'AI Grade'}</span></button>
                     <button className="submit-btn" onClick={handlePreSubmit} disabled={isSubmitting}>SUBMIT WRITING</button>                   
                 </div>
             </div>
@@ -513,19 +500,20 @@ export default function WritingTestPage() {
                 <div className="confirm-overlay" onClick={() => setShowConfirmModal(false)}>
                     <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
                         <h3 className="confirm-title">Nộp bài thi?</h3>
-                        <p className="confirm-desc">Bạn có chắc chắn muốn nộp bài không?<br /><span style={{ fontSize: '0.9rem', color: '#d32f2f' }}>(Lưu ý: If you want to get AI scores, press "AI Grade" before submitting)</span></p>
+                        <p className="confirm-desc">Bạn có chắc chắn muốn nộp bài không?<br /><span style={{ fontSize: '0.9rem', color: '#D32F2F' }}>(Lưu ý: Nếu muốn có điểm chấm AI, hãy bấm nút "AI Grade" trước khi nộp)</span></p>
                         <div className="confirm-actions"><button className="btn-cancel" onClick={() => setShowConfirmModal(false)}>Hủy bỏ</button><button className="btn-confirm" onClick={handleRealSubmit}>Đồng ý Nộp</button></div>
                     </div>
                 </div>
             )}
             {userRole === 'private' && showBugModal && (
                 <div className="modal-overlay" onClick={() => setShowBugModal(false)} style={{ zIndex: 9999 }}>
-                    <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '650px', padding: '30px' }}>
+                    {/* modal-box-test (650px): ban cu dung modal-box width 350 co dinh, maxWidth 650 khong noi rong duoc */}
+                    <div className="modal-box-test" onClick={(e) => e.stopPropagation()} style={{ textAlign: 'left' }}>
                         <button className="close-modal" onClick={() => setShowBugModal(false)}>×</button>
                         <h2 style={{ color: '#ef4444', marginTop: 0, borderBottom: '2px solid #fee2e2', paddingBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <i className="fa-solid fa-bug"></i> BÁO LỖI ĐỀ WRITING
                         </h2>
-                        <p style={{ color: '#64748b', fontSize: '1rem', marginBottom: '20px' }}>
+                        <p style={{ color: '#666666', fontSize: '1rem', marginBottom: '20px' }}>
                             Hệ thống sẽ cập nhật trạng thái đề thành <strong>Reported</strong>.
                         </p>
                         <textarea
@@ -537,9 +525,10 @@ export default function WritingTestPage() {
                         />
                         <button
                             onClick={handleReportBug}
-                            style={{ width: '100%', background: '#ef4444', color: 'white', border: 'none', padding: '15px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1.1rem' }}
+                            disabled={isSendingBug}
+                            style={{ width: '100%', background: '#ef4444', color: 'white', border: 'none', padding: '15px', borderRadius: '8px', fontWeight: 'bold', cursor: isSendingBug ? 'wait' : 'pointer', fontSize: '1.1rem', opacity: isSendingBug ? 0.6 : 1 }}
                         >
-                            <i className="fa-solid fa-paper-plane"></i> GỬI BÁO CÁO LỖI
+                            <i className="fa-solid fa-paper-plane"></i> {isSendingBug ? 'ĐANG GỬI...' : 'GỬI BÁO CÁO LỖI'}
                         </button>
                     </div>
                 </div>

@@ -127,7 +127,7 @@ export default function AntiCheatGuard({ active = true, testId = '', onForceSubm
         }}>
             <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '4rem', marginBottom: '25px', color: '#fca5a5' }}></i>
             <h1 style={{ margin: '0 0 12px 0', fontSize: '1.8rem' }}>
-                CẢNH BÁO VI PHẠM — Lần {violations}/{MAX_VIOLATIONS}
+                CẢNH BÁO VI PHẠM: Lần {violations}/{MAX_VIOLATIONS}
             </h1>
             <p style={{ margin: '0 0 10px 0', fontSize: '1.05rem', maxWidth: '550px', lineHeight: 1.7 }}>
                 Hệ thống phát hiện em vừa <strong>rời khỏi màn hình bài thi</strong> (chuyển tab hoặc mở ứng dụng khác).
@@ -145,7 +145,7 @@ export default function AntiCheatGuard({ active = true, testId = '', onForceSubm
                     boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
                 }}
             >
-                TÔI HIỂU — QUAY LẠI BÀI THI
+                TÔI HIỂU, QUAY LẠI BÀI THI
             </button>
         </div>
     );

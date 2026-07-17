@@ -18,7 +18,8 @@ export default defineConfig({
         name: 'BAVN EXAM', 
         short_name: 'BAVN EXAM', 
         description: 'Nền tảng luyện thi và chấm điểm IELTS AI',
-        theme_color: '#002554', 
+        // Phai trung theme-color trong index.html (Forest Green, Brand Guideline).
+        theme_color: '#2B6830',
         background_color: '#ffffff',
         display: 'standalone', 
         icons: [
@@ -37,6 +38,9 @@ export default defineConfig({
     })
   ],
   build: {
-    cssMinify: false // esbuild và lightningcss đều lỗi với rolldown-vite 7.2.5
+    // Chi nhan true (lightningcss) hoac false: rolldown-vite khong kem esbuild
+    // nen cssMinify: 'esbuild' se lam build chet.
+    // lightningcss bao loi neu App.css co cu phap hong, sua CSS chu dung tat co nay.
+    cssMinify: true
   }
 })

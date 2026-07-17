@@ -12,12 +12,13 @@
 //    đồng hồ vẫn chạy → học viên buộc phải quay lại fullscreen để làm tiếp.
 // ============================================================
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 // Hàm kiểm tra trạng thái fullscreen (gộp cả 2 kiểu)
 function checkIsFullscreen() {
     // Kiểu 1: Fullscreen API đang bật (thêm webkit cho Safari/iPad)
     if (document.fullscreenElement || document.webkitFullscreenElement) return true;
-    // Kiểu 2: F11 — cửa sổ cao bằng màn hình (cho phép sai số 1px do zoom)
+    // Kiểu 2: F11, cửa sổ cao bằng màn hình (cho phép sai số 1px do zoom)
     return window.innerHeight >= window.screen.height - 1;
 }
 
@@ -42,15 +43,15 @@ export default function FullscreenGuard() {
         const el = document.documentElement;
         if (el.requestFullscreen) {
             el.requestFullscreen().catch(() => {
-                // Trình duyệt từ chối (hiếm gặp) → nhắc học viên tự bấm F11
-                alert('Trình duyệt không cho phép tự động bật. Vui lòng bấm phím F11.');
+                // Trình duyệt từ chối (hiếm gặp) → nhắc học viên tự bấm F11 (toast thay alert native theo SOP)
+                toast.warning('⚠️ Trình duyệt không cho phép tự động bật. Vui lòng bấm phím F11.', { autoClose: 6000 });
             });
         } else if (el.webkitRequestFullscreen) {
             // Safari / iPad đời cũ dùng tiền tố webkit
             el.webkitRequestFullscreen();
         } else {
             // Thiết bị không hỗ trợ Fullscreen API (vd iPhone) → nhắc rõ cho học viên
-            alert('Thiết bị của em không hỗ trợ chế độ toàn màn hình. Vui lòng dùng iPad hoặc máy tính để làm bài thi.');
+            toast.error('📵 Thiết bị của em không hỗ trợ chế độ toàn màn hình. Vui lòng dùng iPad hoặc máy tính để làm bài thi.', { autoClose: 8000 });
         }
     };
 
@@ -61,7 +62,7 @@ export default function FullscreenGuard() {
     return (
         <div style={{
             position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-            zIndex: 2147483647, /* cao nhất có thể — che mọi modal khác */
+            zIndex: 2147483647, /* cao nhat co the, che moi modal khac */
             background: 'rgba(30, 82, 37, 0.97)', /* Dark Forest Green theo brand */
             display: 'flex', flexDirection: 'column', alignItems: 'center',
             justifyContent: 'center', textAlign: 'center', padding: '20px',
@@ -74,7 +75,7 @@ export default function FullscreenGuard() {
             <p style={{ margin: '0 0 30px 0', fontSize: '1.05rem', color: '#E8F4EC', maxWidth: '520px', lineHeight: 1.7 }}>
                 Để đảm bảo điều kiện thi chuẩn, em cần làm bài ở chế độ toàn màn hình.
                 Bấm nút bên dưới hoặc nhấn phím <strong>F11</strong> để tiếp tục.
-                Nếu thoát toàn màn hình giữa bài, màn hình này sẽ hiện lại — <strong>đồng hồ vẫn chạy</strong>.
+                Nếu thoát toàn màn hình giữa bài, màn hình này sẽ hiện lại, <strong>đồng hồ vẫn chạy</strong>.
             </p>
             <button
                 onClick={enterFullscreen}

@@ -60,6 +60,7 @@ export default function WritingLibraryPage() {
 
   const [selectedT1, setSelectedT1] = useState(null);
   const [selectedT2, setSelectedT2] = useState(null);
+  const [isStarting, setIsStarting] = useState(false); // khoa nut START khi dang kiem tra khoa tai khoan tren Firebase
   const [searchT1, setSearchT1] = useState("");
   const [searchT2, setSearchT2] = useState("");
 
@@ -147,12 +148,14 @@ export default function WritingLibraryPage() {
 
   // 👉 HÀM GÁC CỔNG WRITING
   const handleStart = async () => {
+    if (isStarting) return; // chan bam nhieu lan khi dang cho Firebase
     if (!selectedT1 && !selectedT2) { toast.warning("⚠️ Vui lòng chọn ít nhất một bài thi!"); return; }
 
     const studentId = localStorage.getItem("currentStudentId");
-    
+
     // Kiểm tra khóa tài khoản trên Firebase
     if (studentId && studentId !== 'Guest') {
+        setIsStarting(true);
         try {
             const snap = await get(child(ref(db), `users/${studentId}`));
             if (snap.exists() && snap.val().isLocked) {
@@ -160,11 +163,15 @@ export default function WritingLibraryPage() {
                 // 👉 Tuyệt chiêu hủy diệt: Xóa trắng bài đã chọn để nút Start bị vô hiệu hóa
                 setSelectedT1(null);
                 setSelectedT2(null);
-                return; 
+                return;
             }
         } catch (error) {
-            toast.error("❌ Lỗi kiểm tra tài khoản: " + error.message);
+            // Thong bao than thien thay vi error.message ky thuat cua Firebase
+            console.error("Lỗi kiểm tra tài khoản:", error);
+            toast.error("❌ Không kết nối được máy chủ, vui lòng kiểm tra mạng rồi thử lại.");
             return;
+        } finally {
+            setIsStarting(false);
         }
     }
 
@@ -235,13 +242,15 @@ export default function WritingLibraryPage() {
                             <h3 style={{marginTop:0, color:'#2B6830'}}>Your Selection</h3>
                             <div className="sel-row">
                                 <div className="sel-label">Task 1</div>
-                                <div className="sel-value">{selectedT1 ? <span style={{color:'green'}}><i className="fa-solid fa-check"></i> {getTestLabel(selectedT1, task1Library)}</span> : <span style={{color:'#ccc'}}>None</span>}</div>
+                                <div className="sel-value">{selectedT1 ? <span style={{color:'#2E7D32'}}><i className="fa-solid fa-check"></i> {getTestLabel(selectedT1, task1Library)}</span> : <span style={{color:'#8A8A8A'}}>None</span>}</div>
                             </div>
                             <div className="sel-row">
                                 <div className="sel-label">Task 2</div>
-                                <div className="sel-value">{selectedT2 ? <span style={{color:'green'}}><i className="fa-solid fa-check"></i> {getTestLabel(selectedT2, task2Library)}</span> : <span style={{color:'#ccc'}}>None</span>}</div>
+                                <div className="sel-value">{selectedT2 ? <span style={{color:'#2E7D32'}}><i className="fa-solid fa-check"></i> {getTestLabel(selectedT2, task2Library)}</span> : <span style={{color:'#8A8A8A'}}>None</span>}</div>
                             </div>
-                            <button className="btn-lib-start" onClick={handleStart}>START PRACTICE <i className="fa-solid fa-arrow-right"></i></button>
+                            <button className="btn-lib-start" onClick={handleStart} disabled={isStarting} style={isStarting ? { opacity: 0.6, cursor: 'wait' } : undefined}>
+                                {isStarting ? 'ĐANG KIỂM TRA...' : <>START PRACTICE <i className="fa-solid fa-arrow-right"></i></>}
+                            </button>
                             <p style={{fontSize:'0.8rem', color:'#777', marginTop:'15px', lineHeight:'1.4'}}><i className="fa-solid fa-circle-info"></i> Select items from the lists on the left.</p>
                         </div>
                     </div>

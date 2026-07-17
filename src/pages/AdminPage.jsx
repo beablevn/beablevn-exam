@@ -1,18 +1,24 @@
 // src/pages/AdminPage.jsx
 import { useState, useEffect } from 'react';
-import { db, functions } from '../firebase';
+import { db } from '../firebase';
+// Moi GHI nhay cam di qua Cloud Function (gate token role='admin'); client chi con ĐỌC.
+import { adminApi, reviewApi } from '../utils/api';
 // allTests (~1.4MB) chi dung khi bam "Dong bo de len Cloud" -> dynamic import trong handler,
 // KHONG import tinh de tranh keo toan bo data de vao bundle chinh.
-import { ref, set, get, child, update, remove } from "firebase/database";
-import { httpsCallable } from "firebase/functions";
+import { ref, get, child } from "firebase/database";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 export default function AdminPage() {
     const [activeTab, setActiveTab] = useState('userList');
+    // Hop thoai xac nhan brand thay window.confirm (SOP cam native dialog)
+    const [confirmReq, setConfirmReq] = useState(null);
+    // Khoa cac nut ghi Firebase khi dang xu ly, chong double-submit
+    const [busy, setBusy] = useState(false);
 
     const [studentId, setStudentId] = useState('');
     const [password, setPassword] = useState('');
@@ -60,37 +66,26 @@ export default function AdminPage() {
         toast.info(`⏳ Đang tự động quét và đẩy ${allTests.length} đề lên Cloud...`);
 
         try {
-            // Chạy vòng lặp qua mảng allTests của bạn
+            // Đẩy từng đề qua Cloud Function adminUploadMock (gate token admin, không ghi thẳng RTDB).
+            // Lưu ý: đề lên trạng thái 'pending', duyệt lại ở Review Hub trước khi hiển thị.
             for (const test of allTests) {
                 if (!test.id) continue;
-
-                // 👉 THÊM DÒNG NÀY ĐỂ CỨU DỮ LIỆU: Cấp trạng thái hiển thị cho đề thi
-                // Đặt là 'published' nếu bạn muốn nó hiện luôn ra trang chủ cho học viên
-                // Hoặc đặt là 'pending' nếu muốn đẩy vào Review Hub cho QA duyệt lại
-                test.status = 'published';
-
-                await set(ref(db, `mockTests/${test.id}`), test);
+                await adminApi.uploadMock(test);
                 console.log(`✅ Đã up thành công đề: ${test.testName}`);
             }
 
-            toast.success(`🚀 XUẤT SẮC! Đã đồng bộ thành công ${allTests.length} đề thi lên Firebase!`);
+            toast.success(`🚀 Đã đồng bộ ${allTests.length} đề (trạng thái Chờ duyệt)!`);
         } catch (error) {
             console.error("Lỗi Bulk Upload:", error);
             toast.error("❌ Thất bại: " + error.message);
         }
     };
 
-    // Mat khau Admin KHONG con hardcode trong bundle. App.jsx luu tam vao sessionStorage sau khi
-    // verifyAdminLogin thanh cong; AdminPage doc lai de goi listUsers (Cloud Function, Admin SDK,
-    // tra danh sach DA LOC BO MAT KHAU). AdminRoute da chan isAdmin nen chi admin da dang nhap moi vao day.
-    const getAdminPass = () => sessionStorage.getItem('_ap') || '';
-
+    // listUsers gate bang token role='admin' (khong con gui mat khau kem). AdminRoute chan isAdmin.
     const fetchUsers = async () => {
         try {
             setLoadingUsers(true);
-            const callListUsers = httpsCallable(functions, "listUsers");
-            const result = await callListUsers({ adminPass: getAdminPass() });
-            const arr = (result.data?.users || []);
+            const arr = await adminApi.listUsers();
             arr.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
             setUsersList(arr);
         } catch (error) {
@@ -125,7 +120,9 @@ export default function AdminPage() {
 
             setReportedBugs(allReported);
         } catch (error) {
+            // Khong duoc im lang: neu chi console.error, tab se hien "He thong sach loi!" du that ra loi mang
             console.error("Lỗi tải danh sách báo cáo:", error);
+            toast.error("❌ Không tải được danh sách đề lỗi, vui lòng bấm Tải lại.");
         } finally {
             setLoadingBugs(false);
         }
@@ -157,7 +154,8 @@ export default function AdminPage() {
             return;
         }
         try {
-            await remove(ref(db, `writingLibrary/${id}`));
+            // Xóa qua Function (reject = remove), gate token admin/private.
+            await reviewApi.setStatus('writingLibrary', id, 'reject');
             toast.success(`🗑️ Đã xóa vĩnh viễn đề: ${id}`);
             setConfirmDeleteWritingId(null);
             fetchAllWriting();
@@ -179,62 +177,77 @@ export default function AdminPage() {
 
     const handleCreateUser = async (e) => {
         e.preventDefault();
+        if (busy) return; // chong bam doi tao trung tai khoan
         if (!studentId || !password || !fullName) { toast.warning("⚠️ Vui lòng nhập đủ thông tin!"); return; }
         if (studentId.length !== 8) { toast.warning("⚠️ Mã học viên phải đúng 8 số!"); return; }
 
+        setBusy(true);
         try {
-            const dbRef = ref(db);
-            const snapshot = await get(child(dbRef, `users/${studentId}`));
-            if (snapshot.exists()) {
-                toast.error(`⛔ LỖI: ID ${studentId} đã tồn tại!`);
-                return;
-            }
-            await set(ref(db, 'users/' + studentId), {
-                password: password, fullName: fullName, role: role, createdAt: new Date().toISOString()
-            });
+            // Tạo qua Function: kiểm trùng ID + hash password server-side (không lưu plaintext).
+            await adminApi.createUser(studentId, password, fullName, role);
             toast.success(`✅ Đã tạo tài khoản: ${fullName}`);
             setStudentId(''); setPassword(''); setFullName(''); setRole('normal');
             setActiveTab('userList');
-        } catch (error) { toast.error("❌ Lỗi hệ thống: " + error.message); }
+        } catch (error) {
+            const dup = (error?.message || '').includes('ton tai');
+            toast.error(dup ? `⛔ ID ${studentId} đã tồn tại!` : "❌ Lỗi tạo tài khoản: " + error.message);
+        }
+        finally { setBusy(false); }
     };
 
-    const handleToggleRole = async (userId, currentRole) => {
+    const handleToggleRole = (userId, currentRole) => {
         const newRole = currentRole === 'normal' ? 'private' : 'normal';
-        const confirmMsg = newRole === 'private'
-            ? `Thăng cấp tài khoản ${userId} thành NGƯỜI KIỂM DUYỆT (PRIVATE)?`
-            : `Hạ cấp tài khoản ${userId} về HỌC VIÊN (NORMAL)?`;
-        if (!window.confirm(confirmMsg)) return;
-        try {
-            await update(ref(db, `users/${userId}`), { role: newRole });
-            toast.success(`🔄 Đã cập nhật quyền cho ${userId}`);
-            fetchUsers();
-        } catch (error) { toast.error("❌ Lỗi đổi quyền: " + error.message); }
+        setConfirmReq({
+            title: newRole === 'private' ? 'THĂNG CẤP TÀI KHOẢN?' : 'HẠ CẤP TÀI KHOẢN?',
+            message: newRole === 'private'
+                ? `Tài khoản ${userId} sẽ trở thành NGƯỜI KIỂM DUYỆT (PRIVATE).`
+                : `Tài khoản ${userId} sẽ trở về HỌC VIÊN (NORMAL).`,
+            yesLabel: newRole === 'private' ? 'THĂNG CẤP' : 'HẠ CẤP',
+            onYes: async () => {
+                try {
+                    await adminApi.setRole(userId, newRole);
+                    toast.success(`🔄 Đã cập nhật quyền cho ${userId}`);
+                    fetchUsers();
+                } catch (error) { toast.error("❌ Lỗi đổi quyền: " + error.message); }
+            }
+        });
     };
 
-    const handleResetPassword = async (userId) => {
-        if (!window.confirm(`Đặt lại mật khẩu cho ${userId} về mặc định "BAVNbavn"?`)) return;
-        try {
-            await update(ref(db, `users/${userId}`), { password: 'BAVNbavn' });
-            toast.success(`🔑 Đã reset mật khẩu tài khoản ${userId}!`);
-        } catch (error) { toast.error("❌ Lỗi reset pass: " + error.message); }
+    const handleResetPassword = (userId) => {
+        setConfirmReq({
+            title: 'RESET MẬT KHẨU?',
+            message: `Mật khẩu của ${userId} sẽ được đặt lại về mặc định "BAVNbavn".`,
+            yesLabel: 'RESET',
+            onYes: async () => {
+                try {
+                    await adminApi.resetPassword(userId);
+                    toast.success(`🔑 Đã reset mật khẩu tài khoản ${userId}!`);
+                } catch (error) { toast.error("❌ Lỗi reset pass: " + error.message); }
+            }
+        });
     };
 
     // 👉 HÀM KHÓA / MỞ KHÓA TÀI KHOẢN
-    const handleToggleLock = async (userId, currentLockStatus) => {
+    const handleToggleLock = (userId, currentLockStatus) => {
         const isCurrentlyLocked = currentLockStatus || false;
-        const confirmMsg = isCurrentlyLocked
-            ? `🔓 MỞ KHÓA cho tài khoản ${userId} để họ được làm bài trở lại?`
-            : `🔒 KHÓA tài khoản ${userId}? (Học viên vẫn đăng nhập được nhưng KHÔNG THỂ làm bài thi)`;
-
-        if (!window.confirm(confirmMsg)) return;
-        try {
-            await update(ref(db, `users/${userId}`), { isLocked: !isCurrentlyLocked });
-            toast.success(isCurrentlyLocked ? `🔓 Đã mở khóa cho ${userId}` : `🔒 Đã khóa tài khoản ${userId}`);
-            fetchUsers(); // Tải lại danh sách
-        } catch (error) { toast.error("❌ Lỗi cập nhật: " + error.message); }
+        setConfirmReq({
+            title: isCurrentlyLocked ? 'MỞ KHÓA TÀI KHOẢN?' : 'KHÓA TÀI KHOẢN?',
+            message: isCurrentlyLocked
+                ? `🔓 Tài khoản ${userId} sẽ được làm bài trở lại.`
+                : `🔒 Tài khoản ${userId} vẫn đăng nhập được nhưng KHÔNG THỂ làm bài thi.`,
+            danger: !isCurrentlyLocked,
+            yesLabel: isCurrentlyLocked ? 'MỞ KHÓA' : 'KHÓA',
+            onYes: async () => {
+                try {
+                    await adminApi.toggleLock(userId, !isCurrentlyLocked);
+                    toast.success(isCurrentlyLocked ? `🔓 Đã mở khóa cho ${userId}` : `🔒 Đã khóa tài khoản ${userId}`);
+                    fetchUsers(); // Tải lại danh sách
+                } catch (error) { toast.error("❌ Lỗi cập nhật: " + error.message); }
+            }
+        });
     };
 
-    // 👉 LOGIC LỌC DANH SÁCH TÌM KIẾM (client-side, tức thì) — theo ID (một phần) HOẶC tên.
+    // 👉 LOGIC LỌC DANH SÁCH TÌM KIẾM (client-side, tức thì): theo ID (một phần) HOẶC tên.
     const _term = searchTerm.trim().toLowerCase();
     const filteredUsers = usersList.filter(user =>
         !_term ||
@@ -242,41 +255,71 @@ export default function AdminPage() {
         (user.fullName && user.fullName.toLowerCase().includes(_term))
     );
 
-    const handleDeleteUser = async (userId, name) => {
-        if (!window.confirm(`🚨 CẢNH BÁO! \nXóa vĩnh viễn tài khoản "${name}" (ID: ${userId})?`)) return;
-        try {
-            await remove(ref(db, `users/${userId}`));
-            toast.success(`🗑️ Đã xóa tài khoản ${userId}.`);
-            fetchUsers();
-        } catch (error) { toast.error("❌ Lỗi xóa: " + error.message); }
+    const handleDeleteUser = (userId, name) => {
+        setConfirmReq({
+            title: '🚨 XÓA VĨNH VIỄN TÀI KHOẢN?',
+            message: `Tài khoản "${name}" (ID: ${userId}) sẽ bị xóa vĩnh viễn, không thể khôi phục.`,
+            danger: true,
+            yesLabel: 'XÓA VĨNH VIỄN',
+            onYes: async () => {
+                try {
+                    await adminApi.deleteUser(userId);
+                    toast.success(`🗑️ Đã xóa tài khoản ${userId}.`);
+                    fetchUsers();
+                } catch (error) { toast.error("❌ Lỗi xóa: " + error.message); }
+            }
+        });
     };
 
     // 👉 HÀM THỦ CÔNG ĐỂ ADMIN CHỦ ĐỘNG ĐÓNG LỖI VÀ TÁI SINH ĐỀ
-    const handleResolveBug = async (id, collection) => {
-        if (!window.confirm(`Xác nhận đề ${id} đã được sửa xong và muốn đưa về lại trạng thái Chờ duyệt (Pending)?`)) return;
-        try {
-            await update(ref(db, `${collection}/${id}`), {
-                status: 'pending',
-                bugNotes: null // Bắn lệnh xóa sạch nhật ký lỗi trên Firebase
-            });
-            toast.success(`✅ Đề ${id} đã trở lại trạng thái Chờ duyệt!`);
-            fetchReportedBugs();
-        } catch (error) {
-            toast.error("❌ Lỗi cập nhật: " + error.message);
-        }
+    const handleResolveBug = (id, collection) => {
+        setConfirmReq({
+            title: 'ĐỀ ĐÃ SỬA XONG?',
+            message: `Đề ${id} sẽ trở về trạng thái Chờ duyệt (Pending) và nhật ký lỗi sẽ được xóa sạch.`,
+            yesLabel: 'XÁC NHẬN',
+            onYes: async () => {
+                try {
+                    // pending: Function tự xóa sạch bugNotes
+                    await reviewApi.setStatus(collection, id, 'pending');
+                    toast.success(`✅ Đề ${id} đã trở lại trạng thái Chờ duyệt!`);
+                    fetchReportedBugs();
+                } catch (error) {
+                    toast.error("❌ Lỗi cập nhật: " + error.message);
+                }
+            }
+        });
     };
 
-    const handleDeleteReportedMock = async (id, name, collection) => {
-        if (!window.confirm(`🚨 Xóa vĩnh viễn hoàn toàn đề thi "${name}" (ID: ${id}) khỏi Firebase?`)) return;
+    const handleDeleteReportedMock = (id, name, collection) => {
+        setConfirmReq({
+            title: '🚨 XÓA VĨNH VIỄN ĐỀ THI?',
+            message: `Đề thi "${name}" (ID: ${id}) sẽ bị xóa hoàn toàn khỏi Firebase, không thể khôi phục.`,
+            danger: true,
+            yesLabel: 'XÓA VĨNH VIỄN',
+            onYes: async () => {
+                try {
+                    await reviewApi.setStatus(collection, id, 'reject');
+                    toast.success(`🗑️ Đã dọn dẹp và xóa sổ đề lỗi: ${id}`);
+                    fetchReportedBugs();
+                } catch (error) { toast.error("❌ Thất bại: " + error.message); }
+            }
+        });
+    };
+
+    // Đăng Writing qua Function adminUploadWriting (gate token admin, status='pending' server-side)
+    const commitWriting = async (newWriting) => {
+        setBusy(true);
         try {
-            await remove(ref(db, `${collection}/${id}`));
-            toast.success(`🗑️ Đã dọn dẹp và xóa sổ đề lỗi: ${id}`);
-            fetchReportedBugs();
-        } catch (error) { toast.error("❌ Thất bại: " + error.message); }
+            await adminApi.uploadWriting(newWriting);
+            toast.success(`🚀 Đã tải lên đề Writing: ${newWriting.id} (Chờ duyệt)`);
+            setWId(''); setWContent(''); setWImage(''); setWCategory('');
+        } catch (error) { toast.error("❌ Lỗi tải lên: " + error.message); }
+        finally { setBusy(false); }
     };
 
     const handleCreateWriting = async (e) => {
         e.preventDefault();
+        if (busy) return;
         const cleanContent = wContent.replace(/<[^>]*>?/gm, '').trim();
         if (!wId || !cleanContent) { toast.warning("⚠️ Vui lòng nhập ID và Nội dung đề bài!"); return; }
 
@@ -288,18 +331,41 @@ export default function AdminPage() {
             newWriting.question = wContent; newWriting.title = wCategory || 'General Issues';
         }
 
+        setBusy(true);
         try {
-            const dbRef = ref(db, `writingLibrary/${newWriting.id}`);
-            const snap = await get(dbRef);
-            if (snap.exists()) { if (!window.confirm("⚠️ ID này đã tồn tại. Bạn có muốn GHI ĐÈ không?")) return; }
-            await set(dbRef, newWriting);
-            toast.success(`🚀 Đã tải lên đề Writing: ${newWriting.id} (Chờ duyệt)`);
-            setWId(''); setWContent(''); setWImage(''); setWCategory('');
-        } catch (error) { toast.error("❌ Lỗi tải lên: " + error.message); }
+            const snap = await get(child(ref(db), `writingLibrary/${newWriting.id}`));
+            setBusy(false);
+            if (snap.exists()) {
+                setConfirmReq({
+                    title: '⚠️ ID ĐÃ TỒN TẠI',
+                    message: `Đề Writing "${newWriting.id}" đã có trên hệ thống. Ghi đè sẽ thay thế toàn bộ nội dung cũ.`,
+                    danger: true,
+                    yesLabel: 'GHI ĐÈ',
+                    onYes: () => commitWriting(newWriting)
+                });
+                return;
+            }
+            await commitWriting(newWriting);
+        } catch (error) { setBusy(false); toast.error("❌ Lỗi tải lên: " + error.message); }
+    };
+
+    // Đăng Mock qua Function adminUploadMock (gate token admin, status='pending' server-side)
+    const commitMockUpload = async (testObj) => {
+        setBusy(true);
+        try {
+            await adminApi.uploadMock(testObj);
+            toast.success(`🚀 Đã tải lên Mock Test: ${testObj.testName} (Chờ duyệt)`);
+            setMockCode('');
+        } catch (error) { toast.error("❌ Lỗi tải lên Firebase: " + error.message); }
+        finally { setBusy(false); }
     };
 
     const handleUploadMockTest = async () => {
+        if (busy) return;
         if (!mockCode.trim()) { toast.warning("⚠️ Vui lòng dán code của đề thi vào ô trống!"); return; }
+
+        // Buoc 1: parse code (loi o day la loi cu phap that su)
+        let testObj;
         try {
             let codeToParse = mockCode.trim();
             const firstBrace = codeToParse.indexOf('{');
@@ -307,22 +373,34 @@ export default function AdminPage() {
             if (firstBrace !== -1 && lastBrace !== -1) { codeToParse = codeToParse.substring(firstBrace, lastBrace + 1); }
 
             const parseJSObject = new Function("return " + codeToParse);
-            const testObj = parseJSObject();
+            testObj = parseJSObject();
+        } catch (error) {
+            toast.error("❌ Lỗi Cú Pháp Code: Kiểm tra lại dấu ngoặc, phẩy.");
+            return;
+        }
 
-            if (!testObj || !testObj.id || !testObj.testName) {
-                toast.error("❌ Code không hợp lệ! Đề thi phải có ít nhất 'id' và 'testName'."); return;
-            }
-            testObj.status = 'pending';
+        if (!testObj || !testObj.id || !testObj.testName) {
+            toast.error("❌ Code không hợp lệ! Đề thi phải có ít nhất 'id' và 'testName'."); return;
+        }
+        testObj.status = 'pending';
 
-            const dbRef = ref(db, `mockTests/${testObj.id}`);
-            const snap = await get(dbRef);
+        // Buoc 2: kiem tra trung ID + ghi (loi o day la loi mang/Firebase, bao dung ban chat)
+        setBusy(true);
+        try {
+            const snap = await get(child(ref(db), `mockTests/${testObj.id}`));
+            setBusy(false);
             if (snap.exists()) {
-                if (!window.confirm(`⚠️ Đề thi có ID "${testObj.id}" đã tồn tại. GHI ĐÈ?`)) return;
+                setConfirmReq({
+                    title: '⚠️ ĐỀ THI ĐÃ TỒN TẠI',
+                    message: `Đề thi có ID "${testObj.id}" đã có trên hệ thống. Ghi đè sẽ thay thế toàn bộ đề cũ.`,
+                    danger: true,
+                    yesLabel: 'GHI ĐÈ',
+                    onYes: () => commitMockUpload(testObj)
+                });
+                return;
             }
-            await set(dbRef, testObj);
-            toast.success(`🚀 Đã tải lên Mock Test: ${testObj.testName} (Chờ duyệt)`);
-            setMockCode('');
-        } catch (error) { toast.error("❌ Lỗi Cú Pháp Code: Kiểm tra lại dấu ngoặc, phẩy."); }
+            await commitMockUpload(testObj);
+        } catch (error) { setBusy(false); toast.error("❌ Lỗi kết nối Firebase: " + error.message); }
     };
 
     const MenuButton = ({ id, icon, label }) => (
@@ -344,6 +422,7 @@ export default function AdminPage() {
     return (
         <div className="admin-layout" style={{ display: 'flex', height: 'calc(100vh - 65px)', background: '#f8fafc', overflow: 'hidden' }}>
             <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+            <ConfirmDialog req={confirmReq} onClose={() => setConfirmReq(null)} />
 
             <style>{`
           .main-footer { display: none !important; }
@@ -358,7 +437,12 @@ export default function AdminPage() {
             .admin-sidebar { width: 100% !important; height: auto !important; flex-direction: row !important; flex-wrap: wrap !important; padding: 12px 10px !important; gap: 6px !important; overflow-y: visible !important; }
             .admin-sidebar h2 { display: none !important; }
             .admin-sidebar > div[style*="font-size: 0.8rem"] { display: none !important; }
+            /* Nut menu thanh chip chia deu hang: khong co dong nay moi nut rong ~216px
+               nen 1 nut/hang, sidebar chiem 1/3 man hinh dien thoai */
+            .admin-sidebar button { flex: 1 1 40% !important; justify-content: center !important; min-height: 44px; font-size: 0.85rem !important; padding: 8px 10px !important; }
             .admin-content { padding: 16px !important; height: auto !important; overflow-y: visible !important; }
+            /* Nut hanh dong trong bang du vung cham ngon tay (chuan 44px, toi thieu 40px) */
+            .admin-content table button { min-width: 40px; min-height: 40px; }
           }
       `}</style>
 
@@ -404,8 +488,9 @@ export default function AdminPage() {
                                     <i className="fa-solid fa-address-book"></i> Danh Sách Tài Khoản
                                 </h2>
 
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                    <div style={{ position: 'relative', width: '300px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
+                                    {/* maxWidth thay width cung: man hep o tim kiem tu co, khong day tran hang */}
+                                    <div style={{ position: 'relative', width: '300px', maxWidth: '100%' }}>
                                         <i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}></i>
                                         <input
                                             type="text"
@@ -516,7 +601,9 @@ export default function AdminPage() {
                                         <option value="private">🕵️‍♂️ Private (Người kiểm duyệt đề)</option>
                                     </select>
                                 </div>
-                                <button type="submit" className="btn-submit-login" style={{ fontSize: '1rem', padding: '12px' }}>LƯU VÀO HỆ THỐNG</button>
+                                <button type="submit" className="btn-submit-login" disabled={busy} style={{ fontSize: '1rem', padding: '12px', opacity: busy ? 0.6 : 1, cursor: busy ? 'wait' : 'pointer' }}>
+                                    {busy ? 'ĐANG LƯU...' : 'LƯU VÀO HỆ THỐNG'}
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -541,10 +628,11 @@ export default function AdminPage() {
                                     style={{ flex: 1, width: '100%', padding: '15px', borderRadius: '8px', minHeight: '220px', border: '1px solid #cbd5e1', background: '#1e293b', color: '#10b981', fontFamily: 'monospace', fontSize: '13px', resize: 'vertical', lineHeight: '1.6' }}
                                     spellCheck="false"
                                 />
-                                <button onClick={handleUploadMockTest} className="btn-submit-login" style={{ background: '#2B6830', fontSize: '1rem', padding: '12px' }}
-                                    onMouseOver={e => e.currentTarget.style.background = '#1E5225'}
-                                    onMouseOut={e => e.currentTarget.style.background = '#2B6830'}>
-                                    <i className="fa-solid fa-cloud-arrow-up"></i> KIỂM TRA CODE & TẢI LÊN MÂY
+                                <button onClick={handleUploadMockTest} className="btn-submit-login" disabled={busy}
+                                    style={{ background: '#2B6830', fontSize: '1rem', padding: '12px', opacity: busy ? 0.6 : 1, cursor: busy ? 'wait' : 'pointer' }}
+                                    onMouseOver={e => { if (!busy) e.currentTarget.style.background = '#1E5225'; }}
+                                    onMouseOut={e => { if (!busy) e.currentTarget.style.background = '#2B6830'; }}>
+                                    <i className="fa-solid fa-cloud-arrow-up"></i> {busy ? 'ĐANG TẢI LÊN...' : 'KIỂM TRA CODE & TẢI LÊN MÂY'}
                                 </button>
                             </div>
                         </div>
@@ -784,15 +872,15 @@ export default function AdminPage() {
                                                                 reported:  { bg: '#fee2e2', color: '#dc2626', label: '🚨 Reported' },
                                                             };
                                                             const st = statusMap[item.status] || { bg: '#f1f5f9', color: '#64748b', label: item.status };
-                                                            const topicLabel = item.category || item.title || '—';
-                                                            const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString('vi-VN') : '—';
+                                                            const topicLabel = item.category || item.title || '-';
+                                                            const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString('vi-VN') : '-';
                                                             return (
                                                                 <tr key={item.id} style={{
                                                                     background: isPendingDelete ? '#fff5f5' : (idx % 2 === 0 ? 'white' : '#fafafa'),
                                                                     transition: 'background 0.15s',
                                                                     borderBottom: idx < filtered.length - 1 ? '1px solid #f1f5f9' : 'none',
                                                                 }}
-                                                                    onMouseOver={e => { if (!isPendingDelete) e.currentTarget.style.background = '#f0f4ff'; }}
+                                                                    onMouseOver={e => { if (!isPendingDelete) e.currentTarget.style.background = '#F2F8F4'; }}
                                                                     onMouseOut={e => { if (!isPendingDelete) e.currentTarget.style.background = idx % 2 === 0 ? 'white' : '#fafafa'; }}>
                                                                     <td style={{ padding: '11px 16px', fontWeight: '700', color: '#0f172a', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
                                                                         {item.id}
@@ -860,15 +948,16 @@ export default function AdminPage() {
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                     {reportedBugs.map((test) => (
                                         <div key={test.id} style={{ border: '1px solid #fca5a5', background: '#fffefc', borderRadius: '8px', padding: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px dashed #fca5a5', paddingBottom: '10px', marginBottom: '15px' }}>
-                                                <div>
+                                            {/* flexWrap: tren dien thoai ten de dai + 2 nut khong chen nhau (cac card khac cung file da co wrap) */}
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px dashed #fca5a5', paddingBottom: '10px', marginBottom: '15px' }}>
+                                                <div style={{ minWidth: 0 }}>
                                                     <span style={{ background: '#ef4444', color: 'white', padding: '3px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold', marginRight: '10px' }}>
                                                         ID: {test.id}
                                                     </span>
                                                     <strong style={{ fontSize: '1.1rem', color: '#0f172a' }}>{test.displayName}</strong>
                                                 </div>
 
-                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                                                     <button onClick={() => handleResolveBug(test.id, test._collection)} style={{ background: '#2B6830', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.85rem', transition: '0.2s' }} onMouseOver={e => e.target.style.background = '#1E5225'} onMouseOut={e => e.target.style.background = '#2B6830'}>
                                                         <i className="fa-solid fa-circle-check"></i> ĐÃ SỬA XONG
                                                     </button>
