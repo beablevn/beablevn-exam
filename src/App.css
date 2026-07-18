@@ -2160,3 +2160,108 @@ svg { max-width: 100%; }
   .q-nav-btn { min-width: 34px; height: 34px; }
   .timer-box { font-size: .95rem; padding: 4px 10px; }
 }
+
+/* ===================================================================== */
+/* TASK 2 LIBRARY: thanh loc nhieu chieu + chip metadata (them 18/07/2026) */
+/* ===================================================================== */
+.col-title .col-count {
+  margin-left: auto;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--bav-green-dark);
+  background: var(--bav-tint);
+  padding: 2px 9px;
+  border-radius: var(--r-pill);
+}
+
+.lib-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.filter-select {
+  flex: 1 1 130px;
+  min-width: 120px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;            /* >=16px de iOS khong tu zoom khi focus */
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.filter-select:focus { border-color: var(--bav-green); box-shadow: var(--ring); }
+
+.filter-groupby {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 170px;
+  min-width: 160px;
+}
+.filter-groupby > span {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bav-green);
+  white-space: nowrap;
+}
+.filter-groupby .filter-select { flex: 1 1 auto; min-width: 90px; }
+
+.filter-clear {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.filter-clear:hover { background: var(--bav-tint); color: var(--bav-green); }
+
+/* The bai Task 2: mo ta 2 dong + chip metadata */
+.item-desc-multi {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.item-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+.meta-chip {
+  font-size: .68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.chip-level { background: var(--bav-green); color: #fff; }
+.chip-type  { background: var(--bav-tint); color: var(--bav-green-dark); }
+.chip-year  { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line); }
+
+.lib-col-loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--bav-green);
+  font-weight: 600;
+}

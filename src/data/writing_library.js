@@ -1,1178 +1,1122 @@
 // src/data/writing_library.js
+// =====================================================================
+// NGAN HANG DE IELTS WRITING TASK 2 (2018-2026) - 202 de
+// Nguon: "DINH NANG - NGAN HANG DE IELTS WRITING TASK 2 2018-2026.xlsx"
+// (03-DINH-NANG/01-IELTS/04-KIEM-TRA). Sinh tu dong, dung lam nguon
+// DUY NHAT cho muc luyen tap Task 2 trong app EXAM (WritingLibraryPage).
+// Moi de kem metadata de LOC/SAP XEP giong file: nam, cap do, tru UNESCO,
+// dang yeu cau, chu de (nhom cu the), unit.
+// =====================================================================
 
-// --- KHO DỮ LIỆU TASK 1 (20 Phút) ---
-export const task1Library = [
-    {
-        id: "t1_01",
-        title: "The table and the chart below provide a breakdown of the total expenditure and the average amount of money spent by students per week while studying abroad in 4 countries.",
-        image: "https://i.postimg.cc/3JsXvyfV/Screenshot-2026-01-13-183557.png"
-    },
-    {
-        id: "t1_02",
-        title: "The bar charts display the results from a 2009 survey regarding people’s automobile in a European country.",
-        image: "https://i.postimg.cc/SRWQRNTF/Screenshot-2026-01-13-200759.png"
-    },
-    {
-        id: "t1_03",
-        title: "The charts below show the distribution of the world’s water and the use of water in three countries.",
-        image: "https://i.postimg.cc/FRz3R00h/t1-03.png"
-    },
-    {
-        id: "t1_04",
-        title: "The graphs below show the total percentage of films released and the total percentage of ticket sales in 1996 and 2006 in a country.",
-        image: "https://i.postimg.cc/SRVfK00J/t1-04.png"
-    },
-    {
-        id: "t1_05",
-        title: "The table shows the amount of money given to developing countries by the USA, EU countries and other countries from 2006 to 2010 ( Figures are in millions of dollars ).",
-        image: "https://i.postimg.cc/7Zsq6qJT/5.jpg"
-    },
-    {
-        id: "t1_06",
-        title: "The graph below shows the information about medical care in three European countries between 1980 and 2000.",
-        image: "https://i.postimg.cc/Gp4dT6v2/6.jpg"
-    },
-    {
-        id: "t1_07",
-        title: "The chart below gives information on the numbers of workers in different occupations who migrated to Australia between 2009 and 2012.",
-        image: "https://i.postimg.cc/hv000VqK/t1-07.png"
-    },
-    {
-        id: "t1_08",
-        title: "The tables give information about the average hours work by part-time and full-time men and women in three countries in Europe in 2002 and compare them with the European countries.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-08.png"
-    },
-    {
-        id: "t1_09",
-        title: "The first graph shows the number of train passengers from 2000 to 2009; the second compares the percentage of trains running on time and target in the period.",
-        image: "https://i.postimg.cc/pdmR53K5/9.jpg"
-    },
-    {
-        id: "t1_10",
-        title: "The pie charts show the proportion of users across different age groups on three apps:Twitter, Facebook and YouTube.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-10.png"
-    },
-    {
-        id: "t1_11",
-        title: "The graph below gives information about the price of bananas in four countries between 1994 and 2004.",
-        image: "https://i.postimg.cc/hv000VqK/t1-11.png"
-    },
-    {
-        id: "t1_12",
-        title: "The graph below shows the average time spent by four car manufacturers to produce vehicles at their US factories.",
-        image: "https://i.postimg.cc/5tXbQD8z/12.jpg"
-    },
-    {
-        id: "t1_13",
-        title: "The pie charts below show the methods used by international students when booking online English courses in three different countries in 2009 and 2010.",
-        image: "https://i.postimg.cc/vm4bxC5S/13.jpg"
-    },
-    {
-        id: "t1_14",
-        title: "The table below shows the amount of waste production (in millions of tonnes) in six different countries over a twenty-year period.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-14.png"
-    },
-    {
-        id: "t1_15",
-        title: "The table below gives information on the percentage of women in the workforce and the proportion of female managers across five countries.",
-        image: "https://i.postimg.cc/hv000VqK/t1-15.png"
-    },
-    {
-        id: "t1_16",
-        title: "The pie charts below show the percentage of students at one adult education center taking various courses offered in 1985 and this year.",
-        image: "https://i.postimg.cc/zf45CpkP/16.jpg"
-    },
-    {
-        id: "t1_17",
-        title: "The table provides a comparison of the expenditure rate of the government on education and training and participation rate of 18-24 year olds in the same in five nations in the year 2002.",
-        image: "https://i.postimg.cc/hv000VqK/t1-17.png"
-    },
-    {
-        id: "t1_18",
-        title: "The bar chart below shows the percentage of people living alone in five different age groups in the USA between 1850 and 2000.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-18.png"
-    },
-    {
-        id: "t1_19",
-        title: "The graph below shows the population of a particular country by age group starting in 1960 and including a forecast to 2040.",
-        image: "https://i.postimg.cc/hv000VqK/t1-19.png"
-    },
-    {
-        id: "t1_20",
-        title: "The graph below shows the number of incidents of car theft, house burglary, and street robbery in a certain city between 1970 and 2005.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-20.png"
-    },
-    {
-        id: "t1_21",
-        title: "The table below shows the change in the percentages of people joining in seven different sports in an European country from 1999 to 2009.",
-        image: "https://i.postimg.cc/hv000VqK/t1-21.png"
-    },
-    {
-        id: "t1_22",
-        title: "The pie charts show energy sources in Australia in 2008 and predictions for 2030.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-22.png"
-    },
-    {
-        id: "t1_23",
-        title: "The bar chart gives information about the life expectancy in Japan, Korea, the United States, and Indonesia, and the table shows the change in life expectancy between 1953 and 2008.",
-        image: "https://i.postimg.cc/hv000VqK/t1-23.png"
-    },
-    {
-        id: "t1_24",
-        title: "The graph below shows the average house prices in 3 countries between the years 1997-2014.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-24.png"
-    },
-    {
-        id: "t1_25",
-        title: "The table below shows water use for different purposes in four countries. The use of water by four different countries (%).",
-        image: "https://i.postimg.cc/hv000VqK/t1-25.png"
-    },
-    {
-        id: "t1_26",
-        title: "The table illustrates the changes in the number of people (in millions) who traveled internationally in 1990, 1995, 2000, and 2005.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-26.png"
-    },
-    {
-        id: "t1_27",
-        title: "The chart below shows the percentage of people who used different types of transport to travel to work in one European city in 1960, 1980, and 2000.",
-        image: "https://i.postimg.cc/hv000VqK/t1-27.png"
-    },
-    {
-        id: "t1_28",
-        title: "The chart below gives information about how families in one country spent their weekly income in 1968 and in 2018.)",
-        image: "https://i.postimg.cc/Qd000VqK/t1-28.png"
-    },
-    {
-        id: "t1_29",
-        title: "The table below shows the percentage of working men and women in different areas of employment in one country in 1986, 1996 and 2006.",
-        image: "https://i.postimg.cc/hv000VqK/t1-29.png"
-    },
-    {
-        id: "t1_30",
-        title: "The chart below shows the expenditure on three categories among different age groups of residents in the UK in 2004.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-30.png"
-    },
-    {
-        id: "t1_31",
-        title: "The chart below shows the percentage of people who ate five portions of fruits and vegetables per day in the UK from 2001 to 2008.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-31.png"
-    },
-    {
-        id: "t1_32",
-        title: "The table below shows information about department stores and online stores Australia in 2011.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-32.png"
-    },
-    {
-        id: "t1_33",
-        title: "The graph below shows the quantities of goods transported in the UK between 1974 and 2002 by four different modes of transport.",
-        image: "https://i.postimg.cc/FRz3R00h/t1-03.png"
-    },
-    {
-        id: "t1_34",
-        title: "The pie charts show the main reasons why students chose to study at a particular UK university in 1987 and in 2007.",
-        image: "https://i.postimg.cc/SRVfK00J/t1-04.png"
-    },
-    {
-        id: "t1_35",
-        title: "The line graph shows the total length of railway track.",
-        image: "https://i.postimg.cc/yxq00VzJ/t1-05.png"
-    },
-    {
-        id: "t1_36",
-        title: "The charts below show the qualifications of staff in an advertising company in 1990 and 2010.",
-        image: "https://i.postimg.cc/rp7c1g99/36.jpg"
-    },
-    {
-        id: "t1_37",
-        title: "The table below shows information about the population of New Zealand from 2011 to 2012 by age group.",
-        image: "https://i.postimg.cc/9fsVd1Bb/37.jpg"
-    },
-    {
-        id: "t1_38",
-        title: "The charts show the sales of new cars in Australia in 1994, 2004 and 2014.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-08.png"
-    },
-    {
-        id: "t1_39",
-        title: "The pie charts below show the different types of courses, which were followed by the students during the years of 1984, 1994 and 2004.",
-        image: "https://i.postimg.cc/hv000VqK/t1-09.png"
-    },
-    {
-        id: "t1_40",
-        title: "The chart shows the changes that took place in three different areas of crime in Newport city centre from 2003 to 2012.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-10.png"
-    },
-    {
-        id: "t1_41",
-        title: "The bar chart below shows the number of miles travelled in a year by men and women for six different purposes in a particular country.",
-        image: "https://i.postimg.cc/hv000VqK/t1-11.png"
-    },
-    {
-        id: "t1_42",
-        title: "The bar chart below shows the percentage of share of total world production by Asia, Europe and other parts of the world from the years 1840 to 2000.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-12.png"
-    },
-    {
-        id: "t1_43",
-        title: "The table below shows the percentage of main types of dwelling in Victoria, the Northern Territory and Tasmania.",
-        image: "https://i.postimg.cc/hv000VqK/t1-13.png"
-    },
-    {
-        id: "t1_44",
-        title: "The graph below shows the number of inquiries received by the Tourist Information Office in one city over six months in 2011.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-14.png"
-    },
-    {
-        id: "t1_45",
-        title: "The charts below show the average age men and women retired in seven countries in 2004 and 2008.",
-        image: "https://i.postimg.cc/hv000VqK/t1-15.png"
-    },
-    {
-        id: "t1_46",
-        title: "The chart below shows the numbers of three types of visitors to a museum between 1997 and 2012.",
-        image: "https://i.postimg.cc/Qd000VqK/t1-16.png"
-    },
-    {
-        id: "t1_47",
-        title: "The graph below shows the amount of time taken to produce a vehicle by four US-based car manufacturers in the years 1998 to 2002.",
-        image: "https://i.postimg.cc/hv000VqK/t1-17.png"
-    },
-    {
-        id: "t1_48",
-        title: "The charts below give information about the age of visitors from the UK to Spain in 1983 and in 2003.",
-        image: "https://i.postimg.cc/TPBGVQc4/48.jpg"
-    },
-    {
-        id: "t1_49",
-        title: "The chart shows information about the actual and expected figures of population in three cities, Jakarta, Sao Paulo, and Shanghai.",
-        image: "https://i.postimg.cc/hv000VqK/t1-19.png"
-    },
-    {
-        id: "t1_50",
-        title: "The table below gives information related to population growth, average birth per woman, life expectancy at birth in countries with different income levels in 2000 and 2004.",
-        image: "https://i.postimg.cc/1zbPGMK2/50.jpg"
-    },
-    {
-        id: "t1_51",
-        title: "The given graph shows the nitrogen oxide emissions produced by four vehicles.",
-        image: "https://i.postimg.cc/VN21q4Fx/51.jpg"
-    },
-    {
-        id: "t1_52",
-        title: "The chart below gives information about European people of different age groups who went to gyms once a month or more between 1990 and 2010.",
-        image: "https://i.postimg.cc/s2vqfdd1/52.jpg"
-    },
-    {
-        id: "t1_53",
-        title: "The table shows information about students studying in six different departments at an Australian university in 2009.",
-        image: "https://i.postimg.cc/1zf2Rhh3/53.jpg"
-    },
-    {
-        id: "t1_54",
-        title: "The graph below shows the average number of people attending top-level football matches in three European countries from 1980 to 2004.",
-        image: "https://i.postimg.cc/5t6T9ddt/54.jpg"
-    },
-    {
-        id: "t1_55",
-        title: "The graph below shows the percentage of people unemployed in the total labour work force across 9 countries in 1994 and 2004.",
-        image: "https://i.postimg.cc/zfV6DZZB/55.jpg"
-    },
-    {
-        id: "t1_56",
-        title: "The bar chart shows the distribution of employment among agriculture, services, industries in three countries in 1980 and projected distribution in 2020.",
-        image: "https://i.postimg.cc/jjLmq00L/56.jpg"
-    },
-    {
-        id: "t1_57",
-        title: "The table shows the number of exchange students from universities in Europe to Australia and vice versa.",
-        image: "https://i.postimg.cc/FRz3R00h/t1-57.png"
-    },
-    {
-        id: "t1_58",
-        title: "The maps below show a beachfront area in Australia in 1950 and the same area today.",
-        image: "https://i.postimg.cc/5t6T9ddH/58.jpg"
-    },
-    {
-        id: "t1_59",
-        title: "The plans show a student common room from five years ago and now.",
-        image: "https://i.postimg.cc/tgYwRQQs/59.jpg"
-    },
-    {
-        id: "t1_60",
-        title: "The maps below show a part of a village in 1910 and the same part of the village in 2010.",
-        image: "https://i.postimg.cc/FRz3R00h/t1-60.png"
-    },
-    {
-        id: "t1_61",
-        title: "The diagrams below show changes in Happy Valley Shopping Centre in 1982 and 2012.",
-        image: "https://i.postimg.cc/Dz8Hfkkb/61.jpg"
-    },
-    {
-        id: "t1_62",
-        title: "The diagram below show the development of Brindell from 1800 to 2000.",
-        image: "https://i.postimg.cc/d0LpQPPk/62.jpg"
-    },
-    {
-        id: "t1_63",
-        title: "The three pictures show the position of a volcano, and a village before and after volcanic eruption.",
-        image: "https://i.postimg.cc/cJr21yyn/63.jpg"
-    },
-    {
-        id: "t1_64",
-        title: "The maps show the changes made to a small museum and its surroundings in 1990 and 2010.",
-        image: "https://i.postimg.cc/Dz8HfkkG/64.jpg"
-    },
-    {
-        id: "t1_65",
-        title: "The diagram shows the fire escape plan for a student accommodation in the second floor of a college.",
-        image: "https://i.postimg.cc/0NbF5RRD/65.jpg"
-    },
-    {
-        id: "t1_66",
-        title: "The plans show the room layouts for training session for up ten people and more than ten people.",
-        image: "https://i.postimg.cc/Dz8Hfkkq/66.jpg"
-    },
-    {
-        id: "t1_67",
-        title: "The plans below show the South Wing of Walton Museum in 2008 and in 2012 after it was redeveloped.",
-        image: "https://i.postimg.cc/mrtJZff7/67.jpg"
-    },
-    {
-        id: "t1_68",
-        title: "The plans below show a small theatre In 2010, and the same theatre in 2012.",
-        image: "https://i.postimg.cc/bvsWYccx/68.jpg"
-    },
-    {
-        id: "t1_69",
-        title: "The diagram below shows a small local museum and its surroundings in 1957 and 2007.",
-        image: "https://i.postimg.cc/XvmhpH49/69.jpg"
-    },
-    {
-        id: "t1_70",
-        title: "The maps show the changes in Shalton village from 1910 to 2010.",
-        image: "https://i.postimg.cc/FRz3R00h/t1-70.png"
-    },
-    {
-        id: "t1_71",
-        title: "The plans below show the layout of a university’s sports centre now.",
-        image: "https://i.postimg.cc/ZqC2YttL/71.jpg"
-    },
-    {
-        id: "t1_72",
-        title: "The diagram below show the stages in the recycling of aluminum drinks can.",
-        image: "https://i.postimg.cc/FRz3R00h/t1-72.png"
-    },
-    {
-        id: "t1_73",
-        title: "The diagram below shows the process of growing and preparing pineapples and pineapple products.",
-        image: "https://i.postimg.cc/FRz3R00h/t1-73.png"
-    },
-    {
-        id: "t1_74",
-        title: "The diagram below describes the structure of a home smokery and how it works.",
-        image: "https://i.postimg.cc/bvsWYccT/74.jpg"
-    },
-    {
-        id: "t1_75",
-        title: "The diagram gives information about the process of making carbonated drinks.",
-        image: "https://i.postimg.cc/Dz8Hfkk6/75.jpg"
-    },
-    {
-        id: "t1_76",
-        title: "The diagram below shows the process of electricity production.",
-        image: "https://i.postimg.cc/VNdpsQQK/76.jpg"
-    },
-    {
-        id: "t1_77",
-        title: "The diagram below shows how one type of coal is used to produce electricity.",
-        image: "https://i.postimg.cc/BvXkZ99M/77.jpg"
-    },
-    {
-        id: "t1_78",
-        title: "The diagram below shows a simple system that turn dirty water into clean water.",
-        image: "https://i.postimg.cc/rpK3yXXn/78.jpg"
-    },
-];
-
-// --- KHO DỮ LIỆU TASK 2 (40 Phút) ---
 export const task2Library = [
-    // === 1. EDUCATION (28 Đề) ===
-    {
-        id: "t2_001",
-        title: "Education",
-        question: "In education and employment, some people work harder than others. Why do some people work harder? Is it always a good thing to work hard?",
-        
-    },
-    {
-        id: "t2_002",
-        title: "Education",
-        question: "Everyone should stay at school until 18. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_003",
-        title: "Education",
-        question: "Nations should spend more money on skills and vocational training for practical work, rather than on university education. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_004",
-        title: "Education",
-        question: "Some people say it is government’s responsibility to transport children to school, while others believe parents should transport their children to school. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_005",
-        title: "Education",
-        question: "The typical teaching situation between students and teachers in the classroom will be gone by the year 2050. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_006",
-        title: "Education",
-        question: "Some people believe that governments should pay full course fees for students who want to study in universities. Do you agree or disagree with this statement?",
-        
-    },
-    {
-        id: "t2_007",
-        title: "Education",
-        question: "Despite better access to education, many adults today still can not read or write. In what ways are they disadvantaged? What can governments do to help them?",
-        
-    },
-    {
-        id: "t2_008",
-        title: "Education",
-        question: "Some people think that children should be taught at school to recycle materials and avoid waste. Other people believe that children should be taught this at home. Discuss both opinions and give your own opinion.",
-        
-    },
-    {
-        id: "t2_009",
-        title: "Education",
-        question: "University education should be free for all students. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_010",
-        title: "Education",
-        question: "Some people think the government should establish free libraries in each town. Others believe that it is a waste of money since people can access the Internet to obtain information. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_011",
-        title: "Education",
-        question: "Some people think that the best way to become successful in life is to get a university education, whereas others say this is no longer true. Discuss both these views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_012",
-        title: "Education",
-        question: "Some people argue that small classes for language students is beneficial, whereas other says number doesn’t matter. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_013",
-        title: "Education",
-        question: "Many students find it harder to study when they are at university or college than when they were at school. Why is this? What can be done to solve the problem?",
-        
-    },
-    {
-        id: "t2_014",
-        title: "Education",
-        question: "Some people think the government should invest more money in teaching science than other subjects in order for a country to develop and progress. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_015",
-        title: "Education",
-        question: "Schools should not force children to learn a foreign language, because some students don’t have a natural ability for languages. Do you agree or disagree with this statement?",
-        
-    },
-    {
-        id: "t2_016",
-        title: "Education",
-        question: "Some people think that schools should select students according to their academic abilities, while others believe that it is better to have students with different abilities studying together. Discuss both views and state your own opinion.",
-        
-    },
-    {
-        id: "t2_017",
-        title: "Education",
-        question: "In many countries, girls tend to choose arts subjects while boys often select science subjects. What are the reasons for this trend? Do you think it should be changed?",
-        
-    },
-    {
-        id: "t2_018",
-        title: "Education",
-        question: "Money for postgraduate research is limited; therefore, some people believe that government financial support should be provided only for scientific research rather than for research into less useful subjects. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_019",
-        title: "Education",
-        question: "In many countries imprisonment is the most common solution to crimes. However, some people believe that better education will be a more effective solution. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_020",
-        title: "Education",
-        question: "In some countries, young people are encouraged to work or travel for a year between finishing high school and starting university studies. Discuss the advantages and disadvantages for young people who decide to do this.",
-        
-    },
-    {
-        id: "t2_021",
-        title: "Education",
-        question: "In many countries, more and more people are competing for a place to study in universities. Why does this happen? Do you think this is a positive or negative development?",
-        
-    },
-    {
-        id: "t2_022",
-        title: "Education",
-        question: "Some people say that schools are no longer necessary because children can get so much information available through the Internet, and they can study just as well at home. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_023",
-        title: "Education",
-        question: "There are parents who are choosing to teach children themselves at home instead of sending them to school in some countries. Do the advantages of homeschooling outweigh the disadvantages?",
-        
-    },
-    {
-        id: "t2_024",
-        title: "Education",
-        question: "Some students choose to work or travel after leaving school and before going to university. Many people, however, say that working experience is more useful in adult life than travel. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_025",
-        title: "Education",
-        question: "University students always focus on one specialist subject, but some people think universities should encourage their students to study a range of subjects in addition to their own subject. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_026",
-        title: "Education",
-        question: "Parents should encourage children to spend more time studying or more time doing physical activities. Some people think traditional games are better than modern games in helping children develop their abilities. To what extent do you agree?",
-        
-    },
-    {
-        id: "t2_027",
-        title: "Education",
-        question: "Some believe secondary students should learn International news as a subject at school, while some think it’s a waste of time. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_028", 
-        title: "Education",
-        question: "Some people believe that every human being can create art (e.g. painting), others think only the people born with the ability can create art. Discuss both views and give your own opinion.",
-        
-    },
-
-
-    // === 2. ENVIRONMENT (10 Đề) ===
-    {
-        id: "t2_029",
-        title: "Environment",
-        question: "Some people think that people should be given the right to use fresh water as they like. Others believe governments should strictly control the use of fresh water. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_030",
-        title: "Environment",
-        question: "Some people believe that all wild animals should be protected. Others say that few wild animals should be protected instead. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_031",
-        title: "Environment",
-        question: "In some cities public parks and open spaces are being changed into gardens where local residents can grow their own fruit and vegetables. Do the advantages outweigh the disadvantages?",
-        
-    },
-    {
-        id: "t2_032",
-        title: "Environment",
-        question: "Long distance flight uses more fuel than cars and brings pollution to the environment. We should discourage non-essential flight rather than limit the use of cars. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_033",
-        title: "Environment",
-        question: "Economic growth is the only way to end world poverty. However, some people say it leads to environmental damage and should be stopped. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_034",
-        title: "Environment",
-        question: "Solving environmental problems should be the responsibility of an international organization rather than each national government. Do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_035",
-        title: "Environment",
-        question: "In many countries, the number of animals and plants are declining. Why do you think it is happening? How to solve this issue?",
-        
-    },
-    {
-        id: "t2_036",
-        title: "Environment",
-        question: "More and more animal species are becoming extinct due to human activities in land and sea. Why is this happening? What are solutions to this problem?",
-        
-    },
-    {
-        id: "t2_037",
-        title: "Environment",
-        question: "In many countries, the amount of household waste like food packaging is increasing. What are the causes of this problem? What measures could be taken to reduce it?",
-        
-    },
-    {
-        id: "t2_038",
-        title: "Environment",
-        question: "Some people say it is more important to plant trees in the open spaces in towns and cities than to build more housing. To what extent do you agree or disagree?",
-        
-    },
-
-    // === 3. TECHNOLOGY (9 Đề) ===
-    {
-        id: "t2_039",
-        title: "Technology",
-        question: "With the rapid advancement of communication technology: smartphones, tablets and other mobile devices, some people believe that the disadvantages outweigh the advantages. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_040",
-        title: "Technology",
-        question: "Some people think that the money spent on developing the technology for space exploration is not justified. There are more beneficial ways to spend this money. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_041",
-        title: "Technology",
-        question: "More and more people no longer read newspapers or watch TV programs to get news. They get news about the world through the Internet. Is this a positive or negative development?",
-        
-    },
-    {
-        id: "t2_042",
-        title: "Technology",
-        question: "Today more and more people are using mobile phones and computers. Thus, people are losing the ability to communicate face to face. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_043",
-        title: "Technology",
-        question: "With the rapid advancement of communication technology: smart phones, tablets and other mobile devices, some people believe that the disadvantages outweigh the advantages. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_044",
-        title: "Technology",
-        question: "Some think that printed books are not necessary in the digital era, because all writing can be stored electronically. Others think printed books still play an important role. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_045",
-        title: "Technology",
-        question: "Some people claim that public museums and art galleries will not be needed because people can see historical objects and work of arts by using a computer. Do you agree or disagree with this opinion?",
-        
-    },
-    {
-        id: "t2_046",
-        title: "Technology",
-        question: "Some people think technology development decrease crime while others believe it actually encourages crime. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_047",
-        title: "Technology",
-        question: "In many countries, more and more people buy a wider range of household goods like television, microwave oven and rice cooker. Do you think this is a positive or negative development?",
-        
-    },
-
-    // === 4. HEALTH (6 Đề) ===
-    {
-        id: "t2_048",
-        title: "Health",
-        question: "Some people think the government should subsidise fruits and vegetables to make healthy food more affordable. Others argue that the government should tax unhealthy food instead. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_049",
-        title: "Health",
-        question: "Some people think that a good diet and exercise are not necessary for a healthy and long life. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_050",
-        title: "Health",
-        question: "Some people think that good health is very important to every person, so medical services should not be run by profit-making companies. Do the advantages of private health care outweigh the disadvantages?",
-        
-    },
-    {
-        id: "t2_051",
-        title: "Health",
-        question: "It is more important to spend public money promoting a healthy lifestyle in order to prevent illness than to spend it on the treatment of people who are already ill. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_052",
-        title: "Health",
-        question: "Some people believe that it is the responsibility of individuals to take care of their own health and diet. Others however believe that governments should make sure that their citizens have a healthy diet. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_053",
-        title: "Health",
-        question: "An increasing number of people are choosing to have cosmetic surgery in order to improve their appearance. Why are more people choosing to have operations to change the way they look? Do you think this is a positive or negative trend?",
-        
-    },
-
-    // === 5. CRIME AND LAW (7 Đề) ===
-    {
-        id: "t2_054",
-        title: "Crime and Law",
-        question: "Some people believe that young people who commit serious crimes should be punished in the same way as adults. Do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_055",
-        title: "Crime and Law",
-        question: "Some people believe that young people who commit crimes should be punished in the same way as adults. Do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_056",
-        title: "Crime and Law",
-        question: "It is argued that the parents of children who break the rules should be punished in some ways as parents are responsible for the children’s actions. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_057",
-        title: "Crime and Law",
-        question: "Recent research suggests that the majority of criminals who are sent to prison commit crimes after they are released. Why is this the case? What can be done to solve this problem?",
-        
-    },
-    {
-        id: "t2_058",
-        title: "Crime and Law",
-        question: "Some people think it is better for one single legal system throughout the world. Others say countries should have their own law. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_059",
-        title: "Crime and Law",
-        question: "In many parts of the world, children and teenagers are committing more crimes. Why is this happening? How should they be punished?",
-        
-    },
-    {
-        id: "t2_060",
-        title: "Crime and Law",
-        question: "Some people think all lawbreakers should be put into prison, while others believe that there are better alternatives. Discuss both views and give your own opinion.",
-        
-    },
-
-    // === 6. ADVERTISING AND MEDIA (14 Đề) ===
-    {
-        id: "t2_061",
-        title: "Advertising and Media",
-        question: "The main purpose of advertising is to increase the sales of products that people don’t really need. To what extent do you agree or disagree.",
-        
-    },
-    {
-        id: "t2_062",
-        title: "Advertising and Media",
-        question: "Large companies often use sports events to promote their products. Some people think this has a negative impact on sports. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_063",
-        title: "Advertising and Media",
-        question: "Advertisements are becoming more and more common in everyday life. Is it a positive or negative development?",
-        
-    },
-    {
-        id: "t2_064",
-        title: "Advertising and Media",
-        question: "Some people find advertisements amusing or annoying and they are not influenced by this when they shop. To what extend do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_065",
-        title: "Advertising and Media",
-        question: "Some people said that what children watch on television influenced their behaviour, other argue that the amount of time influenced their behaviour. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_066",
-        title: "Advertising and Media",
-        question: "There are different methods businesses use to increase their sales. What are the different ways companies use to increase sales? Which one is the most effective?",
-        
-    },
-    {
-        id: "t2_067",
-        title: "Advertising and Media",
-        question: "Nowadays young people are admiring media and sports stars, even though they often do not set a good example. Do you think this is a positive or negative development?",
-        
-    },
-    {
-        id: "t2_068",
-        title: "Advertising and Media",
-        question: "The media should include more stories which report good news. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_069",
-        title: "Advertising and Media",
-        question: "It is better to learn the way people lived in the past through films and video records than written documents. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_070",
-        title: "Advertising and Media",
-        question: "The media should include more good stories which report good news. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_071",
-        title: "Advertising and Media",
-        question: "News plays an important part of most people’s lives. Why is news so important to people? Why is so much news dedicated to bad news? Should the news focus on good news instead?",
-        
-    },
-    {
-        id: "t2_072",
-        title: "Advertising and Media",
-        question: "Some people think advertisements may have positive economic effects whereas others think there are negative social effects because individuals are not satisfied with who they are and what they have. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_073",
-        title: "Advertising and Media",
-        question: "Some people say that the main aim of advertising is to improve the sales of products that people do not really need. To what extent do you agree or disagree with this statement?",
-        
-    },
-    {
-        id: "t2_074",
-        title: "Advertising and Media",
-        question: "Some companies sponsor sport as a way to advertise themselves. Some people think it is good for the world of sports, while others think there are disadvantages. Discuss both views and give your opinion.",
-        
-    },
-
-    // === 7. WORK AND EMPLOYMENT (5 Đề) ===
-    {
-        id: "t2_075",
-        title: "Work and Employment",
-        question: "The most important element in a person’s life is their work. Without a satisfying career, life is meaningless. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_076",
-        title: "Work and Employment",
-        question: "It is better for people to be unemployed than people to be employed but they do not enjoy it. Do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_077",
-        title: "Work and Employment",
-        question: "Many people believe in a balance between work and other parts of their lives, but few achieve it. What are the problems in trying to achieve this and how can these problems be overcome?",
-        
-    },
-    {
-        id: "t2_078",
-        title: "Work and Employment",
-        question: "Interviews form the basic selecting criteria for most large companies. However, some people think that the interview is not a reliable method of choosing whom to employ. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_079",
-        title: "Work and Employment",
-        question: "Leaders and directors in an organization are normally older people. Some people think younger leaders would be better. Do you agree or disagree?",
-        
-    },
-
-    // === 8. SOCIETY AND FAMILY (10 Đề) ===
-    {
-        id: "t2_080",
-        title: "Society and Family",
-        question: "Some people think that charity organizations should only offer help to people of their own country. But others believe that these organizations should give aid to people in great need wherever they live. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_081",
-        title: "Society and Family",
-        question: "The tendency of human beings to copy one another is shown in the popularity of areas such as fashion and consumer goods. To what extent do you agree?",
-        
-    },
-    {
-        id: "t2_082",
-        title: "Society and Family",
-        question: "In some countries, it is difficult for family members and friends to spend enough time with elderly people to look after them. What do you think the cause of the problem? What can we do for the problem?",
-        
-    },
-    {
-        id: "t2_083",
-        title: "Society and Family",
-        question: "In some countries today, many people are having their first child at an older age. What are the reasons for this trend? Do the advantages outweigh the disadvantages?",
-        
-    },
-    {
-        id: "t2_084",
-        title: "Society and Family",
-        question: "In some countries around the world, men and women are having children later in life. What are the reasons for this development? What are the effects on society and family life?",
-        
-    },
-    {
-        id: "t2_085",
-        title: "Society and Family",
-        question: "Nowadays, more and more people from different cities are spending more time away from their families. What are the possible reasons and the effects on the people themselves and their families?",
-        
-    },
-    {
-        id: "t2_086",
-        title: "Society and Family",
-        question: "Older generations often hold some traditional ideas on the correct way of life, thought and behavior. Most people argue that these are not helpful for younger generations to prepare for modern life. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_087",
-        title: "Society and Family",
-        question: "In some countries today, many people are choosing to have their first child later in life. What are the reasons for this trend? Do the advantages of this outweigh the disadvantages?",
-        
-    },
-    {
-        id: "t2_088",
-        title: "Society and Family",
-        question: "In some countries more and more shops are open longer hours every day. What are the positive and negative developments of this?",
-        
-    },
-    {
-        id: "t2_089",
-        title: "Society and Family",
-        question: "Should companies provide sports and social facilities for local communities? To what extent do you agree?",
-        
-    },
-
-    // === 9. URBANIZATION AND HOUSING (7 Đề) ===
-    {
-        id: "t2_090",
-        title: "Urbanization and Housing",
-        question: "In many countries, the quality of life in large cities is becoming worse. What do you think are the causes of this problem? What measures could be taken to solve it?",
-        
-    },
-    {
-        id: "t2_091",
-        title: "Urbanization and Housing",
-        question: "Some people think that it is best to live in a horizontal city while others think of a vertical city. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_092",
-        title: "Urbanization and Housing",
-        question: "As housing is a basic need for people, the government should provide free housing for everyone who cannot afford it. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_093",
-        title: "Urbanization and Housing",
-        question: "The shortage of housing in big cities can cause severe consequences. Only government action can solve this problem. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_094",
-        title: "Urbanization and Housing",
-        question: "With growing population in cities, more and more people live in a home with small or no outdoor areas. Is it a positive or negative development?",
-        
-    },
-    {
-        id: "t2_095",
-        title: "Urbanization and Housing",
-        question: "The major cities in the world are growing fast, as well as their problems. What are the problems that young people living in cities are facing with? Give solutions to these problems.",
-        
-    },
-    {
-        id: "t2_096",
-        title: "Urbanization and Housing",
-        question: "Towns and cities are attractive places. Some people suggest that the government should spend money putting in more works of art like paintings and statues to make them better to live in. To what extent do you agree or disagree?",
-        
-    },
-
-    // === 10. SPORTS (3 Đề) ===
-    {
-        id: "t2_097",
-        title: "Sports",
-        question: "Some people believe that sport has an important role in society. Others, however, feel that it is nothing more than a leisure activity for some people. Discuss both these views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_098",
-        title: "Sports",
-        question: "Some countries spend a lot of money preparing competitors to take part in major competitions such as Olympic Games or football World Cup. Some people say that it would be better to spend this money encouraging children to take up sports from a young age. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_099",
-        title: "Sports",
-        question: "Some people think that hosting an international sport event is good for the country, while some people think it is bad. Discuss both views and state your opinion. To what extent do you agree or disagree?",
-        
-    },
-
-    // === 11. ART AND CULTURE (3 Đề) ===
-    {
-        id: "t2_100",
-        title: "Art and Culture",
-        question: "Some people think that museums should be enjoyable places to entertain people, while others believe that the purpose of the museums is to educate. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_101",
-        title: "Art and Culture",
-        question: "In today’s world of advanced science and technology, we still greatly value our artists such as musicians, painters, and writers. What can the arts tell us about life that science and technology cannot?",
-        
-    },
-    {
-        id: "t2_102",
-        title: "Art and Culture",
-        question: "Some people say that every human being can create art (e.g. painting), others think only the people born with the ability can create art. Discuss both views and give your own opinion.",
-        
-    },
-
-    // === 12. FOOD AND AGRICULTURE (5 Đề) ===
-    {
-        id: "t2_103",
-        title: "Food and Agriculture",
-        question: "Countries should produce the food that their population eats, and import as little as possible. To what extent do you agree or disagree.",
-        
-    },
-    {
-        id: "t2_104",
-        title: "Food and Agriculture",
-        question: "Demand for food is increasing worldwide. What are the causes of this? What measures can the international community take to make sure the supply of food is enough?",
-        
-    },
-    {
-        id: "t2_105",
-        title: "Food and Agriculture",
-        question: "Countries should produce the food that their population eats, and import as little as possible. To what extent do you agree or disagree? Give reasons, examples to your answer.",
-        
-    },
-    {
-        id: "t2_106",
-        title: "Food and Agriculture",
-        question: "Some people suggest that a country should try to produce all the food for its population and import as little food as possible. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_107",
-        title: "Food and Agriculture",
-        question: "In many countries, more and more people choose to buy imported food rather than food produced locally. Why do people buy imported food? What could be done to encourage people to buy local food?",
-        
-    },
-
-    // === 13. GLOBALIZATION AND INTERNATIONAL ISSUES (4 Đề) ===
-    {
-        id: "t2_108",
-        title: "Globalization and International Issues",
-        question: "Some people say that the increasing business and cultural contact between countries has positive effects. Others say it would lead to the loss of national identities. Discuss both views and give your opinion.",
-        
-    },
-    {
-        id: "t2_109",
-        title: "Globalization and International Issues",
-        question: "Some believe that we should invent a new language for international communication. Do the advantages of this outweigh the disadvantages?",
-        
-    },
-    {
-        id: "t2_110",
-        title: "Globalization and International Issues",
-        question: "Some people think the increasing business and cultural contact between countries brings many positive effects. Others say it causes the loss of national identities. Discuss both views and give your own opinion.",
-        
-    },
-    {
-        id: "t2_111",
-        title: "Globalization and International Issues",
-        question: "As we are facing more and more problems, which affect the whole planet, good relationships between different countries are becoming more important than ever before. To what extent do you agree or disagree?",
-        
-    },
-
-    // === 14. TOURISM (1 Đề) ===
-    {
-        id: "t2_112",
-        title: "Tourism",
-        question: "In recent years, “responsible tourists” have paid attention to preserving both culture and environment of the places they visit. However, some people say that it is impossible to be a “responsible tourist”. To what extent do you agree or disagree?",
-        
-    },
-
-    // === 15. TRANSPORT (3 Đề) ===
-    {
-        id: "t2_113",
-        title: "Transport",
-        question: "Some experts say for road safety cyclists should pass a test before being allowed on public roads. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_114",
-        title: "Transport",
-        question: "Some people think that the best way to improve road safety is to increase the minimum legal age for driving a car or motorbike. To what extent do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_115",
-        title: "Transport",
-        question: "In some cities, people are choosing cars instead of bicycles, while in other cities riding bikes is replacing cars. Why is this the case? Which development do you think is better?",
-        
-    },
-
-    // === 16. ECONOMY (2 Đề) ===
-    {
-        id: "t2_116",
-        title: "Economy",
-        question: "Some people believe that they should be able to keep all the money they earn, and should not have to pay tax to the state. Do you agree or disagree?",
-        
-    },
-    {
-        id: "t2_117",
-        title: "Economy",
-        question: "Economic progress is one way to measure the success of a country, while some people think there are other factors. What other factors should be considered? Within these factors, do you think anyone is more important than economic progress?",
-        
-    },
-
-    // === 17. OTHER (2 Đề) ===
-    {
-        id: "t2_118",
-        title: "Other",
-        question: "Some think that having ambition is a good quality. Is it important to be ambitious? Is it a positive or negative characteristic?",
-        
-    },
-    {
-        id: "t2_119",
-        title: "Other",
-        question: "Intelligence is the most important quality that a leader needs to have. To what extent do you agree or disagree?",
-        
-    }
+    { id: "t2_001", type: "TASK 2", status: "published",
+      question: "Some people think that money is the most important thing to be happy in life. Others disagree. Discuss both views and give your own opinion.",
+      year: 2020, level: "Cấp 2 – Elementary (4.5→5.5)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tiền & kinh tế", unit: "U4 – Money & affordability",
+      title: "Tiền & kinh tế" },
+    { id: "t2_002", type: "TASK 2", status: "published",
+      question: "Some people prefer to spend their free time outdoors, while others prefer to stay at home. Discuss both views and give your own opinion.",
+      year: 2020, level: "Cấp 2 – Elementary (4.5→5.5)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Hạnh phúc & lối sống", unit: "U5 – Health & responsibility",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_003", type: "TASK 2", status: "published",
+      question: "Some people like to buy new things, while others prefer to keep and repair old things. Discuss both views and give your opinion.",
+      year: 2021, level: "Cấp 2 – Elementary (4.5→5.5)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Hạnh phúc & lối sống", unit: "U5 – Health & responsibility",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_004", type: "TASK 2", status: "published",
+      question: "Many people today spend less time cooking at home and buy more ready-made or fast food. Is this a positive or negative development?",
+      year: 2022, level: "Cấp 2 – Elementary (4.5→5.5)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Ẩm thực & chế độ ăn", unit: "U5 – Health & responsibility",
+      title: "Ẩm thực & chế độ ăn" },
+    { id: "t2_005", type: "TASK 2", status: "published",
+      question: "Many people prefer to watch films at home rather than at the cinema. Why might this be? Is it a positive or negative development?",
+      year: 2023, level: "Cấp 2 – Elementary (4.5→5.5)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Hạnh phúc & lối sống", unit: "U5 – Health & responsibility",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_006", type: "TASK 2", status: "published",
+      question: "Some people think that keeping pets is good for children, while others think it is dangerous and unhealthy. Discuss both views and give your opinion.",
+      year: 2020, level: "Cấp 2 – Elementary (4.5→5.5)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Động vật hoang dã", unit: "U7 – Environment & sustainability",
+      title: "Động vật hoang dã" },
+    { id: "t2_007", type: "TASK 2", status: "published",
+      question: "Some people believe that it is better to live in a big city, while others prefer to live in the countryside. Discuss both views and give your opinion.",
+      year: 2019, level: "Cấp 2 – Elementary (4.5→5.5)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Nhà ở & đô thị", unit: "U8 – Community & cooperation",
+      title: "Nhà ở & đô thị" },
+    { id: "t2_008", type: "TASK 2", status: "published",
+      question: "It is better for college students to live far away from home than to live at home with their parents. Do you agree or disagree?",
+      year: 2018, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_009", type: "TASK 2", status: "published",
+      question: "Some people believe that children should be taught how to manage money at school. To what extent do you agree or disagree?",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_010", type: "TASK 2", status: "published",
+      question: "In many countries, schools have severe problems with student behaviour. What do you think are the causes of this? What solutions can you suggest?",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_011", type: "TASK 2", status: "published",
+      question: "Some educationalists say that every child should be taught how to play a musical instrument at school. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_012", type: "TASK 2", status: "published",
+      question: "Many people believe that teaching children at home is best for a child's development while others think that it is important for children to go to school. Discuss the advantages and disadvantages of both approaches.",
+      year: 2021, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi ích & bất lợi – Advantages/Disadvantages", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_013", type: "TASK 2", status: "published",
+      question: "Some people believe that children should be allowed to stay at home and play until they are six or seven years old. Others believe that it is important for young children to go to school as soon as possible. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_014", type: "TASK 2", status: "published",
+      question: "Many students find it difficult to concentrate on their studies because of mobile phones. Why is this? What can be done about it?",
+      year: 2023, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_015", type: "TASK 2", status: "published",
+      question: "Should financial education be a mandatory subject in schools? To what extent do you agree or disagree?",
+      year: 2025, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_016", type: "TASK 2", status: "published",
+      question: "It is important for children to learn how to grow food, so schools should have gardening as a subject. To what extent do you agree or disagree?",
+      year: 2025, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – Education systems",
+      title: "Giáo dục" },
+    { id: "t2_017", type: "TASK 2", status: "published",
+      question: "Some people say that the increasing use of computers and mobile phones for communication has had a negative effect on young people's reading and writing skills. To what extent do you agree or disagree?",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Công nghệ", unit: "U2 – Science & innovation",
+      title: "Công nghệ" },
+    { id: "t2_018", type: "TASK 2", status: "published",
+      question: "Computers are increasingly used in education. In what ways is this a positive development? In what ways is this a negative development?",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi ích & bất lợi – Advantages/Disadvantages", topic: "Công nghệ", unit: "U2 – Science & innovation",
+      title: "Công nghệ" },
+    { id: "t2_019", type: "TASK 2", status: "published",
+      question: "Nowadays, many people spend a lot of time on their phones and computers. What are the effects of this on their health and social life?",
+      year: 2022, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Công nghệ", unit: "U2 – Science & innovation",
+      title: "Công nghệ" },
+    { id: "t2_020", type: "TASK 2", status: "published",
+      question: "Nowadays, many people prefer to communicate through text messages rather than phone calls. Why is this? Is it a positive or negative development?",
+      year: 2023, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Công nghệ", unit: "U2 – Science & innovation",
+      title: "Công nghệ" },
+    { id: "t2_021", type: "TASK 2", status: "published",
+      question: "Some people believe that advertising is a positive part of our life, while others feel that it is a negative influence. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Quảng cáo & tiêu dùng", unit: "U4 – Business & globalisation",
+      title: "Quảng cáo & tiêu dùng" },
+    { id: "t2_022", type: "TASK 2", status: "published",
+      question: "Nowadays many people prefer to shop online rather than in physical stores. Do the advantages outweigh the disadvantages?",
+      year: 2024, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Lợi/hại – Outweigh", topic: "Kinh doanh & toàn cầu hoá", unit: "U4 – Business & globalisation",
+      title: "Kinh doanh & toàn cầu hoá" },
+    { id: "t2_023", type: "TASK 2", status: "published",
+      question: "Health experts claim that walking is the best exercise. However, people are walking less and less on a daily basis. What has made people walk less? How can this situation be improved?",
+      year: 2018, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Sức khoẻ", unit: "U5 – Culture & lifestyle",
+      title: "Sức khoẻ" },
+    { id: "t2_024", type: "TASK 2", status: "published",
+      question: "Some people say that physical exercise should be a required part of every school day. Other people believe that students should spend the whole school day on academic studies. Discuss both views and give your own opinion.",
+      year: 2018, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Thể thao", unit: "U5 – Culture & lifestyle",
+      title: "Thể thao" },
+    { id: "t2_025", type: "TASK 2", status: "published",
+      question: "Some people think that children should begin their formal education at a very early age. Others think they should not go to school until they are older. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Gia đình & trẻ em", unit: "U5 – Culture & lifestyle",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_026", type: "TASK 2", status: "published",
+      question: "In some countries, the average weight of people is increasing and their levels of health and fitness are decreasing. What do you think are the causes of these problems and what measures could be taken to solve them?",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Sức khoẻ", unit: "U5 – Culture & lifestyle",
+      title: "Sức khoẻ" },
+    { id: "t2_027", type: "TASK 2", status: "published",
+      question: "Nowadays, many families have both parents working. Some working parents believe other family members such as grandparents can take care of their children, while others think childcare centres provide the best care. Discuss both views and give your opinion.",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Gia đình & trẻ em", unit: "U5 – Culture & lifestyle",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_028", type: "TASK 2", status: "published",
+      question: "Some people think that children should obey rules and do what their parents and teachers want them to do. Others believe that children controlled too much cannot deal with problems well later on. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Gia đình & trẻ em", unit: "U5 – Culture & lifestyle",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_029", type: "TASK 2", status: "published",
+      question: "Some people think that parents should teach children how to be good members of society. Others believe that school is the place to learn this. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Gia đình & trẻ em", unit: "U5 – Culture & lifestyle",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_030", type: "TASK 2", status: "published",
+      question: "Fewer and fewer young people play sport nowadays. What are the reasons for this? What can be done to encourage them to take part in sport?",
+      year: 2020, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Thể thao", unit: "U5 – Culture & lifestyle",
+      title: "Thể thao" },
+    { id: "t2_031", type: "TASK 2", status: "published",
+      question: "In many countries, people spend a lot of money on their pets. Some people believe this money could be better spent helping people in need. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Động vật hoang dã", unit: "U5 – Culture & lifestyle",
+      title: "Động vật hoang dã" },
+    { id: "t2_032", type: "TASK 2", status: "published",
+      question: "These days, many young people idolise famous people such as sports stars or singers. Why is this? Is this a positive or negative development?",
+      year: 2020, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Giới trẻ & tuổi tác", unit: "U5 – Culture & lifestyle",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_033", type: "TASK 2", status: "published",
+      question: "Many people no longer eat traditional foods from their own country. Instead, they eat fast food and processed food. Why is this? Is it a positive or negative development?",
+      year: 2021, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Ẩm thực & chế độ ăn", unit: "U5 – Culture & lifestyle",
+      title: "Ẩm thực & chế độ ăn" },
+    { id: "t2_034", type: "TASK 2", status: "published",
+      question: "Some people say that the only reason for learning a foreign language is to travel to or work in a foreign country. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Ngôn ngữ", unit: "U5 – Culture & lifestyle",
+      title: "Ngôn ngữ" },
+    { id: "t2_035", type: "TASK 2", status: "published",
+      question: "Reading books is more beneficial than watching television. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Truyền thông & ảnh hưởng", unit: "U5 – Culture & lifestyle",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_036", type: "TASK 2", status: "published",
+      question: "Some parents believe that childcare centres provide the best care for children, while others think family members such as grandparents are better. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Gia đình & trẻ em", unit: "U5 – Culture & lifestyle",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_037", type: "TASK 2", status: "published",
+      question: "Learning a new language at an early age is better than learning it as an adult. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Ngôn ngữ", unit: "U5 – Culture & lifestyle",
+      title: "Ngôn ngữ" },
+    { id: "t2_038", type: "TASK 2", status: "published",
+      question: "Nowadays, many people communicate with each other through social media rather than in person. Some think this has weakened relationships. Do you agree or disagree?",
+      year: 2024, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Truyền thông & ảnh hưởng", unit: "U5 – Culture & lifestyle",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_039", type: "TASK 2", status: "published",
+      question: "Many people believe that international tourism is a bad thing for their country. What are the reasons for this? What can be done to change their opinion?",
+      year: 2018, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Du lịch", unit: "U6 – Environment & policy",
+      title: "Du lịch" },
+    { id: "t2_040", type: "TASK 2", status: "published",
+      question: "Traffic congestion is becoming a huge problem for many major cities. Suggest some measures that could be taken to reduce traffic in big cities.",
+      year: 2018, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Vấn đề & giải pháp – Problems/Solutions", topic: "Giao thông", unit: "U6 – Environment & policy",
+      title: "Giao thông" },
+    { id: "t2_041", type: "TASK 2", status: "published",
+      question: "Plastic bags, plastic bottles and plastic packaging are bad for the environment. What damage does plastic do to the environment? What can be done to solve this problem?",
+      year: 2021, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Vấn đề & giải pháp – Problems/Solutions", topic: "Môi trường", unit: "U6 – Environment & policy",
+      title: "Môi trường" },
+    { id: "t2_042", type: "TASK 2", status: "published",
+      question: "Nowadays, more and more people move away from their families to live and work in big cities. Do the advantages outweigh the disadvantages?",
+      year: 2022, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Lợi/hại – Outweigh", topic: "Nhà ở & đô thị", unit: "U6 – Environment & policy",
+      title: "Nhà ở & đô thị" },
+    { id: "t2_043", type: "TASK 2", status: "published",
+      question: "Public transport should be free for everyone. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giao thông", unit: "U6 – Environment & policy",
+      title: "Giao thông" },
+    { id: "t2_044", type: "TASK 2", status: "published",
+      question: "Some people prefer staying in hotels when travelling, while others prefer renting holiday homes for a short period. Discuss both views and give your own opinion.",
+      year: 2026, level: "Cấp 3 – Intermediate (5.5→6.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Du lịch", unit: "U6 – Environment & policy",
+      title: "Du lịch" },
+    { id: "t2_045", type: "TASK 2", status: "published",
+      question: "Some people think that all university students should study whatever they like. Others believe that they should only be allowed to study subjects that will be useful in the future, such as those related to science and technology. Discuss both views and give your own opinion.",
+      year: 2018, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_046", type: "TASK 2", status: "published",
+      question: "University students should pay all the cost of their studies because university education benefits individuals rather than society as a whole. To what extent do you agree or disagree?",
+      year: 2018, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_047", type: "TASK 2", status: "published",
+      question: "In some countries, young people are encouraged to work or travel for a year between finishing high school and starting university studies. Discuss the advantages and disadvantages for young people who decide to do this.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi ích & bất lợi – Advantages/Disadvantages", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_048", type: "TASK 2", status: "published",
+      question: "Some people think that schools should select students according to their academic abilities, while others believe it is better to have students of different abilities in the same class. Discuss both views and give your opinion.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_049", type: "TASK 2", status: "published",
+      question: "Some people believe that studying at university or college is the best route to a successful career, while others believe that it is better to get a job straight after school. Discuss both views and give your opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_050", type: "TASK 2", status: "published",
+      question: "Nowadays many students have the opportunity to study for part of their course in a different country. Do the advantages of this outweigh the disadvantages?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_051", type: "TASK 2", status: "published",
+      question: "In some countries, the number of people who study and live in another country is increasing. Is this a positive or negative development?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_052", type: "TASK 2", status: "published",
+      question: "Some people think that schools should reward students who show the best academic results, while others believe that it is more important to reward students who show improvements. Discuss both views and give your own opinion.",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_053", type: "TASK 2", status: "published",
+      question: "Some experts believe that it is better for children to begin learning a foreign language at primary school rather than secondary school. Do the advantages of this outweigh the disadvantages?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_054", type: "TASK 2", status: "published",
+      question: "Many people believe that lecturing in large halls is an outdated method of teaching in universities. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_055", type: "TASK 2", status: "published",
+      question: "Many young people leave school with a negative attitude towards learning. Why do some school leavers feel this way? What can be done to encourage a positive attitude towards learning?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_056", type: "TASK 2", status: "published",
+      question: "Some people think that a person improves their intellectual skills more when they study alone, while others think it is better to study with a group. Discuss both views and give your own opinion.",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_057", type: "TASK 2", status: "published",
+      question: "Some people think that history has nothing or little to tell us, but others think that studying the past history can help us better understand the present. Discuss both views and give your own opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_058", type: "TASK 2", status: "published",
+      question: "Schools are spending more time teaching traditional subjects such as history. Some people think they should rather teach skills that can help students find a job. To what extent do you agree or disagree?",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_059", type: "TASK 2", status: "published",
+      question: "Some people believe that studying abroad gives students a better education, while others feel students can get an equally good education in their own country. Discuss both views and give your opinion.",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_060", type: "TASK 2", status: "published",
+      question: "Some people believe that it should be compulsory for governments to provide free university education for all citizens. To what extent do you agree or disagree?",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_061", type: "TASK 2", status: "published",
+      question: "Distance learning through the Internet is becoming more common, but some people worry it cannot replace face-to-face learning in a classroom. Do the advantages of distance learning outweigh the disadvantages?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_062", type: "TASK 2", status: "published",
+      question: "Universities and colleges are now offering qualifications through distance learning from the Internet rather than teachers in the classroom. Do you think the advantages of this development outweigh the disadvantages?",
+      year: 2026, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Giáo dục", unit: "U1 – University education & access",
+      title: "Giáo dục" },
+    { id: "t2_063", type: "TASK 2", status: "published",
+      question: "Some people think that robots are very important for humans' future development, while others think that robots are a dangerous invention that could have negative effects on society. Discuss both views and give your own opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Công nghệ", unit: "U2 – Technology in education",
+      title: "Công nghệ" },
+    { id: "t2_064", type: "TASK 2", status: "published",
+      question: "Some people think that new technology has made our lives more complicated, and that we should live a simpler life without it. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Công nghệ", unit: "U2 – Technology in education",
+      title: "Công nghệ" },
+    { id: "t2_065", type: "TASK 2", status: "published",
+      question: "Nowadays technology is increasingly being used to monitor what people are saying and doing (for example, through tracking mobile phones). In what ways is this technology being used? Do you think the benefits outweigh the problems?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Công nghệ", unit: "U2 – Technology in education",
+      title: "Công nghệ" },
+    { id: "t2_066", type: "TASK 2", status: "published",
+      question: "Online shopping is becoming more common. What effect will this have on the environment and the types of jobs required? Is this a positive or negative development?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Công nghệ", unit: "U2 – Technology in education",
+      title: "Công nghệ" },
+    { id: "t2_067", type: "TASK 2", status: "published",
+      question: "In the future, all cars, buses and trucks will be driverless. The only people travelling inside the vehicles will be passengers. Do you think the advantages of driverless vehicles outweigh the disadvantages?",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Công nghệ", unit: "U2 – Technology in education",
+      title: "Công nghệ" },
+    { id: "t2_068", type: "TASK 2", status: "published",
+      question: "Many people use social media on their smartphones, and this has changed the way they interact in daily life. Do the advantages of this outweigh the disadvantages?",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Công nghệ", unit: "U2 – Technology in education",
+      title: "Công nghệ" },
+    { id: "t2_069", type: "TASK 2", status: "published",
+      question: "Some people think that job satisfaction is more important than job security, while others believe that a permanent job is better than an interesting one. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_070", type: "TASK 2", status: "published",
+      question: "Some people believe that professionals such as doctors and engineers should be required to work in the country where they did their training. Others think they should be free to work in another country. Discuss both views and give your own opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_071", type: "TASK 2", status: "published",
+      question: "Nowadays many people choose to be self-employed rather than to work for a company. Why might this be the case? What could be the disadvantages of being self-employed?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_072", type: "TASK 2", status: "published",
+      question: "Many people work long hours, leaving very little time for leisure activities. Does this situation have more advantages or more disadvantages?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Lợi ích & bất lợi – Advantages/Disadvantages", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_073", type: "TASK 2", status: "published",
+      question: "Many employees can now do their work at home using modern technology. However, this change may only benefit workers, not employers. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_074", type: "TASK 2", status: "published",
+      question: "An increasing number of people change their career and place of residence several times during their life. Is this a positive or negative development?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_075", type: "TASK 2", status: "published",
+      question: "In many countries, people are now retiring later than in the past. Why is this happening? Is this a positive or negative development?",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_076", type: "TASK 2", status: "published",
+      question: "Some people believe that professional workers such as nurses and teachers should be paid more than entertainers and sports stars. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_077", type: "TASK 2", status: "published",
+      question: "Some people believe that it is a good idea to change jobs frequently, while others think that staying with the same employer is better. Discuss both views and give your opinion.",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_078", type: "TASK 2", status: "published",
+      question: "Some people think that working from home is more productive, while others believe that working in an office is better. Discuss both views and give your opinion.",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_079", type: "TASK 2", status: "published",
+      question: "Some companies prefer their employees to work in the office, while others allow them to work from home. Discuss both sides and give your own opinion.",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_080", type: "TASK 2", status: "published",
+      question: "Some people think that working fewer days per week actually increases productivity. To what extent do you agree or disagree?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_081", type: "TASK 2", status: "published",
+      question: "Older people make better managers and company directors than younger people. To what extent do you agree or disagree?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_082", type: "TASK 2", status: "published",
+      question: "Some people believe that a four-day working week would improve people's quality of life. To what extent do you agree or disagree?",
+      year: 2026, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Việc làm & nghề nghiệp", unit: "U3 – Work & automation",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_083", type: "TASK 2", status: "published",
+      question: "Consumers are faced with increasing amounts of advertising from competing companies. To what extent do you think consumers are influenced by advertisements? What measures can be taken to protect them?",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Câu hỏi trực tiếp 2 phần – Two-part", topic: "Quảng cáo & tiêu dùng", unit: "U4 – Advertising & the economy",
+      title: "Quảng cáo & tiêu dùng" },
+    { id: "t2_084", type: "TASK 2", status: "published",
+      question: "Advertising is designed to encourage people to buy things they do not really need. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Quảng cáo & tiêu dùng", unit: "U4 – Advertising & the economy",
+      title: "Quảng cáo & tiêu dùng" },
+    { id: "t2_085", type: "TASK 2", status: "published",
+      question: "As well as making money, businesses also have social responsibilities. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Kinh doanh & toàn cầu hoá", unit: "U4 – Advertising & the economy",
+      title: "Kinh doanh & toàn cầu hoá" },
+    { id: "t2_086", type: "TASK 2", status: "published",
+      question: "The gap between the rich and the poor is becoming wider in many countries. What problems does this cause? What measures can be taken to address the issue?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Vấn đề & giải pháp – Problems/Solutions", topic: "Tiền & kinh tế", unit: "U4 – Advertising & the economy",
+      title: "Tiền & kinh tế" },
+    { id: "t2_087", type: "TASK 2", status: "published",
+      question: "Directors and executives of large organisations earn much higher salaries than ordinary employees. Some people think this is necessary while others believe it is unfair. Discuss both views and give your own opinion.",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tiền & kinh tế", unit: "U4 – Advertising & the economy",
+      title: "Tiền & kinh tế" },
+    { id: "t2_088", type: "TASK 2", status: "published",
+      question: "If a product is good and meets people's needs, people will buy it, so advertising is unnecessary and no more than a form of entertainment. To what extent do you agree or disagree?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Quảng cáo & tiêu dùng", unit: "U4 – Advertising & the economy",
+      title: "Quảng cáo & tiêu dùng" },
+    { id: "t2_089", type: "TASK 2", status: "published",
+      question: "Many companies now use social media to advertise their products. Do the advantages of this outweigh the disadvantages?",
+      year: 2025, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Lợi/hại – Outweigh", topic: "Quảng cáo & tiêu dùng", unit: "U4 – Advertising & the economy",
+      title: "Quảng cáo & tiêu dùng" },
+    { id: "t2_090", type: "TASK 2", status: "published",
+      question: "Nowadays, some consumers are less influenced by advertising than in the past. What are the reasons? Is this a positive or negative development?",
+      year: 2026, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Quảng cáo & tiêu dùng", unit: "U4 – Advertising & the economy",
+      title: "Quảng cáo & tiêu dùng" },
+    { id: "t2_091", type: "TASK 2", status: "published",
+      question: "Many local shops have closed because customers now travel to large shopping centres and malls. Is this a positive or negative development?",
+      year: 2026, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Kinh doanh & toàn cầu hoá", unit: "U4 – Advertising & the economy",
+      title: "Kinh doanh & toàn cầu hoá" },
+    { id: "t2_092", type: "TASK 2", status: "published",
+      question: "The rising cost of living means many families struggle to afford basic needs. What are the causes of this and what can governments do to help?",
+      year: 2026, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO DO – Học để làm việc",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Tiền & kinh tế", unit: "U4 – Advertising & the economy",
+      title: "Tiền & kinh tế" },
+    { id: "t2_093", type: "TASK 2", status: "published",
+      question: "Some people think that all teenagers should be required to do unpaid work in their free time to help the local community. To what extent do you agree or disagree?",
+      year: 2018, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giới trẻ & tuổi tác", unit: "U5 – Happiness & employment",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_094", type: "TASK 2", status: "published",
+      question: "Some people think that a sense of competition in children should be encouraged. Others believe that children who are taught to cooperate rather than compete become more useful adults. Discuss both views and give your opinion.",
+      year: 2018, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giới trẻ & tuổi tác", unit: "U5 – Happiness & employment",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_095", type: "TASK 2", status: "published",
+      question: "In some cultures, children are often told that they can achieve anything if they try hard enough. What are the advantages and disadvantages of giving children this message?",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Lợi ích & bất lợi – Advantages/Disadvantages", topic: "Giới trẻ & tuổi tác", unit: "U5 – Happiness & employment",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_096", type: "TASK 2", status: "published",
+      question: "Some people think that hosting international sports events is good for a country, while others believe it causes more problems than benefits. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Thể thao", unit: "U5 – Happiness & employment",
+      title: "Thể thao" },
+    { id: "t2_097", type: "TASK 2", status: "published",
+      question: "In many countries, children are engaged in some kind of paid work. Some people regard this as completely wrong, while others consider it a valuable experience. Discuss both views and give your opinion.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giới trẻ & tuổi tác", unit: "U5 – Happiness & employment",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_098", type: "TASK 2", status: "published",
+      question: "Nowadays a growing number of people with health problems are trying alternative medicines and treatments instead of visiting their usual doctor. Is this a positive or a negative development?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Sức khoẻ", unit: "U5 – Happiness & employment",
+      title: "Sức khoẻ" },
+    { id: "t2_099", type: "TASK 2", status: "published",
+      question: "Some countries are considering imposing a tax on unhealthy foods to help solve health problems. To what extent do you agree or disagree with this measure?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Sức khoẻ", unit: "U5 – Happiness & employment",
+      title: "Sức khoẻ" },
+    { id: "t2_100", type: "TASK 2", status: "published",
+      question: "Prevention is better than cure. Out of a country's health budget, a large proportion should be spent on preventative measures rather than the treatment of illness. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Sức khoẻ", unit: "U5 – Happiness & employment",
+      title: "Sức khoẻ" },
+    { id: "t2_101", type: "TASK 2", status: "published",
+      question: "Some people believe that competition among children should be encouraged, while others feel that children should be taught to cooperate. Discuss both views and give your opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giới trẻ & tuổi tác", unit: "U5 – Happiness & employment",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_102", type: "TASK 2", status: "published",
+      question: "In some countries, more and more people choose to buy imported food rather than food produced locally. Why do people buy imported food? Is this a positive or negative trend?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Ẩm thực & chế độ ăn", unit: "U5 – Happiness & employment",
+      title: "Ẩm thực & chế độ ăn" },
+    { id: "t2_103", type: "TASK 2", status: "published",
+      question: "Some people believe that professional sportspeople are paid too much money. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Thể thao", unit: "U5 – Happiness & employment",
+      title: "Thể thao" },
+    { id: "t2_104", type: "TASK 2", status: "published",
+      question: "Nowadays, more and more people decide to have children later in their lives. What are the reasons? Do the advantages of this outweigh the disadvantages?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Lợi/hại – Outweigh", topic: "Gia đình & trẻ em", unit: "U5 – Happiness & employment",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_105", type: "TASK 2", status: "published",
+      question: "Many people believe that family has the greatest influence on children's development, while others believe that outside factors such as television and friends are more important. Discuss both views and give your opinion.",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Gia đình & trẻ em", unit: "U5 – Happiness & employment",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_106", type: "TASK 2", status: "published",
+      question: "Nowadays, many people have to compete with others for work and in their daily life. Is this a positive or negative development?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Hạnh phúc & lối sống", unit: "U5 – Happiness & employment",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_107", type: "TASK 2", status: "published",
+      question: "Some people believe that allowing children to make mistakes is beneficial, while others think adults should prevent children from making mistakes. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Gia đình & trẻ em", unit: "U5 – Happiness & employment",
+      title: "Gia đình & trẻ em" },
+    { id: "t2_108", type: "TASK 2", status: "published",
+      question: "Some people believe that hospitals should focus their resources on treating illness, while others think they should spend more on preventing illness. Discuss both views and give your own opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Sức khoẻ", unit: "U5 – Happiness & employment",
+      title: "Sức khoẻ" },
+    { id: "t2_109", type: "TASK 2", status: "published",
+      question: "Some people think that young people should be free to choose their career, while others believe that they should be practical and choose a career with good pay. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giới trẻ & tuổi tác", unit: "U5 – Happiness & employment",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_110", type: "TASK 2", status: "published",
+      question: "Some people prefer to spend their money on experiences such as travel, while others prefer to spend it on material possessions. Discuss both views and give your own opinion.",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Hạnh phúc & lối sống", unit: "U5 – Happiness & employment",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_111", type: "TASK 2", status: "published",
+      question: "Some people think that the government should be responsible for paying the cost of health care for its citizens. To what extent do you agree or disagree?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Sức khoẻ", unit: "U5 – Happiness & employment",
+      title: "Sức khoẻ" },
+    { id: "t2_112", type: "TASK 2", status: "published",
+      question: "Extreme sports such as skydiving and rock climbing are very dangerous and should be banned. To what extent do you agree or disagree?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Thể thao", unit: "U5 – Happiness & employment",
+      title: "Thể thao" },
+    { id: "t2_113", type: "TASK 2", status: "published",
+      question: "Some people think that it is more important for a government to spend public money on developing sports facilities than on training top athletes. Discuss both views and give your opinion.",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Thể thao", unit: "U5 – Happiness & employment",
+      title: "Thể thao" },
+    { id: "t2_114", type: "TASK 2", status: "published",
+      question: "Some people say that vertical farming in city buildings is a good way to produce food. Do the advantages outweigh the disadvantages?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Lợi/hại – Outweigh", topic: "Ẩm thực & chế độ ăn", unit: "U5 – Happiness & employment",
+      title: "Ẩm thực & chế độ ăn" },
+    { id: "t2_115", type: "TASK 2", status: "published",
+      question: "A nation's population should pay for their healthcare provision in the future rather than rely on the government. To what extent do you agree or disagree?",
+      year: 2025, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Sức khoẻ", unit: "U5 – Happiness & employment",
+      title: "Sức khoẻ" },
+    { id: "t2_116", type: "TASK 2", status: "published",
+      question: "To be successful in sport, some people believe a good coach is essential, while others say an athlete's natural ability is more important. Discuss both views and give your own opinion.",
+      year: 2025, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Thể thao", unit: "U5 – Happiness & employment",
+      title: "Thể thao" },
+    { id: "t2_117", type: "TASK 2", status: "published",
+      question: "Some people think that the government is wasting money on the arts, and that this money could be better spent elsewhere. To what extent do you agree with this view?",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Văn hoá & nghệ thuật", unit: "U6 – Media & human imitation",
+      title: "Văn hoá & nghệ thuật" },
+    { id: "t2_118", type: "TASK 2", status: "published",
+      question: "The news media has become more influential in people's lives today. Some people think this is a negative development. To what extent do you agree or disagree?",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Truyền thông & ảnh hưởng", unit: "U6 – Media & human imitation",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_119", type: "TASK 2", status: "published",
+      question: "Many people believe that social networking sites such as Facebook have had a huge negative impact on both individuals and society. To what extent do you agree?",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Truyền thông & ảnh hưởng", unit: "U6 – Media & human imitation",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_120", type: "TASK 2", status: "published",
+      question: "Newspapers have a strong influence on people's ideas and opinions. Why is this the case? Is this a positive or negative situation?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Truyền thông & ảnh hưởng", unit: "U6 – Media & human imitation",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_121", type: "TASK 2", status: "published",
+      question: "Some people think that music plays an important role in society. Others think it is simply a form of entertainment. Discuss both views and give your own opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Văn hoá & nghệ thuật", unit: "U6 – Media & human imitation",
+      title: "Văn hoá & nghệ thuật" },
+    { id: "t2_122", type: "TASK 2", status: "published",
+      question: "Some people believe that the news media should not influence people's opinions. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Truyền thông & ảnh hưởng", unit: "U6 – Media & human imitation",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_123", type: "TASK 2", status: "published",
+      question: "Some people believe that governments should invest in public services and facilities to improve people's lives, while others think that money should be spent on the arts. Discuss both views and give your own opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Văn hoá & nghệ thuật", unit: "U6 – Media & human imitation",
+      title: "Văn hoá & nghệ thuật" },
+    { id: "t2_124", type: "TASK 2", status: "published",
+      question: "Traditional customs and cultures are gradually disappearing in the modern world. What are the reasons for this? Is this a positive or negative development?",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Văn hoá & nghệ thuật", unit: "U6 – Media & human imitation",
+      title: "Văn hoá & nghệ thuật" },
+    { id: "t2_125", type: "TASK 2", status: "published",
+      question: "Some people believe that art (painting, music, poetry) can improve people's quality of life, while others think it is a waste of time. Discuss both views and give your own opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Văn hoá & nghệ thuật", unit: "U6 – Media & human imitation",
+      title: "Văn hoá & nghệ thuật" },
+    { id: "t2_126", type: "TASK 2", status: "published",
+      question: "The use of social media such as Facebook and Twitter is replacing face-to-face contact for many people in everyday life. Do the advantages of this development outweigh the disadvantages?",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Lợi/hại – Outweigh", topic: "Truyền thông & ảnh hưởng", unit: "U6 – Media & human imitation",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_127", type: "TASK 2", status: "published",
+      question: "Some people think that the media should share equally good and bad news, while others believe that the media focuses too much on bad news. Discuss both views and give your opinion.",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Truyền thông & ảnh hưởng", unit: "U6 – Media & human imitation",
+      title: "Truyền thông & ảnh hưởng" },
+    { id: "t2_128", type: "TASK 2", status: "published",
+      question: "The government should protect culture, so some people believe that new buildings should be built in traditional styles. To what extent do you agree or disagree?",
+      year: 2026, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Văn hoá & nghệ thuật", unit: "U6 – Media & human imitation",
+      title: "Văn hoá & nghệ thuật" },
+    { id: "t2_129", type: "TASK 2", status: "published",
+      question: "Global warming is one of the most serious issues that the world is facing today. What are the causes of global warming and what measures can governments and individuals take to tackle the issue?",
+      year: 2018, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_130", type: "TASK 2", status: "published",
+      question: "Some people think that environmental problems are too big for individuals to solve, while others believe that these problems cannot be solved without action from individuals. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_131", type: "TASK 2", status: "published",
+      question: "In many countries, the amount of rubbish and household waste is increasing. Why do you think this is happening? What can be done to reduce the amount of waste?",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_132", type: "TASK 2", status: "published",
+      question: "Scientists have been warning for many years about the importance of protecting the environment, but not enough is being done. What are the reasons for this? What can be done to encourage people to protect the environment?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_133", type: "TASK 2", status: "published",
+      question: "The increase in the production of consumer goods results in damage to the natural environment. What are the causes of this? What can be done to solve this problem?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_134", type: "TASK 2", status: "published",
+      question: "Some people believe that it is the responsibility of individuals to take action to protect the environment. Others think that governments and large companies should be responsible. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_135", type: "TASK 2", status: "published",
+      question: "Some people think that the best way to solve environmental problems is to increase the price of fuel. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_136", type: "TASK 2", status: "published",
+      question: "Environmental problems such as pollution and climate change are becoming more serious. Some people think individuals should take action rather than wait for governments to act. To what extent do you agree or disagree?",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_137", type: "TASK 2", status: "published",
+      question: "Should manufacturers and shopping malls reduce packaged products, or is it the responsibility of consumers to choose products with less packaging? Discuss both views and give your opinion.",
+      year: 2025, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Môi trường", unit: "U7 – Household waste & environment",
+      title: "Môi trường" },
+    { id: "t2_138", type: "TASK 2", status: "published",
+      question: "The best way to understand other cultures is to spend time travelling abroad. To what extent do you agree or disagree?",
+      year: 2018, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Du lịch", unit: "U8 – Population ageing & cooperation",
+      title: "Du lịch" },
+    { id: "t2_139", type: "TASK 2", status: "published",
+      question: "Some people think that international tourism creates tension rather than understanding between people from different countries. To what extent do you agree or disagree?",
+      year: 2018, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Du lịch", unit: "U8 – Population ageing & cooperation",
+      title: "Du lịch" },
+    { id: "t2_140", type: "TASK 2", status: "published",
+      question: "In many countries, people are now living longer than ever before. Some people say an ageing population creates problems for governments. Other people think there are benefits if society has more elderly people. Discuss both views and give your own opinion.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Dân số & già hoá", unit: "U8 – Population ageing & cooperation",
+      title: "Dân số & già hoá" },
+    { id: "t2_141", type: "TASK 2", status: "published",
+      question: "Some people believe that the best way to reduce crime is to give longer prison sentences. Others, however, think there are better alternative ways to reduce crime. Discuss both views and give your opinion.",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tội phạm & pháp luật", unit: "U8 – Population ageing & cooperation",
+      title: "Tội phạm & pháp luật" },
+    { id: "t2_142", type: "TASK 2", status: "published",
+      question: "In many cities, planners tend to arrange shops, schools, offices and homes in specific areas, separating them from one another. Do you think the advantages of this outweigh the disadvantages?",
+      year: 2019, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Lợi/hại – Outweigh", topic: "Nhà ở & đô thị", unit: "U8 – Population ageing & cooperation",
+      title: "Nhà ở & đô thị" },
+    { id: "t2_143", type: "TASK 2", status: "published",
+      question: "More and more people are buying products that are transported thousands of kilometres from the place they are produced. Do you think the advantages of this development outweigh the disadvantages?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Lợi/hại – Outweigh", topic: "Toàn cầu hoá", unit: "U8 – Population ageing & cooperation",
+      title: "Toàn cầu hoá" },
+    { id: "t2_144", type: "TASK 2", status: "published",
+      question: "Some people think that the increase in criminal behaviour among young people is due to a lack of parental discipline. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Tội phạm & pháp luật", unit: "U8 – Population ageing & cooperation",
+      title: "Tội phạm & pháp luật" },
+    { id: "t2_145", type: "TASK 2", status: "published",
+      question: "Some people believe that governments should spend money on railways rather than roads, while others believe that roads are more important. Discuss both views and give your own opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giao thông", unit: "U8 – Population ageing & cooperation",
+      title: "Giao thông" },
+    { id: "t2_146", type: "TASK 2", status: "published",
+      question: "In many countries, the proportion of older people is steadily increasing. Does this trend have more positive or negative effects on society?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Dân số & già hoá", unit: "U8 – Population ageing & cooperation",
+      title: "Dân số & già hoá" },
+    { id: "t2_147", type: "TASK 2", status: "published",
+      question: "In many countries today, both men and women need to work full-time. Therefore, household tasks and childcare should be shared equally. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Bình đẳng giới", unit: "U8 – Population ageing & cooperation",
+      title: "Bình đẳng giới" },
+    { id: "t2_148", type: "TASK 2", status: "published",
+      question: "As countries develop, more and more people buy and use their own cars. Do you think the advantages of this trend for individuals outweigh the disadvantages for the environment?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Lợi/hại – Outweigh", topic: "Giao thông", unit: "U8 – Population ageing & cooperation",
+      title: "Giao thông" },
+    { id: "t2_149", type: "TASK 2", status: "published",
+      question: "Some people think that cultural traditions may be destroyed when they are used as money-making attractions for tourists. Others believe this is the only way to save such traditions. Discuss both views and give your opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Du lịch", unit: "U8 – Population ageing & cooperation",
+      title: "Du lịch" },
+    { id: "t2_150", type: "TASK 2", status: "published",
+      question: "In many countries, traffic and housing problems in cities could be reduced by moving large companies, factories and their employees to the countryside. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Nhà ở & đô thị", unit: "U8 – Population ageing & cooperation",
+      title: "Nhà ở & đô thị" },
+    { id: "t2_151", type: "TASK 2", status: "published",
+      question: "Some people believe that reducing speed limits is the best way to improve road safety, while others disagree. Discuss both views and give your own opinion.",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giao thông", unit: "U8 – Population ageing & cooperation",
+      title: "Giao thông" },
+    { id: "t2_152", type: "TASK 2", status: "published",
+      question: "Some people think that men are naturally more competitive than women. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Bình đẳng giới", unit: "U8 – Population ageing & cooperation",
+      title: "Bình đẳng giới" },
+    { id: "t2_153", type: "TASK 2", status: "published",
+      question: "Some people believe that people who break the law should be sent to prison, while others believe that education is a better way to reduce crime. Discuss both views and give your own opinion.",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tội phạm & pháp luật", unit: "U8 – Population ageing & cooperation",
+      title: "Tội phạm & pháp luật" },
+    { id: "t2_154", type: "TASK 2", status: "published",
+      question: "In some countries, a growing number of people are choosing to live alone. Is this a positive or negative development for society?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Xã hội & cộng đồng", unit: "U8 – Population ageing & cooperation",
+      title: "Xã hội & cộng đồng" },
+    { id: "t2_155", type: "TASK 2", status: "published",
+      question: "Some people think that men and women have different natural abilities and are therefore suited to different jobs. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Bình đẳng giới", unit: "U8 – Population ageing & cooperation",
+      title: "Bình đẳng giới" },
+    { id: "t2_156", type: "TASK 2", status: "published",
+      question: "Some people think that building more roads is the best way to solve traffic problems, while others believe there are better alternatives. Discuss both views and give your opinion.",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giao thông", unit: "U8 – Population ageing & cooperation",
+      title: "Giao thông" },
+    { id: "t2_157", type: "TASK 2", status: "published",
+      question: "An increasing number of people are choosing to buy things and then throw them away rather than repairing them. Why do people do this? What problems does it cause?",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Xã hội & cộng đồng", unit: "U8 – Population ageing & cooperation",
+      title: "Xã hội & cộng đồng" },
+    { id: "t2_158", type: "TASK 2", status: "published",
+      question: "Some people believe that the increasing number of vehicles is one of the biggest problems facing cities, while others think cities have bigger challenges. Discuss both views and give your opinion.",
+      year: 2021, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giao thông", unit: "U8 – Population ageing & cooperation",
+      title: "Giao thông" },
+    { id: "t2_159", type: "TASK 2", status: "published",
+      question: "In some countries, the number of crimes committed by teenagers is growing. What are the causes of this? What could be done to reduce it?",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Nguyên nhân & giải pháp – Causes/Solutions", topic: "Tội phạm & pháp luật", unit: "U8 – Population ageing & cooperation",
+      title: "Tội phạm & pháp luật" },
+    { id: "t2_160", type: "TASK 2", status: "published",
+      question: "Some people think the government should spend money on new public services such as libraries and sports facilities, while others believe it should be spent on improving existing services. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Chính phủ & chi tiêu công", unit: "U8 – Population ageing & cooperation",
+      title: "Chính phủ & chi tiêu công" },
+    { id: "t2_161", type: "TASK 2", status: "published",
+      question: "Some people think that criminals should be given community service instead of being sent to prison. To what extent do you agree or disagree?",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Tội phạm & pháp luật", unit: "U8 – Population ageing & cooperation",
+      title: "Tội phạm & pháp luật" },
+    { id: "t2_162", type: "TASK 2", status: "published",
+      question: "Nowadays, many old people live in nursing homes rather than with their families. Why is this the case? Do the advantages of this outweigh the disadvantages?",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Lợi/hại – Outweigh", topic: "Dân số & già hoá", unit: "U8 – Population ageing & cooperation",
+      title: "Dân số & già hoá" },
+    { id: "t2_163", type: "TASK 2", status: "published",
+      question: "Some people believe that people who move to a new country should adopt the local customs and traditions. To what extent do you agree or disagree?",
+      year: 2023, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Nhập cư", unit: "U8 – Population ageing & cooperation",
+      title: "Nhập cư" },
+    { id: "t2_164", type: "TASK 2", status: "published",
+      question: "It is too expensive to look after and repair old buildings, so this money should be spent on building new modern buildings instead. To what extent do you agree or disagree?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Chính phủ & chi tiêu công", unit: "U8 – Population ageing & cooperation",
+      title: "Chính phủ & chi tiêu công" },
+    { id: "t2_165", type: "TASK 2", status: "published",
+      question: "Media coverage of violent crimes is spreading fear among people and encouraging criminals. For this reason, some people believe violent crimes should not be reported on television or in newspapers. To what extent do you agree or disagree?",
+      year: 2024, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Tội phạm & pháp luật", unit: "U8 – Population ageing & cooperation",
+      title: "Tội phạm & pháp luật" },
+    { id: "t2_166", type: "TASK 2", status: "published",
+      question: "More and more people are travelling to untouched, unexplored natural places. What are the advantages and disadvantages of this trend for individuals and the country?",
+      year: 2025, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Lợi ích & bất lợi – Advantages/Disadvantages", topic: "Du lịch", unit: "U8 – Population ageing & cooperation",
+      title: "Du lịch" },
+    { id: "t2_167", type: "TASK 2", status: "published",
+      question: "Does tourism endanger local culture, or is it beneficial? Discuss both views and give your own opinion.",
+      year: 2025, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Du lịch", unit: "U8 – Population ageing & cooperation",
+      title: "Du lịch" },
+    { id: "t2_168", type: "TASK 2", status: "published",
+      question: "In some countries, more people prefer to rent a house rather than buy one. Why is this the case? Is it a positive or negative development?",
+      year: 2025, level: "Cấp 4 – Upper-Inter (6.0→7.0)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Tích cực hay tiêu cực – Positive/Negative", topic: "Nhà ở & đô thị", unit: "U8 – Population ageing & cooperation",
+      title: "Nhà ở & đô thị" },
+    { id: "t2_169", type: "TASK 2", status: "published",
+      question: "Some people think that governments should spend money on measures to save languages with few speakers from dying out completely. Others believe this is a waste of financial resources. Discuss both views and give your opinion.",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Ngôn ngữ", unit: "U1 – The knowledge economy",
+      title: "Ngôn ngữ" },
+    { id: "t2_170", type: "TASK 2", status: "published",
+      question: "Space exploration is much too expensive and the money should be spent on more important things. What is your opinion?",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_171", type: "TASK 2", status: "published",
+      question: "Some people believe that unpaid community service should be a compulsory part of high school programmes. To what extent do you agree or disagree?",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giáo dục", unit: "U1 – The knowledge economy",
+      title: "Giáo dục" },
+    { id: "t2_172", type: "TASK 2", status: "published",
+      question: "Some people believe that spending money on developing the technology for space travel is unjustifiable and there are more beneficial ways to spend this money. To what extent do you agree or disagree?",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_173", type: "TASK 2", status: "published",
+      question: "Some people say that the main aim of education is to prepare children to be useful members of society. Others believe the purpose of education is to help children reach their full potential as individuals. Discuss both views and give your opinion.",
+      year: 2020, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Giáo dục", unit: "U1 – The knowledge economy",
+      title: "Giáo dục" },
+    { id: "t2_174", type: "TASK 2", status: "published",
+      question: "Governments should spend money on protecting wildlife and natural habitats rather than on space exploration. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_175", type: "TASK 2", status: "published",
+      question: "The most important aim of science should be to improve people's lives. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_176", type: "TASK 2", status: "published",
+      question: "The money spent by governments on space programs would be better spent on vital public services. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_177", type: "TASK 2", status: "published",
+      question: "Some people believe that it is good to share as much information as possible in scientific research, business and the academic world. Others believe that some information is too important or too valuable to be shared freely. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tri thức & thông tin", unit: "U1 – The knowledge economy",
+      title: "Tri thức & thông tin" },
+    { id: "t2_178", type: "TASK 2", status: "published",
+      question: "Some people think that scientific research should be carried out and controlled by governments rather than private companies. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_179", type: "TASK 2", status: "published",
+      question: "Some people say that the government should decide how to spend research money. Others believe that scientists should decide. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_180", type: "TASK 2", status: "published",
+      question: "Some people believe that developments in the field of artificial intelligence will have a positive impact on our lives in the near future. Others, by contrast, are worried about the threat it might pose. Discuss both these views and give your own opinion.",
+      year: 2023, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Công nghệ", unit: "U1 – The knowledge economy",
+      title: "Công nghệ" },
+    { id: "t2_181", type: "TASK 2", status: "published",
+      question: "Some people believe that scientific research should focus on solving world health problems, while others think there are more important areas to research. Discuss both views and give your opinion.",
+      year: 2023, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_182", type: "TASK 2", status: "published",
+      question: "Some people think that spending money on space exploration is a waste when there are so many problems on Earth. Others disagree. Discuss both views and give your own opinion.",
+      year: 2024, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Khoa học & đổi mới", unit: "U1 – The knowledge economy",
+      title: "Khoa học & đổi mới" },
+    { id: "t2_183", type: "TASK 2", status: "published",
+      question: "Generative artificial intelligence is now being used to write essays and produce art. Do the advantages of this development outweigh the disadvantages?",
+      year: 2026, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO KNOW – Học để biết",
+      qtype: "Lợi/hại – Outweigh", topic: "Công nghệ", unit: "U1 – The knowledge economy",
+      title: "Công nghệ" },
+    { id: "t2_184", type: "TASK 2", status: "published",
+      question: "Many governments think that economic progress is their most important goal. Some people, however, think that other types of progress are equally important for a country. Discuss both views and give your opinion.",
+      year: 2020, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tiền & kinh tế", unit: "U2 – The future of work",
+      title: "Tiền & kinh tế" },
+    { id: "t2_185", type: "TASK 2", status: "published",
+      question: "Some people believe that economic growth is the best way to end world poverty, while others argue that it damages the environment and should be stopped. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tiền & kinh tế", unit: "U2 – The future of work",
+      title: "Tiền & kinh tế" },
+    { id: "t2_186", type: "TASK 2", status: "published",
+      question: "Some people believe that the best way to produce a happier society is to ensure that there are only small differences between the earnings of the richest and the poorest. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO DO – Học để làm việc",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Tiền & kinh tế", unit: "U2 – The future of work",
+      title: "Tiền & kinh tế" },
+    { id: "t2_187", type: "TASK 2", status: "published",
+      question: "Some people believe that the only way to guarantee a good life for everyone in a country is through economic progress. Others think there are more important factors. Discuss both views and give your own opinion.",
+      year: 2023, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO DO – Học để làm việc",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Tiền & kinh tế", unit: "U2 – The future of work",
+      title: "Tiền & kinh tế" },
+    { id: "t2_188", type: "TASK 2", status: "published",
+      question: "Artificial intelligence and automation are replacing many jobs done by humans. Do the advantages of this development outweigh the disadvantages?",
+      year: 2025, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO DO – Học để làm việc",
+      qtype: "Lợi/hại – Outweigh", topic: "Việc làm & nghề nghiệp", unit: "U2 – The future of work",
+      title: "Việc làm & nghề nghiệp" },
+    { id: "t2_189", type: "TASK 2", status: "published",
+      question: "Happiness is considered very important in life. Why is it difficult to define? What factors are important in achieving happiness?",
+      year: 2018, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Câu hỏi trực tiếp 2 phần – Two-part", topic: "Hạnh phúc & lối sống", unit: "U3 – Identity, ambition & success",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_190", type: "TASK 2", status: "published",
+      question: "Some people believe that it is best to accept a bad situation, such as an unsatisfactory job or a shortage of money. Others argue that it is better to try and improve such situations. Discuss both views and give your opinion.",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Hạnh phúc & lối sống", unit: "U3 – Identity, ambition & success",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_191", type: "TASK 2", status: "published",
+      question: "It is often said that international sporting events help to ease international tensions and release nationalistic energies in a safe way. To what extent do you agree or disagree?",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Thể thao", unit: "U3 – Identity, ambition & success",
+      title: "Thể thao" },
+    { id: "t2_192", type: "TASK 2", status: "published",
+      question: "Some people think that in order to prevent illness and disease, governments should make efforts to reduce environmental pollution and housing problems. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Sức khoẻ", unit: "U3 – Identity, ambition & success",
+      title: "Sức khoẻ" },
+    { id: "t2_193", type: "TASK 2", status: "published",
+      question: "Nowadays, celebrities are more famous for their glamour and wealth than for their achievements, and this sets a bad example to young people. To what extent do you agree or disagree?",
+      year: 2021, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Giới trẻ & tuổi tác", unit: "U3 – Identity, ambition & success",
+      title: "Giới trẻ & tuổi tác" },
+    { id: "t2_194", type: "TASK 2", status: "published",
+      question: "Many people believe that a person's success in life is determined by luck rather than by hard work. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO BE – Học để khẳng định bản thân",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Hạnh phúc & lối sống", unit: "U3 – Identity, ambition & success",
+      title: "Hạnh phúc & lối sống" },
+    { id: "t2_195", type: "TASK 2", status: "published",
+      question: "The death penalty is the most effective way to reduce and prevent crimes. To what extent do you agree or disagree?",
+      year: 2018, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Tội phạm & pháp luật", unit: "U4 – Population ageing & global cooperation",
+      title: "Tội phạm & pháp luật" },
+    { id: "t2_196", type: "TASK 2", status: "published",
+      question: "A person's worth nowadays seems to be judged according to their social status and material possessions. Old-fashioned values such as honour, kindness and trust no longer seem important. To what extent do you agree or disagree with this opinion?",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Xã hội & cộng đồng", unit: "U4 – Population ageing & global cooperation",
+      title: "Xã hội & cộng đồng" },
+    { id: "t2_197", type: "TASK 2", status: "published",
+      question: "The globalisation of the economy and free trade between countries can bring both benefits and problems. Discuss both the advantages and disadvantages of globalisation.",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Lợi ích & bất lợi – Advantages/Disadvantages", topic: "Toàn cầu hoá", unit: "U4 – Population ageing & global cooperation",
+      title: "Toàn cầu hoá" },
+    { id: "t2_198", type: "TASK 2", status: "published",
+      question: "In the developed world, average life expectancy is increasing. What problems will this cause for individuals and society? Suggest some measures that could be taken to reduce the impact of ageing populations.",
+      year: 2019, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Vấn đề & giải pháp – Problems/Solutions", topic: "Dân số & già hoá", unit: "U4 – Population ageing & global cooperation",
+      title: "Dân số & già hoá" },
+    { id: "t2_199", type: "TASK 2", status: "published",
+      question: "Wild animals have no place in the 21st century, so protecting them is a waste of resources. To what extent do you agree or disagree?",
+      year: 2020, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Động vật hoang dã", unit: "U4 – Population ageing & global cooperation",
+      title: "Động vật hoang dã" },
+    { id: "t2_200", type: "TASK 2", status: "published",
+      question: "Many people believe that countries have a moral obligation to help each other, while others think that international aid is often wasted. Discuss both views and give your opinion.",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Toàn cầu hoá", unit: "U4 – Population ageing & global cooperation",
+      title: "Toàn cầu hoá" },
+    { id: "t2_201", type: "TASK 2", status: "published",
+      question: "Some people say that instead of preventing climate change, we need to find a way to live with it. To what extent do you agree or disagree?",
+      year: 2022, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Ý kiến – Agree/Disagree", topic: "Môi trường", unit: "U4 – Population ageing & global cooperation",
+      title: "Môi trường" },
+    { id: "t2_202", type: "TASK 2", status: "published",
+      question: "International cooperation is necessary to protect the environment, but some countries are not willing to sacrifice economic growth. Discuss both views and give your own opinion.",
+      year: 2024, level: "Cấp 5 – Advanced (7.0→8.0+)", pillar: "TO LIVE TOGETHER – Học để chung sống",
+      qtype: "Thảo luận 2 quan điểm – Discuss both views", topic: "Môi trường", unit: "U4 – Population ageing & global cooperation",
+      title: "Môi trường" },
 ];
 
-// =========================================================================
-// 🔥 XỬ LÝ DỮ LIỆU TỰ ĐỘNG (CHẠY 1 LẦN KHI KHỞI ĐỘNG APP)
-// =========================================================================
+// --- Hau xu ly: gan huong dan chuan + so thu tu de (Test N) ---
+task2Library.forEach((item, index) => {
+    item.instruction = "Give reasons for your answer and include any relevant examples from your own knowledge or experience.";
+    item.testNo = index + 1; // Test 1..202, trung STT trong file goc
+});
 
-// 1. XỬ LÝ TASK 1
-if (typeof task1Library !== 'undefined') {
-    task1Library.forEach((item, index) => {
-        // Tự động thêm câu hướng dẫn vào sau đề bài
-        item.title = item.title.trim() + " Summarise the information by selecting and reporting the main features, and make comparisons where relevant.";
+// Tra cuu nhanh theo id (WritingTestPage dung khi mo bai lam)
+export const task2ById = Object.fromEntries(task2Library.map((it) => [it.id, it]));
 
-        // Phân loại dạng bài (Graphs / Maps / Processes)
-        const testNumber = index + 1;
-        if (testNumber <= 57) {
-            item.category = "Graphs & Charts";
-        } else if (testNumber <= 71) {
-            item.category = "Maps";
-        } else {
-            item.category = "Processes";
-        }
-    });
-}
-
-// 2. XỬ LÝ TASK 2 (Mới thêm)
-if (typeof task2Library !== 'undefined') {
-    task2Library.forEach(item => {
-        // 🔥 Tự động thêm hướng dẫn chuẩn cho tất cả bài Task 2
-        // Bạn có thể xóa trường "instruction" trong data gốc đi cho gọn file
-        item.instruction = "Give reasons for your answer and include any relevant examples from your own knowledge or experience.";
-    });
-}
+// Danh sach gia tri loc da sap xep san (dung cho cac dropdown filter)
+export const TASK2_FILTERS = {
+  "levels": [
+    "Cấp 2 – Elementary (4.5→5.5)",
+    "Cấp 3 – Intermediate (5.5→6.0)",
+    "Cấp 4 – Upper-Inter (6.0→7.0)",
+    "Cấp 5 – Advanced (7.0→8.0+)"
+  ],
+  "pillars": [
+    "TO KNOW – Học để biết",
+    "TO DO – Học để làm việc",
+    "TO LIVE TOGETHER – Học để chung sống",
+    "TO BE – Học để khẳng định bản thân"
+  ],
+  "qtypes": [
+    "Thảo luận 2 quan điểm – Discuss both views",
+    "Ý kiến – Agree/Disagree",
+    "Lợi/hại – Outweigh",
+    "Tích cực hay tiêu cực – Positive/Negative",
+    "Nguyên nhân & giải pháp – Causes/Solutions",
+    "Lợi ích & bất lợi – Advantages/Disadvantages",
+    "Vấn đề & giải pháp – Problems/Solutions",
+    "Câu hỏi trực tiếp 2 phần – Two-part"
+  ],
+  "topics": [
+    "Giáo dục",
+    "Việc làm & nghề nghiệp",
+    "Công nghệ",
+    "Môi trường",
+    "Khoa học & đổi mới",
+    "Sức khoẻ",
+    "Gia đình & trẻ em",
+    "Giới trẻ & tuổi tác",
+    "Hạnh phúc & lối sống",
+    "Thể thao",
+    "Tiền & kinh tế",
+    "Truyền thông & ảnh hưởng",
+    "Du lịch",
+    "Giao thông",
+    "Tội phạm & pháp luật",
+    "Quảng cáo & tiêu dùng",
+    "Văn hoá & nghệ thuật",
+    "Nhà ở & đô thị",
+    "Dân số & già hoá",
+    "Ẩm thực & chế độ ăn",
+    "Bình đẳng giới",
+    "Kinh doanh & toàn cầu hoá",
+    "Ngôn ngữ",
+    "Toàn cầu hoá",
+    "Xã hội & cộng đồng",
+    "Động vật hoang dã",
+    "Chính phủ & chi tiêu công",
+    "Nhập cư",
+    "Tri thức & thông tin"
+  ],
+  "years": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "units": [
+    "U8 – Population ageing & cooperation",
+    "U5 – Happiness & employment",
+    "U1 – University education & access",
+    "U5 – Culture & lifestyle",
+    "U1 – The knowledge economy",
+    "U3 – Work & automation",
+    "U6 – Media & human imitation",
+    "U4 – Advertising & the economy",
+    "U1 – Education systems",
+    "U7 – Household waste & environment",
+    "U4 – Population ageing & global cooperation",
+    "U2 – Technology in education",
+    "U3 – Identity, ambition & success",
+    "U6 – Environment & policy",
+    "U2 – The future of work",
+    "U2 – Science & innovation",
+    "U5 – Health & responsibility",
+    "U4 – Business & globalisation",
+    "U4 – Money & affordability",
+    "U7 – Environment & sustainability",
+    "U8 – Community & cooperation"
+  ]
+};

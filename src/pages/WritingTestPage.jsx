@@ -13,6 +13,7 @@ import parse from 'html-react-parser';
 
 import { ref, push, set, get, child, update } from "firebase/database";
 import { db } from '../firebase';
+import { task2ById } from '../data/writing_library';
 
 const EMAIL_SERVICE_ID = "service_gvlyalu";
 const EMAIL_TEMPLATE_ID = "template_h4voh6v";
@@ -289,7 +290,11 @@ export default function WritingTestPage() {
                 let t1 = null, t2 = null;
 
                 if (t1Id) { const snap1 = await get(child(dbRef, `writingLibrary/${t1Id}`)); if (snap1.exists()) t1 = snap1.val(); }
-                if (t2Id) { const snap2 = await get(child(dbRef, `writingLibrary/${t2Id}`)); if (snap2.exists()) t2 = snap2.val(); }
+                if (t2Id) {
+                    // Task 2 lay tu ngan hang local (writing_library.js); neu khong co moi thu Firebase (tuong thich ban cu)
+                    if (task2ById[t2Id]) { t2 = task2ById[t2Id]; }
+                    else { const snap2 = await get(child(dbRef, `writingLibrary/${t2Id}`)); if (snap2.exists()) t2 = snap2.val(); }
+                }
                 setTask1Data(t1); setTask2Data(t2);
 
                 // 🔥 LOGIC KHÔI PHỤC AN TOÀN CHỐNG CRASH
