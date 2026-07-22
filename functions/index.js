@@ -45,7 +45,10 @@ const DEFAULT_RESET_PASSWORD = "BAVNbavn"; // reset ve mat khau nay (da hash tru
 // ---- Helpers ------------------------------------------------
 const db = () => admin.database();
 
-const isValidStudentId = (id) => typeof id === "string" && /^\d{8}$/.test(id);
+// Cho phep ca ID hoc vien (8 so) lan ID nhan su (ten, khong co ma so co dinh):
+// chu cai Unicode (giu dau tieng Viet) + chu so. KHONG khoang trang, KHONG ky tu dac biet.
+// Toi da 30 ky tu. PHAI dong bo voi src/utils/idValidation.js (ID_PATTERN) ben client.
+const isValidStudentId = (id) => typeof id === "string" && /^[\p{L}\p{N}]{1,30}$/u.test(id);
 
 // Bat buoc nguoi goi la admin (co claim role='admin' trong token)
 function assertAdmin(request) {

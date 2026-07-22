@@ -12,6 +12,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import ConfirmDialog from '../components/ConfirmDialog';
+import PasswordField from '../components/PasswordField';
+import { isTypableId, isValidLoginId } from '../utils/idValidation';
+
+// Mat khau mac dinh khi tao tai khoan moi — trung voi DEFAULT_RESET_PASSWORD ben
+// functions/index.js (mat khau reset ve khi bam nut "Reset Pass"). Dien san de admin
+// khong phai go tay, van sua duoc neu can mat khau rieng.
+const DEFAULT_NEW_PASSWORD = 'BAVNbavn';
 
 export default function AdminPage() {
     const [activeTab, setActiveTab] = useState('userList');
@@ -21,7 +28,7 @@ export default function AdminPage() {
     const [busy, setBusy] = useState(false);
 
     const [studentId, setStudentId] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState(DEFAULT_NEW_PASSWORD);
     const [fullName, setFullName] = useState('');
     const [role, setRole] = useState('normal');
     // Quyen truy cap he thi khi tao tai khoan moi: 'ielts' | 'sat' | 'both'
@@ -181,14 +188,14 @@ export default function AdminPage() {
         e.preventDefault();
         if (busy) return; // chong bam doi tao trung tai khoan
         if (!studentId || !password || !fullName) { toast.warning("⚠️ Vui lòng nhập đủ thông tin!"); return; }
-        if (studentId.length !== 8) { toast.warning("⚠️ Mã học viên phải đúng 8 số!"); return; }
+        if (!isValidLoginId(studentId)) { toast.warning("⚠️ ID không hợp lệ (chỉ chữ và số, không dấu cách, tối đa 30 ký tự)!"); return; }
 
         setBusy(true);
         try {
             // Tạo qua Function: kiểm trùng ID + hash password server-side (không lưu plaintext).
             await adminApi.createUser(studentId, password, fullName, role, examSystem);
             toast.success(`✅ Đã tạo tài khoản: ${fullName}`);
-            setStudentId(''); setPassword(''); setFullName(''); setRole('normal'); setExamSystem('both');
+            setStudentId(''); setPassword(DEFAULT_NEW_PASSWORD); setFullName(''); setRole('normal'); setExamSystem('both');
             setActiveTab('userList');
         } catch (error) {
             const dup = (error?.message || '').includes('ton tai');
@@ -613,16 +620,16 @@ export default function AdminPage() {
                             </h2>
                             <form onSubmit={handleCreateUser}>
                                 <div style={{ marginBottom: 15 }}>
-                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 5, color: '#334155' }}>Mã Học Viên (8 số)</label>
-                                    <input className="login-input" value={studentId} onChange={(e) => { if (/^\d*$/.test(e.target.value) && e.target.value.length <= 8) setStudentId(e.target.value); }} placeholder="VD: 12345678" />
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 5, color: '#334155' }}>ID (Học viên / Nhân sự)</label>
+                                    <input className="login-input" value={studentId} onChange={(e) => { if (isTypableId(e.target.value)) setStudentId(e.target.value); }} placeholder="VD: 12345678 hoặc NguyenVanA (không dấu cách)" />
                                 </div>
                                 <div style={{ marginBottom: 15 }}>
                                     <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 5, color: '#334155' }}>Họ và Tên</label>
                                     <input className="login-input" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="VD: Nguyễn Văn A" />
                                 </div>
                                 <div style={{ marginBottom: 15 }}>
-                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 5, color: '#334155' }}>Mật khẩu</label>
-                                    <input type="password" className="login-input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nhập mật khẩu..." />
+                                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 5, color: '#334155' }}>Mật khẩu <span style={{ fontWeight: 'normal', color: '#94a3b8' }}>(đã điền sẵn mặc định, có thể sửa)</span></label>
+                                    <PasswordField className="login-input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nhập mật khẩu..." />
                                 </div>
                                 <div style={{ marginBottom: 15 }}>
                                     <label style={{ fontWeight: 'bold', display: 'block', marginBottom: 5, color: '#334155' }}>Phân quyền (Role)</label>

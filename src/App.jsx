@@ -17,6 +17,8 @@ import { ref, get, child, remove } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from './firebase';
 import { loginStudent, loginAdmin, logout, changePassword } from './utils/api';
+import { isTypableId, isValidLoginId } from './utils/idValidation';
+import PasswordField from './components/PasswordField';
 import { ToastContainer, toast } from 'react-toastify';
 import ConfirmDialog from './components/ConfirmDialog';
 import 'react-toastify/dist/ReactToastify.css';
@@ -125,10 +127,15 @@ function App() {
     };
   }, []);
 
+  // Cho ca ID hoc vien (8 so) lan ID nhan su (ten, khong co ma so co dinh).
+  // Ky tu khong hop le bi chan ngay tai day — bao loi ro rang thay vi im lang
+  // khong lam gi (truoc day go chu vao la mat tieu, khong biet vi sao).
   const handleIdChange = (e) => {
     const val = e.target.value;
-    if (/^\d*$/.test(val) && val.length <= 8) {
+    if (isTypableId(val)) {
       setCredentials({ ...credentials, studentId: val });
+    } else {
+      toast.warning("⚠️ ID chỉ được chứa chữ cái và chữ số, không dấu cách (tối đa 30 ký tự).", { toastId: 'invalid-id-char' });
     }
   };
 
@@ -219,7 +226,7 @@ function App() {
     e.preventDefault();
     if (isSubmitting) return; // chan bam doi khi dang goi Firebase
     const { studentId, password } = credentials;
-    if (studentId.length !== 8 && studentId !== 'admin') { toast.warning("⚠️ Mã học viên phải có đúng 8 chữ số!"); return; }
+    if (!isValidLoginId(studentId)) { toast.warning("⚠️ Vui lòng nhập ID (học viên hoặc nhân sự)!"); return; }
     if (password.length < 6) { toast.warning("⚠️ Mật khẩu phải có ít nhất 6 ký tự!"); return; }
     setIsSubmitting(true);
 
@@ -261,7 +268,7 @@ function App() {
     e.preventDefault();
     if (isSubmitting) return;
     const { studentId, oldPass, newPass, confirmPass } = passForm;
-    if (studentId.length !== 8) { toast.warning("⚠️ Vui lòng nhập đúng Mã học viên!"); return; }
+    if (!isValidLoginId(studentId)) { toast.warning("⚠️ Vui lòng nhập đúng ID!"); return; }
     if (newPass.length < 6) { toast.warning("⚠️ Mật khẩu mới phải từ 6 ký tự!"); return; }
     if (newPass !== confirmPass) { toast.error("❌ Xác nhận mật khẩu không khớp!"); return; }
     setIsSubmitting(true);
@@ -376,10 +383,10 @@ function App() {
                     <h2 style={{color:'#2B6830', marginTop:0}}>ĐĂNG NHẬP</h2>
                     <p style={{color:'#666', fontSize:'14px'}}>Hệ thống thi thử IELTS Online</p>
                     <form onSubmit={handleLoginSubmit}>
-                        <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>MÃ HỌC VIÊN</div>
-                        <input type="text" className="login-input" placeholder="Nhập 8 số ID..." value={credentials.studentId} onChange={handleIdChange} inputMode="numeric" />
+                        <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>MÃ HV / TÊN ĐĂNG NHẬP</div>
+                        <input type="text" className="login-input" placeholder="Nhập ID..." value={credentials.studentId} onChange={handleIdChange} />
                         <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>MẬT KHẨU</div>
-                        <input type="password" className="login-input" placeholder="Nhập mật khẩu..." value={credentials.password} onChange={(e) => setCredentials({...credentials, password: e.target.value})} />
+                        <PasswordField className="login-input" placeholder="Nhập mật khẩu..." value={credentials.password} onChange={(e) => setCredentials({...credentials, password: e.target.value})} />
                         <button type="submit" className="btn-submit-login" disabled={isSubmitting} style={isSubmitting ? { opacity: 0.6, cursor: 'wait' } : undefined}>
                             {isSubmitting ? 'ĐANG KIỂM TRA...' : 'TRUY CẬP HỆ THỐNG'}
                         </button>
@@ -395,14 +402,14 @@ function App() {
                     <h3 style={{color:'#2B6830', marginTop:0}}>ĐỔI MẬT KHẨU</h3>
                     <p style={{color:'#666', fontSize:'13px', fontStyle:'italic'}}>Nhập thông tin xác thực để đổi mật khẩu mới</p>
                     <form onSubmit={handleChangePassSubmit}>
-                        <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>Mã Học Viên</div>
-                        <input type="text" className="login-input" placeholder="Nhập 8 số ID..." value={passForm.studentId} onChange={(e) => {if(/^\d*$/.test(e.target.value) && e.target.value.length<=8) setPassForm({...passForm, studentId: e.target.value})}} />
+                        <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>ID (Học viên / Nhân sự)</div>
+                        <input type="text" className="login-input" placeholder="Nhập ID..." value={passForm.studentId} onChange={(e) => {if(isTypableId(e.target.value)) setPassForm({...passForm, studentId: e.target.value})}} />
                         <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>Mật khẩu cũ</div>
-                        <input type="password" className="login-input" placeholder="Nhập mật khẩu hiện tại..." value={passForm.oldPass} onChange={(e) => setPassForm({...passForm, oldPass: e.target.value})} />
+                        <PasswordField className="login-input" placeholder="Nhập mật khẩu hiện tại..." value={passForm.oldPass} onChange={(e) => setPassForm({...passForm, oldPass: e.target.value})} />
                         <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>Mật khẩu mới</div>
-                        <input type="password" className="login-input" placeholder="Mật khẩu mới (min 6 ký tự)" value={passForm.newPass} onChange={(e) => setPassForm({...passForm, newPass: e.target.value})} />
+                        <PasswordField className="login-input" placeholder="Mật khẩu mới (min 6 ký tự)" value={passForm.newPass} onChange={(e) => setPassForm({...passForm, newPass: e.target.value})} />
                         <div style={{textAlign:'left', fontSize:'12px', fontWeight:'bold', marginTop:10, color:'#555'}}>Xác nhận mật khẩu</div>
-                        <input type="password" className="login-input" placeholder="Nhập lại mật khẩu mới..." value={passForm.confirmPass} onChange={(e) => setPassForm({...passForm, confirmPass: e.target.value})} />
+                        <PasswordField className="login-input" placeholder="Nhập lại mật khẩu mới..." value={passForm.confirmPass} onChange={(e) => setPassForm({...passForm, confirmPass: e.target.value})} />
                         {/* Bo override #28a745 (xanh Bootstrap ngoai brand), dung Forest Green cua class */}
                         <button type="submit" className="btn-submit-login" disabled={isSubmitting} style={isSubmitting ? { opacity: 0.6, cursor: 'wait' } : undefined}>
                             {isSubmitting ? 'ĐANG LƯU...' : 'LƯU MẬT KHẨU MỚI'}
